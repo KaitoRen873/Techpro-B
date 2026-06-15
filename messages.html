@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💬 Class Messages</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #09142e;
+            --card-bg: #132040;
+            --card-border: #3a5fc8;
+            --accent: #ffd700;
+            --accent-glow: #ff9500;
+            --text: #e8edf5;
+            --muted: #8899bb;
+            --pink: #ff6b9d;
+            --teal: #00e5c0;
+            --purple: #b388ff;
+            --star-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Press Start 2P', cursive;
+            min-height: 100vh;
+            padding: 40px 20px 60px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════ STARFIELD BACKGROUND ═══════════════════════ */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.8);
+            }
+        }
+
+        /* ═══════════════════════ SHOOTING STAR ═══════════════════════ */
+        .shooting-star {
+            position: fixed;
+            top: -10px;
+            left: 70%;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+            border-radius: 50%;
+            animation: shoot 4s ease-in infinite;
+            animation-delay: 2s;
+            pointer-events: none;
+            z-index: 0;
+            transform: rotate(-25deg);
+            filter: blur(1px);
+        }
+
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.7);
+        }
+
+        .shooting-star:nth-child(2) {
+            left: 25%;
+            animation-delay: 5s;
+            animation-duration: 5s;
+            height: 60px;
+        }
+
+        .shooting-star:nth-child(3) {
+            left: 55%;
+            animation-delay: 8s;
+            animation-duration: 3.5s;
+            height: 100px;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translate(0, 0) rotate(-25deg);
+                opacity: 1;
+            }
+            15% {
+                transform: translate(-300px, 500px) rotate(-25deg);
+                opacity: 0;
+            }
+            16% {
+                transform: translate(0, 0) rotate(-25deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(0, 0) rotate(-25deg);
+                opacity: 0;
+            }
+        }
+
+        /* ═══════════════════════ INTRO OVERLAY ═══════════════════════ */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #020816;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            visibility: visible;
+            opacity: 1;
+        }
+        #intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .intro-title {
+            font-size: 1.4rem;
+            color: #5b8def;
+            text-shadow: 0 0 20px #5b8def, 0 0 40px #1e3a6b;
+            animation: glitchText 2s infinite;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+        }
+        @keyframes glitchText {
+            0%, 100% { text-shadow: 0 0 20px #5b8def, 0 0 40px #1e3a6b; }
+            20% { text-shadow: -3px 0 #ff6b9d, 3px 0 #5b8def; }
+            40% { text-shadow: 3px 0 #ff6b9d, -3px 0 #5b8def; }
+            60% { text-shadow: 0 0 20px #5b8def; }
+        }
+        .intro-bar-outer {
+            width: 320px;
+            height: 22px;
+            border: 3px solid #5b8def;
+            background: #0a1230;
+            padding: 2px;
+            box-shadow: 0 0 15px rgba(91,141,239,0.4);
+        }
+        .intro-bar-inner {
+            height: 100%;
+            width: 0%;
+            background: #5b8def;
+            animation: introLoad 2.5s steps(20) forwards;
+            box-shadow: 0 0 12px #5b8def;
+        }
+        @keyframes introLoad {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .intro-status {
+            margin-top: 18px;
+            font-size: 0.5rem;
+            color: #aac0f0;
+            animation: blink 1s infinite;
+            letter-spacing: 2px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ═══════════════════════ MAIN CONTENT WRAPPER ═══════════════════════ */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            max-width: 850px;
+            margin: 0 auto;
+            opacity: 0;
+            transition: opacity 0.8s ease 0.4s;
+        }
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ═══════════════════════ HEADER ═══════════════════════ */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-glow), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 18px rgba(255, 180, 50, 0.5));
+            animation: titleGlow 2s ease-in-out infinite;
+            margin-bottom: 8px;
+        }
+
+        @keyframes titleGlow {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 18px rgba(255, 180, 50, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 32px rgba(255, 180, 50, 0.9));
+            }
+        }
+
+        .header .subtitle {
+            font-size: 0.5rem;
+            color: var(--muted);
+            letter-spacing: 4px;
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
+        .header .pixel-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .header .pixel-divider span {
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+            animation: dividerPulse 1.4s ease-in-out infinite;
+        }
+        .header .pixel-divider span:nth-child(2) {
+            animation-delay: 0.2s;
+            background: var(--pink);
+            box-shadow: 0 0 8px var(--pink);
+        }
+        .header .pixel-divider span:nth-child(3) {
+            animation-delay: 0.4s;
+            background: var(--teal);
+            box-shadow: 0 0 8px var(--teal);
+        }
+        .header .pixel-divider span:nth-child(4) {
+            animation-delay: 0.6s;
+            background: var(--purple);
+            box-shadow: 0 0 8px var(--purple);
+        }
+        .header .pixel-divider span:nth-child(5) {
+            animation-delay: 0.8s;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        @keyframes dividerPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.6);
+                opacity: 1;
+            }
+        }
+
+        /* ═══════════════════════ MESSAGE CARDS GRID ═══════════════════════ */
+        .messages-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin-bottom: 50px;
+        }
+
+        @media (min-width: 600px) {
+            .messages-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .message-card:nth-child(3) {
+                grid-column: 1 / -1;
+                max-width: 450px;
+                justify-self: center;
+                width: 100%;
+            }
+        }
+
+        /* ═══════════════════════ MESSAGE CARD ═══════════════════════ */
+        .message-card {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 16px;
+            padding: 28px 24px 24px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center,
+                    rgba(255, 255, 255, 0.03) 0%,
+                    transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .message-card:hover::before {
+            opacity: 1;
+        }
+
+        .message-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.55),
+                0 0 40px rgba(255, 180, 30, 0.15),
+                0 0 80px rgba(255, 180, 30, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .message-card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease;
+        }
+
+        /* Card accent stripe */
+        .message-card .card-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-radius: 13px 13px 0 0;
+        }
+
+        .message-card:nth-child(1) .card-accent {
+            background: linear-gradient(90deg, var(--pink), #ff4081);
+            box-shadow: 0 0 18px rgba(255, 107, 157, 0.5);
+        }
+        .message-card:nth-child(2) .card-accent {
+            background: linear-gradient(90deg, var(--teal), #00c9a7);
+            box-shadow: 0 0 18px rgba(0, 229, 192, 0.5);
+        }
+        .message-card:nth-child(3) .card-accent {
+            background: linear-gradient(90deg, var(--purple), #7c4dff);
+            box-shadow: 0 0 18px rgba(179, 136, 255, 0.5);
+        }
+
+        /* Avatar circle */
+        .message-card .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            position: relative;
+            z-index: 1;
+            transition: all 0.35s ease;
+            flex-shrink: 0;
+        }
+
+        .message-card:hover .avatar {
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            transform: rotate(-5deg) scale(1.08);
+        }
+
+        .message-card:nth-child(1) .avatar {
+            background: linear-gradient(135deg, #ff6b9d, #c0392b);
+        }
+        .message-card:nth-child(2) .avatar {
+            background: linear-gradient(135deg, #00e5c0, #00796b);
+        }
+        .message-card:nth-child(3) .avatar {
+            background: linear-gradient(135deg, #b388ff, #512da8);
+        }
+
+        /* Student name */
+        .message-card .student-name {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .message-card:hover .student-name {
+            color: var(--accent);
+        }
+
+        /* Role / badge */
+        .message-card .role-badge {
+            display: inline-block;
+            font-size: 0.4rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--muted);
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover .role-badge {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        /* Message text */
+        .message-card .message-text {
+            font-size: 0.55rem;
+            line-height: 1.9;
+            color: #c8d6e5;
+            position: relative;
+            z-index: 1;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.35s ease;
+            font-style: italic;
+        }
+
+        .message-card:hover .message-text {
+            border-left-color: var(--accent);
+            background: rgba(0, 0, 0, 0.35);
+            color: #ffffff;
+        }
+
+        /* Heart icon */
+        .message-card .heart-icon {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            transition: all 0.35s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .message-card:hover .heart-icon {
+            opacity: 1;
+            transform: scale(1.3);
+            animation: heartBeat 0.8s ease-in-out;
+        }
+
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            20% {
+                transform: scale(1.45);
+            }
+            40% {
+                transform: scale(1);
+            }
+            60% {
+                transform: scale(1.35);
+            }
+            80% {
+                transform: scale(1);
+            }
+        }
+
+        /* ═══════════════════════ BACK BUTTON ═══════════════════════ */
+        .back-button-wrapper {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            letter-spacing: 3px;
+            text-decoration: none;
+            color: var(--text);
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            padding: 14px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .back-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.06),
+                    transparent);
+            transition: left 0.5s ease;
+        }
+
+        .back-button:hover::after {
+            left: 100%;
+        }
+
+        .back-button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(255, 180, 30, 0.2);
+            transform: translateY(-4px);
+            letter-spacing: 5px;
+        }
+
+        .back-button:active {
+            transform: scale(0.94);
+            transition: transform 0.1s ease;
+        }
+
+        .back-button .arrow {
+            display: inline-block;
+            transition: transform 0.35s ease;
+            font-size: 0.7rem;
+        }
+
+        .back-button:hover .arrow {
+            transform: translateX(-6px);
+        }
+
+        /* ═══════════════════════ FLOATING PARTICLES ═══════════════════════ */
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            font-size: 1.2rem;
+            animation: floatUp var(--dur) linear infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+            bottom: -30px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            80% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(var(--drift)) rotate(var(--spin));
+                opacity: 0;
+            }
+        }
+
+        /* ═══════════════════════ SCROLLBAR ═══════════════════════ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+            .message-card {
+                padding: 20px 16px 18px;
+                border-radius: 12px;
+            }
+            .message-card .student-name {
+                font-size: 0.55rem;
+            }
+            .message-card .message-text {
+                font-size: 0.45rem;
+                line-height: 1.7;
+                padding: 10px 12px;
+            }
+            .message-card .avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .back-button {
+                font-size: 0.45rem;
+                padding: 12px 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ STARFIELD ═══════════════ -->
+    <div class="starfield" id="starfield"></div>
+
+    <!-- ═══════════════ SHOOTING STARS ═══════════════ -->
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
+    <!-- ═══════════════ FLOATING PARTICLES ═══════════════ -->
+    <div id="particles-container"></div>
+
+    <!-- ═══════════════ INTRO SCREEN ═══════════════ -->
+    <div id="intro-overlay">
+        <div class="intro-title">TECHPRO B MESSAGES</div>
+        <div class="intro-bar-outer"><div class="intro-bar-inner"></div></div>
+        <div class="intro-status">LOADING MESSAGES...</div>
+    </div>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <div class="main-content" id="main-content">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>💬 Class Messages</h1>
+            <p class="subtitle">Farewell &middot; Memories &middot; Good Vibes</p>
+            <div class="pixel-divider">
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- Messages Grid -->
+        <div class="messages-grid">
+
+            <!-- Message Card 1 -->
+            <div class="message-card">
+                <div class="card-accent"></div>
+                <div class="avatar">🌸</div>
+                <div class="student-name">HANA TANAKA</div>
+                <div class="role-badge">🌟 Class President</div>
+                <p class="message-text">"Thank you for the memories. Every laugh, every challenge — I'll carry them all with me. Stay amazing!"</p>
+                <span class="heart-icon">💖</span>
+            </div>
+
+            <!-- Message Card 2 -->
+            <div class="message-card">
+                <div class="card-accent"></div>
+                <div class="avatar">🚀</div>
+                <div class="student-name">LEO MARTINEZ</div>
+                <div class="role-badge">🎮 Gaming Club</div>
+                <p class="message-text">"Good luck everyone. The final boss of life awaits — and I know we'll all beat it. GG WP!"</p>
+                <span class="heart-icon">💛</span>
+            </div>
+
+            <!-- Message Card 3 -->
+            <div class="message-card">
+                <div class="card-accent"></div>
+                <div class="avatar">📚</div>
+                <div class="student-name">AISHA PATEL</div>
+                <div class="role-badge">🏆 Valedictorian</div>
+                <p class="message-text">"Never stop learning. The classroom may end, but curiosity is a lifelong adventure. Go chase your dreams!"</p>
+                <span class="heart-icon">💜</span>
+            </div>
+
+        </div>
+
+        <!-- Back Button -->
+        <div class="back-button-wrapper">
+            <a href="index.html" class="back-button">
+                <span class="arrow">◀</span> BACK TO HOME
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // ═══════════════════════ INTRO OVERLAY LOGIC ═══════════════════════
+        window.addEventListener('load', () => {
+            const introOverlay = document.getElementById('intro-overlay');
+            const mainContent = document.getElementById('main-content');
+            setTimeout(() => {
+                introOverlay.classList.add('hidden');
+                mainContent.classList.add('visible');
+            }, 2600);
+        });
+
+        // ═══════════════════════ STARFIELD GENERATOR ═══════════════════════
+        const starfield = document.getElementById('starfield');
+        const starCount = 90;
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+            star.style.setProperty('--delay', Math.random() * 4 + 's');
+            starfield.appendChild(star);
+        }
+
+        // ═══════════════════════ FLOATING PARTICLES ═══════════════════════
+        const particlesContainer = document.getElementById('particles-container');
+        const emojis = ['✨', '⭐', '💫', '🌟', '💛', '🧡', '🪐', '💎', '🔮', '🎓'];
+
+        function spawnParticle() {
+            const particle = document.createElement('span');
+            particle.classList.add('floating-particle');
+            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            particle.style.left = Math.random() * 95 + '%';
+            particle.style.setProperty('--dur', (Math.random() * 10 + 8) + 's');
+            particle.style.setProperty('--delay', Math.random() * 2 + 's');
+            particle.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+            particle.style.setProperty('--spin', (Math.random() * 360 - 180) + 'deg');
+            particlesContainer.appendChild(particle);
+
+            const duration = parseFloat(particle.style.getPropertyValue('--dur')) + parseFloat(particle.style.getPropertyValue('--delay'));
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, duration * 1000 + 500);
+        }
+
+        setInterval(spawnParticle, 1800);
+        for (let i = 0; i < 8; i++) {
+            setTimeout(spawnParticle, i * 300);
+        }
+
+        // ═══════════════════════ CONSOLE EASTER EGG ═══════════════════════
+        console.log(`
+        🎓  Class Messages  🎓
+        "The beautiful thing about learning
+         is that nobody can take it away from you."
+         — B.B. King
+
+        ✨ Wishing you all the best! ✨
+        `);
+    </script>
+
+</body>
+</html>
