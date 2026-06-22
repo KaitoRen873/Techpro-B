@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Dash: Neon Runner</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: #050510;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 800px;
+            max-height: 450px;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+            overflow: hidden;
+            background: #000;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* UI Overlay */
+        #ui {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Menu/Game Over Overlay */
+        #menu-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #menu-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #menu-title {
+            color: #ff0055;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+            letter-spacing: 4px;
+        }
+
+        #menu-instructions {
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        #start-btn {
+            background: transparent;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        #start-btn:hover, #start-btn:active {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 20px #00ffcc;
+        }
+
+        /* Mobile Controls Layer */
+        #mobile-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: 5;
+        }
+
+        #jump-zone, #duck-zone {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            color: rgba(255, 255, 255, 0.15);
+            font-weight: bold;
+            font-size: 0.9rem;
+            pointer-events: auto;
+        }
+
+        #jump-zone { background: linear-gradient(to top, rgba(0,255,204,0.02), transparent); }
+        #duck-zone { background: linear-gradient(to top, rgba(255,0,85,0.02), transparent); }
+
+        /* Hide mobile text hints on desktop layouts */
+        @media (pointer: fine) {
+            #mobile-controls span { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui">
+            <div id="score-board">Score: <span id="score">0</span></div>
+            <div id="high-score-board">High: <span id="high-score">0</span></div>
+        </div>
+
+        <div id="menu-overlay" class="visible">
+            <h1 id="menu-title">CYBER DASH</h1>
+            <p id="menu-instructions">Press SPACE / Tap Screen to Start</p>
+            <button id="start-btn">PLAY</button>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="mobile-controls">
+            <div id="jump-zone"><span>TAP TO JUMP</span></div>
+            <div id="duck-zone"><span>HOLD TO DUCK</span></div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set logical game resolution
+        const GAME_WIDTH = 800;
+        const GAME_HEIGHT = 450;
+        canvas.width = GAME_WIDTH;
+        canvas.height = GAME_HEIGHT;
+
+        // Game State variables
+        let gameState = 'MENU'; 
+        let score = 0;
+        let highScore = localStorage.getItem('cyber_high_score') || 0;
+        let gameSpeed = 6;
+        const MAX_SPEED = 15;
+
+        document.getElementById('high-score').innerText = highScore;
+
+        // Game Systems Objects
+        const player = {
+            x: 80,
+            y: 300,
+            baseY: 300,
+            width: 40,
+            height: 50,
+            baseHeight: 50,
+            duckHeight: 25,
+            velocityY: 0,
+            gravity: 0.6,
+            jumpForce: -13,
+            isGrounded: true,
+            isDucking: false,
+            color: '#00ffcc',
+            
+            update() {
+                if (this.isDucking && this.isGrounded) {
+                    this.height = this.duckHeight;
+                    this.y = this.baseY + (this.baseHeight - this.duckHeight);
+                } else {
+                    this.height = this.baseHeight;
+                    if (!this.isDucking && this.y === this.baseY + (this.baseHeight - this.duckHeight)) {
+                        this.y = this.baseY;
+                    }
+                }
+
+                this.velocityY += this.gravity;
+                this.y += this.velocityY;
+
+                const currentGround = this.isDucking ? this.baseY + (this.baseHeight - this.duckHeight) : this.baseY;
+                if (this.y >= currentGround) {
+                    this.y = currentGround;
+                    this.velocityY = 0;
+                    this.isGrounded = true;
+                } else {
+                    this.isGrounded = false;
+                }
+            },
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                
+                ctx.beginPath();
+                if (this.isDucking) {
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                } else {
+                    ctx.moveTo(this.x, this.y + this.height);
+                    ctx.lineTo(this.x + this.width, this.y + this.height / 2);
+                    ctx.lineTo(this.x, this.y);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.shadowBlur = 0; 
+            },
+
+            jump() {
+                if (this.isGrounded && !this.isDucking) {
+                    this.velocityY = this.jumpForce;
+                    this.isGrounded = false;
+                    createExplosion(this.x + this.width/2, this.y + this.height, '#00ffcc', 8);
+                }
+            }
+        };
+
+        let obstacles = [];
+        let particles = [];
+
+        class Obstacle {
+            constructor() {
+                this.type = Math.random() > 0.4 ? 'LOW' : 'HIGH';
+                this.width = 25 + Math.random() * 20;
+                this.x = GAME_WIDTH + this.width;
+                
+                if (this.type === 'LOW') {
+                    this.height = 40 + Math.random() * 30;
+                    this.y = GAME_HEIGHT - 100 - this.height; 
+                    this.color = '#ff0055';
+                } else {
+                    this.height = 45;
+                    this.y = GAME_HEIGHT - 175; 
+                    this.color = '#ffff00';
+                }
+            }
+
+            update() {
+                this.x -= gameSpeed;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function createExplosion(x, y, color, count = 5) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    alpha: 1,
+                    color
+                });
+            }
+        }
+
+        function updateParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.03;
+                if (p.alpha <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function drawParticles() {
+            particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 4, 4);
+                ctx.restore();
+            });
+        }
+
+        function drawBackground() {
+            ctx.strokeStyle = '#111126';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, GAME_HEIGHT - 100);
+            ctx.lineTo(GAME_WIDTH, GAME_HEIGHT - 100);
+            ctx.stroke();
+
+            for (let i = 0; i <= GAME_WIDTH; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, GAME_HEIGHT - 100);
+                ctx.lineTo(i - 100, GAME_HEIGHT);
+                ctx.stroke();
+            }
+        }
+
+        function resetGame() {
+            score = 0;
+            gameSpeed = 6;
+            obstacles = [];
+            particles = [];
+            player.y = player.baseY;
+            player.velocityY = 0;
+            player.isDucking = false;
+            document.getElementById('score').innerText = score;
+            gameState = 'PLAYING';
+            document.getElementById('menu-overlay').classList.remove('visible');
+        }
+
+        // Controllers
+        window.addEventListener('keydown', e => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                if (gameState === 'PLAYING') player.jump();
+                else resetGame();
+            }
+            if (e.code === 'ArrowDown' || e.code === 'KeyS') player.isDucking = true;
+        });
+
+        window.addEventListener('keyup', e => {
+            if (e.code === 'ArrowDown' || e.code === 'KeyS') player.isDucking = false;
+        });
+
+        // Mobile Interfaces
+        const jumpZone = document.getElementById('jump-zone');
+        const duckZone = document.getElementById('duck-zone');
+        const startBtn = document.getElementById('start-btn');
+
+        startBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetGame();
+        });
+
+        jumpZone.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (gameState === 'PLAYING') player.jump();
+            else resetGame();
+        }, {passive: false});
+
+        duckZone.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (gameState === 'PLAYING') player.isDucking = true;
+        }, {passive: false});
+
+        duckZone.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            player.isDucking = false;
+        }, {passive: false});
+
+        let spawnTimer = 0;
+
+        function loop() {
+            ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            drawBackground();
+
+            if (gameState === 'PLAYING') {
+                score += 1;
+                if (score % 200 === 0 && gameSpeed < MAX_SPEED) gameSpeed += 0.5;
+                document.getElementById('score').innerText = Math.floor(score / 5);
+
+                player.update();
+
+                spawnTimer++;
+                if (spawnTimer > Math.max(50, 110 - gameSpeed * 4)) {
+                    if (Math.random() > 0.45) {
+                        obstacles.push(new Obstacle());
+                        spawnTimer = 0;
+                    }
+                }
+
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    let obs = obstacles[i];
+                    obs.update();
+
+                    if (player.x < obs.x + obs.width &&
+                        player.x + player.width > obs.x &&
+                        player.y < obs.y + obs.height &&
+                        player.y + player.height > obs.y) {
+                        
+                        gameState = 'GAMEOVER';
+                        createExplosion(player.x + 20, player.y + 20, '#ff0055', 25);
+                        
+                        let finalScore = Math.floor(score / 5);
+                        if (finalScore > highScore) {
+                            highScore = finalScore;
+                            localStorage.setItem('cyber_high_score', highScore);
+                            document.getElementById('high-score').innerText = highScore;
+                        }
+
+                        document.getElementById('menu-title').innerText = "GAME OVER";
+                        document.getElementById('menu-instructions').innerText = `Score: ${finalScore} | High Score: ${highScore}`;
+                        document.getElementById('menu-overlay').classList.add('visible');
+                    }
+
+                    if (obs.x + obs.width < 0) obstacles.splice(i, 1);
+                }
+            }
+
+            obstacles.forEach(obs => obs.draw());
+            updateParticles();
+            drawParticles();
+            player.draw();
+
+            requestAnimationFrame(loop);
+        }
+
+        requestAnimationFrame(loop);
+    </script>
+</body>
+</html>

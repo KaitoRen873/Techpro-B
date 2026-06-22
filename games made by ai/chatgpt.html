@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Mobile RPG</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+    touch-action:none;
+}
+
+canvas{
+    display:block;
+}
+
+#hud{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:rgba(0,0,0,.7);
+    padding:10px;
+    border-radius:10px;
+    z-index:100;
+}
+
+#controls{
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    z-index:100;
+}
+
+.ctrl{
+    width:60px;
+    height:60px;
+    font-size:24px;
+    margin:2px;
+    border:none;
+    border-radius:12px;
+}
+
+#attack{
+    position:absolute;
+    right:20px;
+    bottom:40px;
+    width:90px;
+    height:90px;
+    font-size:30px;
+    border:none;
+    border-radius:50%;
+    z-index:100;
+}
+</style>
+</head>
+<body>
+
+<div id="hud">
+    ❤️ HP: <span id="hp">100</span><br>
+    ⭐ XP: <span id="xp">0</span><br>
+    🏆 Level: <span id="level">1</span><br><br>
+
+    <button onclick="saveGame()">Save</button>
+    <button onclick="loadGame()">Load</button>
+</div>
+
+<canvas id="game"></canvas>
+
+<div id="controls">
+    <div style="text-align:center;">
+        <button class="ctrl" id="up">↑</button>
+    </div>
+
+    <div>
+        <button class="ctrl" id="left">←</button>
+        <button class="ctrl" id="down">↓</button>
+        <button class="ctrl" id="right">→</button>
+    </div>
+</div>
+
+<button id="attack">⚔️</button>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+resize();
+window.addEventListener("resize",resize);
+
+const move={
+    up:false,
+    down:false,
+    left:false,
+    right:false,
+    attack:false
+};
+
+function bindButton(id,key){
+    const btn=document.getElementById(id);
+
+    btn.addEventListener("touchstart",e=>{
+        e.preventDefault();
+        move[key]=true;
+    });
+
+    btn.addEventListener("touchend",e=>{
+        e.preventDefault();
+        move[key]=false;
+    });
+
+    btn.addEventListener("mousedown",()=>move[key]=true);
+    btn.addEventListener("mouseup",()=>move[key]=false);
+}
+
+bindButton("up","up");
+bindButton("down","down");
+bindButton("left","left");
+bindButton("right","right");
+bindButton("attack","attack");
+
+const player={
+    x:200,
+    y:200,
+    size:30,
+    hp:100,
+    xp:0,
+    level:1,
+    speed:4
+};
+
+let enemies=[];
+
+function spawnEnemy(){
+    return{
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        size:25,
+        hp:20
+    };
+}
+
+for(let i=0;i<10;i++){
+    enemies.push(spawnEnemy());
+}
+
+function updatePlayer(){
+
+    if(move.up) player.y-=player.speed;
+    if(move.down) player.y+=player.speed;
+    if(move.left) player.x-=player.speed;
+    if(move.right) player.x+=player.speed;
+
+    player.x=Math.max(0,
+        Math.min(canvas.width-player.size,player.x));
+
+    player.y=Math.max(0,
+        Math.min(canvas.height-player.size,player.y));
+}
+
+function updateEnemies(){
+
+    enemies.forEach(enemy=>{
+
+        const dx=player.x-enemy.x;
+        const dy=player.y-enemy.y;
+
+        const dist=Math.hypot(dx,dy);
+
+        if(dist>0){
+            enemy.x+=(dx/dist)*1.3;
+            enemy.y+=(dy/dist)*1.3;
+        }
+
+        if(dist<40){
+
+            player.hp-=0.05;
+
+            if(move.attack){
+
+                enemy.hp--;
+
+                if(enemy.hp<=0){
+
+                    player.xp+=10;
+
+                    if(player.xp>=player.level*100){
+                        player.level++;
+                        player.hp=100;
+                    }
+
+                    Object.assign(enemy,spawnEnemy());
+                }
+            }
+        }
+    });
+}
+
+function drawGrid(){
+
+    ctx.strokeStyle="#222";
+
+    for(let x=0;x<canvas.width;x+=50){
+        ctx.beginPath();
+        ctx.moveTo(x,0);
+        ctx.lineTo(x,canvas.height);
+        ctx.stroke();
+    }
+
+    for(let y=0;y<canvas.height;y+=50){
+        ctx.beginPath();
+        ctx.moveTo(0,y);
+        ctx.lineTo(canvas.width,y);
+        ctx.stroke();
+    }
+}
+
+function draw(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    drawGrid();
+
+    ctx.fillStyle="cyan";
+    ctx.fillRect(
+        player.x,
+        player.y,
+        player.size,
+        player.size
+    );
+
+    enemies.forEach(enemy=>{
+
+        ctx.fillStyle="red";
+        ctx.fillRect(
+            enemy.x,
+            enemy.y,
+            enemy.size,
+            enemy.size
+        );
+
+        ctx.fillStyle="lime";
+
+        ctx.fillRect(
+            enemy.x,
+            enemy.y-6,
+            enemy.hp,
+            4
+        );
+    });
+
+    document.getElementById("hp").textContent=
+        Math.floor(player.hp);
+
+    document.getElementById("xp").textContent=
+        player.xp;
+
+    document.getElementById("level").textContent=
+        player.level;
+}
+
+function saveGame(){
+    localStorage.setItem(
+        "mobileRPG",
+        JSON.stringify(player)
+    );
+}
+
+function loadGame(){
+
+    const save=
+        JSON.parse(localStorage.getItem("mobileRPG"));
+
+    if(save){
+        Object.assign(player,save);
+    }
+}
+
+function loop(){
+
+    if(player.hp>0){
+        updatePlayer();
+        updateEnemies();
+    }
+
+    draw();
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>
