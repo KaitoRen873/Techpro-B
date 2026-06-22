@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TechPro Computer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <style>
+        /* ─────────── ROOT ─────────── */
         :root {
             --bg-teal: #008080;
             --win95-gray: #c0c0c0;
@@ -17,7 +18,6 @@
             --window-bg: #ffffff;
             --text-dark: #222;
             --accent: #ffcc00;
-            --pixel-border: 2px solid;
         }
 
         * {
@@ -33,11 +33,11 @@
             height: 100vh;
             width: 100vw;
             user-select: none;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="font-size:12px"><text y="12">🖱️</text></svg>'), auto;
+            cursor: default;
             image-rendering: pixelated;
+            position: relative;
         }
 
-        /* ═══════════════ SCANLINES OVERLAY ═══════════════ */
         .scanlines {
             position: fixed;
             top: 0;
@@ -47,13 +47,12 @@
             pointer-events: none;
             z-index: 999;
             background: repeating-linear-gradient(0deg,
-                    rgba(0, 0, 0, 0.08) 0px,
-                    rgba(0, 0, 0, 0.08) 2px,
+                    rgba(0, 0, 0, 0.07) 0px,
+                    rgba(0, 0, 0, 0.07) 2px,
                     transparent 2px,
                     transparent 4px);
-            animation: scanMove 0.1s linear infinite;
+            animation: scanMove 0.12s linear infinite;
         }
-
         @keyframes scanMove {
             0% {
                 background-position: 0 0;
@@ -63,7 +62,18 @@
             }
         }
 
-        /* ═══════════════ BOOT SCREEN ═══════════════ */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+        }
+
+        /* ─────────── BOOT SCREEN ─────────── */
         .boot-screen {
             position: fixed;
             top: 0;
@@ -77,47 +87,65 @@
             align-items: center;
             justify-content: center;
             color: #00ff00;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            animation: bootFadeOut 0.6s ease 3.5s forwards;
+            animation: bootFadeOut 0.8s ease 4.2s forwards;
         }
-
         .boot-logo {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
             animation: bootGlow 1.5s ease-in-out infinite;
         }
-
-        .boot-bar {
-            width: 280px;
-            height: 24px;
-            border: 3px solid #00ff00;
-            margin-top: 25px;
-            padding: 2px;
+        .boot-title {
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            color: #00dd00;
+            margin-bottom: 4px;
         }
-
+        .boot-sub {
+            font-size: 0.5rem;
+            color: #008800;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
+        }
+        .boot-bar {
+            width: 320px;
+            height: 22px;
+            border: 3px solid #00ff00;
+            padding: 2px;
+            background: #001100;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.15);
+        }
         .boot-bar-fill {
             height: 100%;
             width: 0%;
             background: #00ff00;
-            animation: bootLoad 3s ease-in-out forwards;
+            animation: bootLoad 3.8s ease-in-out forwards;
+            box-shadow: 0 0 20px #00ff00;
         }
-
+        .boot-status {
+            margin-top: 16px;
+            font-size: 0.45rem;
+            color: #00aa00;
+            animation: blink 1.2s infinite;
+            letter-spacing: 3px;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
         @keyframes bootLoad {
             0% {
                 width: 0%;
             }
-            70% {
-                width: 85%;
+            30% {
+                width: 25%;
             }
-            90% {
-                width: 98%;
+            60% {
+                width: 65%;
+            }
+            85% {
+                width: 92%;
             }
             100% {
                 width: 100%;
             }
         }
-
         @keyframes bootFadeOut {
             0% {
                 opacity: 1;
@@ -132,7 +160,6 @@
                 pointer-events: none;
             }
         }
-
         @keyframes bootGlow {
             0%,
             100% {
@@ -142,84 +169,116 @@
                 text-shadow: 0 0 30px #00ff00, 0 0 60px #00ff00;
             }
         }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
+        }
 
-        /* ═══════════════ DESKTOP ═══════════════ */
+        /* ─────────── DESKTOP ─────────── */
         .desktop {
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-            gap: 28px;
-            padding: 40px 30px;
+            gap: 20px;
+            padding: 30px 24px;
             height: calc(100vh - 50px);
             position: relative;
             z-index: 1;
+            background: #008080;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="%23008080"/><circle cx="30" cy="30" r="1.5" fill="rgba(255,255,255,0.06)"/></svg>');
+        }
+        .desktop.wallpaper-dark {
+            background: #1a1a2e;
+            background-image: radial-gradient(ellipse at center, #16213e 0%, #0f0f1a 100%);
+        }
+        .desktop.wallpaper-teal {
+            background: #008080;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="%23008080"/><circle cx="30" cy="30" r="1.5" fill="rgba(255,255,255,0.06)"/></svg>');
+        }
+        .desktop.wallpaper-blue {
+            background: #0a1628;
+            background-image: radial-gradient(ellipse at 20% 30%, #1a3a6a 0%, #0a1628 70%);
         }
 
+        /* ─────────── DESKTOP ICON ─────────── */
         .icon {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100px;
+            width: 88px;
             color: white;
             cursor: pointer;
-            transition: all 0.15s ease;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
-            padding: 10px 8px;
+            transition: all 0.12s ease;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7), 0 0 4px rgba(0, 0, 0, 0.4);
+            padding: 8px 6px;
             border: 2px solid transparent;
             border-radius: 2px;
+            text-align: center;
         }
-
         .icon:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px dotted rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px dotted rgba(255, 255, 255, 0.5);
             transform: scale(1.02);
         }
-
         .icon:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.25);
+            transform: scale(0.94);
+            background: rgba(255, 255, 255, 0.20);
         }
-
         .icon .icon-img {
-            font-size: 3.2rem;
+            font-size: 3rem;
             filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.5));
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            line-height: 1.1;
         }
-
         .icon p {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.4;
+            line-height: 1.3;
+            word-break: break-word;
+            max-width: 76px;
         }
 
-        /* ═══════════════ WINDOWS ═══════════════ */
+        /* ─────────── WINDOW ─────────── */
         .window {
             position: absolute;
-            top: 120px;
-            left: 130px;
-            width: 340px;
-            background: #c0c0c0;
+            background: var(--win95-gray);
             border: 2px solid #000;
-            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3), inset 1px 1px 0 white;
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35), inset 1px 1px 0 white;
             display: none;
-            z-index: 10;
             flex-direction: column;
-            min-width: 250px;
-            font-family: 'Press Start 2P', cursive;
+            min-width: 200px;
+            min-height: 120px;
             color: #000;
             image-rendering: pixelated;
+            resize: none;
+            overflow: hidden;
+            z-index: 10;
+            border-radius: 0;
         }
-
         .window.active {
             z-index: 20;
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5), inset 1px 1px 0 white;
+            box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.45), inset 1px 1px 0 white;
+        }
+        .window.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: calc(100% - 50px) !important;
+            border: 2px solid #000;
+        }
+        .window.minimized {
+            display: none !important;
         }
 
         .title-bar {
-            background: #000080;
+            background: var(--title-bar);
             color: white;
-            padding: 5px 8px;
+            padding: 4px 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -227,23 +286,28 @@
             font-size: 0.5rem;
             letter-spacing: 1px;
             border-bottom: 2px solid #000;
+            flex-shrink: 0;
+            min-height: 28px;
         }
-
         .title-bar .window-title {
             display: flex;
             align-items: center;
             gap: 5px;
+            font-size: 0.5rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-family: 'Press Start 2P', cursive;
         }
-
         .title-bar .window-controls {
             display: flex;
-            gap: 4px;
+            gap: 3px;
+            flex-shrink: 0;
         }
-
         .title-bar button {
             width: 20px;
             height: 20px;
-            background: #c0c0c0;
+            background: var(--win95-gray);
             border: 2px solid #000;
             font-family: 'Press Start 2P', cursive;
             font-size: 0.5rem;
@@ -253,420 +317,2557 @@
             justify-content: center;
             box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
             color: black;
+            padding: 0;
+            line-height: 1;
         }
-
         .title-bar button:active {
             box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
         }
+        .title-bar .close-btn {
+            font-size: 0.55rem;
+            font-weight: bold;
+        }
+        .title-bar .close-btn:hover {
+            background: #e00000;
+            color: white;
+        }
 
         .window-content {
-            padding: 15px;
-            background: #fff;
+            padding: 12px 14px;
+            background: var(--window-bg);
             flex: 1;
             overflow-y: auto;
-            font-size: 0.55rem;
-            line-height: 1.8;
-            max-height: 260px;
-            border-top: 2px solid #808080;
-            border-left: 2px solid #808080;
-            border-right: 2px solid #dfdfdf;
-            border-bottom: 2px solid #dfdfdf;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            border-top: 2px solid var(--win95-dark);
+            border-left: 2px solid var(--win95-dark);
+            border-right: 2px solid var(--win95-light);
+            border-bottom: 2px solid var(--win95-light);
+            min-height: 60px;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+        .window-content::-webkit-scrollbar {
+            width: 14px;
+            background: var(--win95-gray);
+        }
+        .window-content::-webkit-scrollbar-thumb {
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+        }
+        .window-content::-webkit-scrollbar-button {
+            display: none;
         }
 
-        .window-content p {
-            margin-bottom: 8px;
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            cursor: nwse-resize;
+            background: var(--win95-gray);
+            border-top: 2px solid var(--win95-dark);
+            border-left: 2px solid var(--win95-dark);
+            border-right: 2px solid var(--win95-light);
+            border-bottom: 2px solid var(--win95-light);
+            z-index: 5;
+        }
+        .resize-handle::after {
+            content: '▸';
+            font-size: 0.5rem;
+            position: absolute;
+            bottom: 0;
+            right: 2px;
+            color: var(--win95-dark);
         }
 
-        .window-content .list-item {
-            padding: 5px 0;
-            border-bottom: 1px dashed #aaa;
-        }
-
-        /* ═══════════════ TASKBAR ═══════════════ */
+        /* ─────────── TASKBAR ─────────── */
         .taskbar {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 46px;
-            background: #c0c0c0;
-            border-top: 3px solid #dfdfdf;
+            height: 50px;
+            background: var(--win95-gray);
+            border-top: 3px solid var(--win95-light);
             display: flex;
             align-items: center;
-            padding: 0 8px;
+            padding: 0 6px 0 4px;
             z-index: 50;
             box-shadow: inset 0 1px 0 white;
+            gap: 4px;
         }
-
         .start-button {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: #c0c0c0;
+            gap: 5px;
+            background: var(--win95-gray);
             border: 2px solid #000;
-            padding: 5px 12px;
+            padding: 4px 10px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             cursor: pointer;
             box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
-            margin-right: 15px;
             letter-spacing: 1px;
+            flex-shrink: 0;
+            height: 34px;
         }
-
         .start-button:active {
             box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
         }
+        .start-button .start-icon {
+            font-size: 0.8rem;
+        }
+
+        .taskbar-programs {
+            display: flex;
+            gap: 3px;
+            flex: 1;
+            overflow-x: auto;
+            padding: 0 4px;
+            height: 34px;
+            align-items: center;
+        }
+        .taskbar-programs::-webkit-scrollbar {
+            height: 4px;
+        }
+        .taskbar-programs::-webkit-scrollbar-thumb {
+            background: var(--win95-dark);
+        }
+
+        .taskbar-btn {
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            padding: 2px 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.4rem;
+            cursor: pointer;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            white-space: nowrap;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .taskbar-btn.active-btn {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+            background: #b0b0b0;
+        }
 
         .taskbar-time {
-            margin-left: auto;
-            font-size: 0.55rem;
-            padding: 5px 12px;
-            border: 2px solid #808080;
+            font-size: 0.5rem;
+            padding: 4px 10px;
+            border: 2px solid var(--win95-dark);
             background: #fff;
             box-shadow: inset 1px 1px 0 #555, inset -1px -1px 0 white;
             letter-spacing: 1px;
+            flex-shrink: 0;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            font-family: 'Press Start 2P', cursive;
+        }
+        .taskbar-tray {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            padding: 0 6px;
+            border-left: 2px solid var(--win95-dark);
+            border-right: 2px solid var(--win95-light);
+            height: 34px;
+        }
+        .taskbar-tray span {
+            font-size: 0.9rem;
+            cursor: pointer;
+            opacity: 0.8;
         }
 
-        /* Start menu popup */
         .start-menu {
             position: fixed;
-            bottom: 52px;
-            left: 8px;
-            background: #c0c0c0;
+            bottom: 54px;
+            left: 6px;
+            background: var(--win95-gray);
             border: 2px solid #000;
-            width: 200px;
-            padding: 8px 0;
+            width: 220px;
             display: none;
             z-index: 60;
-            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+            padding: 4px 0;
         }
-
         .start-menu .menu-item {
-            padding: 8px 16px;
-            font-size: 0.5rem;
+            padding: 7px 14px;
+            font-size: 0.45rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #808080;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--win95-dark);
+            transition: background 0.1s;
+            font-family: 'Press Start 2P', cursive;
         }
-
+        .start-menu .menu-item:last-child {
+            border-bottom: none;
+        }
         .start-menu .menu-item:hover {
             background: #000080;
             color: white;
         }
+        .start-menu .menu-divider {
+            height: 2px;
+            background: var(--win95-dark);
+            margin: 4px 8px;
+            border-top: 2px solid var(--win95-light);
+        }
 
-        /* ═══════════════ RESPONSIVE ═══════════════ */
-        @media (max-width: 600px) {
+        .context-menu {
+            position: fixed;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: none;
+            padding: 4px 0;
+            min-width: 150px;
+        }
+        .context-menu .ctx-item {
+            padding: 6px 16px;
+            font-size: 0.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--win95-dark);
+            font-family: 'Press Start 2P', cursive;
+        }
+        .context-menu .ctx-item:last-child {
+            border-bottom: none;
+        }
+        .context-menu .ctx-item:hover {
+            background: #000080;
+            color: white;
+        }
+
+        /* ─────────── NOTEPAD ─────────── */
+        .notepad-textarea {
+            width: 100%;
+            height: 200px;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 1rem;
+            background: #fff;
+            border: none;
+            outline: none;
+            resize: none;
+            color: #222;
+            line-height: 1.6;
+            padding: 4px;
+        }
+        .notepad-textarea:focus {
+            outline: 2px solid #000080;
+        }
+
+        /* ─────────── CALCULATOR ─────────── */
+        .calc-display {
+            background: #fff;
+            border: 2px solid var(--win95-dark);
+            padding: 8px 12px;
+            text-align: right;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-family: 'VT323', 'Courier New', monospace;
+            min-height: 45px;
+            box-shadow: inset 1px 1px 0 #555, inset -1px -1px 0 white;
+            line-height: 1.2;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+        .calc-grid button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            padding: 8px 0;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            cursor: pointer;
+            transition: all 0.05s;
+        }
+        .calc-grid button:active {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+        }
+        .calc-grid .calc-op {
+            background: #d0d0d0;
+        }
+        .calc-grid .calc-eq {
+            background: #000080;
+            color: white;
+            box-shadow: inset 1px 1px 0 #4444aa, inset -1px -1px 0 #000044;
+        }
+        .calc-grid .calc-eq:active {
+            box-shadow: inset -1px -1px 0 #4444aa, inset 1px 1px 0 #000044;
+        }
+        .calc-grid .calc-clear {
+            background: #c04040;
+            color: white;
+        }
+
+        /* ─────────── MY COMPUTER ─────────── */
+        .drive-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+        .drive-item:hover {
+            background: #000080;
+            color: white;
+            border: 2px dotted white;
+        }
+
+        /* ─────────── RECYCLE BIN ─────────── */
+        .recycle-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 6px;
+            border-bottom: 1px dashed #aaa;
+            font-size: 0.9rem;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+        .recycle-empty {
+            text-align: center;
+            color: var(--win95-dark);
+            padding: 20px 0;
+            font-size: 1.2rem;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+
+        /* ─────────── PAINT ─────────── */
+        .paint-canvas {
+            border: 2px solid var(--win95-dark);
+            background: white;
+            cursor: crosshair;
+            width: 100%;
+            image-rendering: pixelated;
+            touch-action: none;
+        }
+        .paint-tools {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .paint-tools button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.4rem;
+            padding: 4px 10px;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            cursor: pointer;
+        }
+        .paint-tools button:active {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+        }
+        .paint-tools button.active-tool {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+            background: #b0b0b0;
+        }
+        .paint-colors {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .paint-colors .color-swatch {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #000;
+            cursor: pointer;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+        }
+        .paint-colors .color-swatch.active-color {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+            border-color: #fff;
+        }
+
+        /* ─────────── COMMAND PROMPT ─────────── */
+        .cmd-output {
+            background: #000;
+            color: #00ff00;
+            padding: 8px 10px;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 1rem;
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+            line-height: 1.6;
+            border: 2px solid var(--win95-dark);
+            white-space: pre-wrap;
+        }
+        .cmd-input-wrap {
+            display: flex;
+            margin-top: 6px;
+            gap: 4px;
+        }
+        .cmd-input-wrap input {
+            flex: 1;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 1rem;
+            padding: 4px 8px;
+            border: 2px solid var(--win95-dark);
+            background: #fff;
+            color: #000;
+            outline: none;
+        }
+        .cmd-input-wrap input:focus {
+            border-color: #000080;
+        }
+        .cmd-input-wrap button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.4rem;
+            padding: 4px 12px;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            cursor: pointer;
+        }
+        .cmd-input-wrap button:active {
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+        }
+
+        /* ─────────── MUSIC PLAYER ─────────── */
+        .music-player {
+            text-align: center;
+        }
+        .music-player .music-display {
+            font-size: 1.6rem;
+            margin: 8px 0;
+            min-height: 50px;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+        .music-player .music-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .music-player .music-controls button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            padding: 6px 14px;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            cursor: pointer;
+        }
+
+        /* ─────────── SCREENSAVER ─────────── */
+        .screensaver {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .screensaver.active {
+            display: flex;
+            pointer-events: all;
+            cursor: none;
+        }
+        .screensaver .ss-text {
+            color: #00ff00;
+            font-size: 2rem;
+            animation: ssFloat 3s ease-in-out infinite;
+            text-shadow: 0 0 30px #00ff00;
+            letter-spacing: 8px;
+            font-family: 'VT323', 'Courier New', monospace;
+        }
+        @keyframes ssFloat {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.05);
+                opacity: 1;
+            }
+        }
+
+        /* ─────────── MINESWEEPER ─────────── */
+        .ms-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            font-family: 'VT323', 'Courier New', monospace;
+            background: var(--win95-gray);
+            padding: 4px 8px;
+            border: 2px solid var(--win95-dark);
+            width: 100%;
+        }
+        .ms-grid {
+            display: grid;
+            gap: 2px;
+            margin: 0 auto;
+            background: var(--win95-gray);
+            padding: 4px;
+            border: 2px solid var(--win95-dark);
+            width: fit-content;
+        }
+        .ms-cell {
+            width: 32px;
+            height: 32px;
+            background: var(--win95-gray);
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 white, inset -1px -1px 0 #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'VT323', 'Courier New', monospace;
+            transition: all 0.05s;
+        }
+        .ms-cell.revealed {
+            background: #d0d0d0;
+            box-shadow: inset -1px -1px 0 white, inset 1px 1px 0 #555;
+            border-color: #808080;
+        }
+        .ms-cell.flagged {
+            background: #f0e68c;
+        }
+        .ms-cell.mine-exploded {
+            background: #ff0000;
+        }
+
+        /* ─────────── SOLITAIRE ─────────── */
+        .solitaire-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+        .solitaire-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .solitaire-stock-area {
+            display: flex;
+            gap: 4px;
+        }
+        .solitaire-foundation-area {
+            display: flex;
+            gap: 4px;
+        }
+        .solitaire-pile {
+            width: 56px;
+            height: 76px;
+            background: #0a5c0a;
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 #2a8a2a, inset -1px -1px 0 #003000;
+            position: relative;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            flex-shrink: 0;
+        }
+        .solitaire-pile .card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border: 1px solid #333;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: black;
+            font-family: 'VT323', 'Courier New', monospace;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.05s;
+        }
+        .solitaire-pile .card.red {
+            color: #cc0000;
+        }
+        .solitaire-pile .card.face-down {
+            background: #1a4c8a;
+            color: transparent;
+            background-image: repeating-linear-gradient(45deg, #2a5c9a 0px, #2a5c9a 3px, #1a4c8a 3px, #1a4c8a 6px);
+            border-color: #0a2a5a;
+        }
+        .solitaire-pile .card.face-down::after {
+            content: '♠';
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 1.2rem;
+        }
+        .solitaire-pile .card.face-down * {
+            display: none;
+        }
+        .solitaire-pile .card.selected {
+            outline: 3px solid #ffcc00;
+            transform: translateY(-4px);
+            z-index: 10;
+        }
+        .solitaire-tableau-area {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            flex: 1;
+            min-height: 160px;
+        }
+        .solitaire-tableau-area .solitaire-pile {
+            width: 56px;
+            height: 120px;
+            min-height: 76px;
+            background: #0a5c0a;
+            border: 2px solid #000;
+            box-shadow: inset 1px 1px 0 #2a8a2a, inset -1px -1px 0 #003000;
+            position: relative;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .solitaire-tableau-area .solitaire-pile .card {
+            position: absolute;
+            left: 2px;
+            width: calc(100% - 4px);
+            height: 28px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #333;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-weight: bold;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.05s;
+        }
+        .solitaire-tableau-area .solitaire-pile .card.red {
+            color: #cc0000;
+        }
+        .solitaire-tableau-area .solitaire-pile .card.face-down {
+            background: #1a4c8a;
+            color: transparent;
+            background-image: repeating-linear-gradient(45deg, #2a5c9a 0px, #2a5c9a 3px, #1a4c8a 3px, #1a4c8a 6px);
+            border-color: #0a2a5a;
+        }
+        .solitaire-tableau-area .solitaire-pile .card.face-down::after {
+            content: '♠';
+            color: rgba(255, 255, 255, 0.12);
+            font-size: 0.9rem;
+        }
+        .solitaire-tableau-area .solitaire-pile .card.face-down * {
+            display: none;
+        }
+        .solitaire-tableau-area .solitaire-pile .card.selected {
+            outline: 2px solid #ffcc00;
+            z-index: 20;
+        }
+        .solitaire-empty-label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.6rem;
+            font-family: 'VT323', monospace;
+        }
+        .solitaire-win {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.8rem;
+            color: #ffd700;
+            font-family: 'VT323', monospace;
+            animation: bootGlow 1.5s infinite;
+        }
+
+        /* ─────────── PINBALL ─────────── */
+        #pinballCanvas {
+            width: 100%;
+            height: 400px;
+            background: #0a0a2a;
+            border: 4px solid var(--win95-dark);
+            display: block;
+            margin: 0 auto;
+            cursor: none;
+            image-rendering: pixelated;
+        }
+        .pinball-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 0.9rem;
+            padding: 0 4px;
+        }
+        .pinball-controls span {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .pinball-controls .key-hint {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        /* ─────────── RESPONSIVE ─────────── */
+        @media (max-width: 640px) {
             .icon {
-                width: 80px;
+                width: 72px;
             }
             .icon .icon-img {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
+            }
+            .icon p {
+                font-size: 0.4rem;
             }
             .window {
-                width: 260px;
-                left: 20px;
-                top: 80px;
+                width: 280px !important;
+                left: 10px !important;
+                top: 60px !important;
+            }
+            .ms-cell {
+                width: 28px;
+                height: 28px;
+                font-size: 0.9rem;
+            }
+            .solitaire-pile {
+                width: 44px;
+                height: 60px;
+            }
+            .solitaire-tableau-area .solitaire-pile {
+                width: 44px;
+                height: 90px;
+            }
+            .solitaire-tableau-area .solitaire-pile .card {
+                height: 22px;
+                font-size: 0.6rem;
+            }
+            #pinballCanvas {
+                height: 300px;
+            }
+            .taskbar-time {
+                font-size: 0.4rem;
+                padding: 2px 6px;
+            }
+            .start-button {
+                font-size: 0.4rem;
+                padding: 2px 6px;
+            }
+            .taskbar-btn {
+                font-size: 0.35rem;
+                padding: 1px 8px;
+                max-width: 80px;
+            }
+            .desktop {
+                padding: 16px 12px;
+                gap: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .window {
+                width: 240px !important;
+                left: 4px !important;
+                top: 50px !important;
+                min-width: 160px;
+            }
+            .window-content {
+                font-size: 0.9rem;
+                padding: 8px 10px;
+            }
+            .title-bar {
+                font-size: 0.4rem;
+                min-height: 24px;
+            }
+            .title-bar button {
+                width: 18px;
+                height: 18px;
+                font-size: 0.4rem;
+            }
+            .icon {
+                width: 64px;
+            }
+            .icon .icon-img {
+                font-size: 2rem;
+            }
+            .ms-cell {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+            }
+            .solitaire-pile {
+                width: 36px;
+                height: 48px;
+                font-size: 0.6rem;
+            }
+            .solitaire-tableau-area .solitaire-pile {
+                width: 36px;
+                height: 70px;
+            }
+            .solitaire-tableau-area .solitaire-pile .card {
+                height: 18px;
+                font-size: 0.5rem;
+            }
+            #pinballCanvas {
+                height: 240px;
+            }
+            .calc-display {
+                font-size: 1.4rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Boot Screen -->
-    <div class="boot-screen">
-        <div class="boot-logo">💻 TechPro OS</div>
-        <div style="font-size:0.6rem; color:#00cc00;">Version 1.0 (Retro Edition)</div>
-        <div class="boot-bar">
-            <div class="boot-bar-fill"></div>
-        </div>
+    <!-- ═══════════════ BOOT SCREEN ═══════════════ -->
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-logo">💻</div>
+        <div class="boot-title">TechPro OS</div>
+        <div class="boot-sub">══ Version 2.0 ══</div>
+        <div class="boot-bar"><div class="boot-bar-fill" id="bootFill"></div></div>
+        <div class="boot-status" id="bootStatus">⟡ INITIALIZING KERNEL …</div>
     </div>
 
-    <!-- Scanlines -->
+    <!-- ═══════════════ SCANLINES & VIGNETTE ═══════════════ -->
     <div class="scanlines"></div>
+    <div class="vignette"></div>
 
-    <!-- Desktop Icons -->
-    <div class="desktop" id="desktop">
-        <div class="icon" data-window="students">
-            <div class="icon-img">📁</div>
-            <p>Students</p>
-        </div>
-        <div class="icon" data-window="teachers">
-            <div class="icon-img">📁</div>
-            <p>Teachers</p>
-        </div>
-        <div class="icon" data-window="gallery">
-            <div class="icon-img">📁</div>
-            <p>Gallery</p>
-        </div>
-        <div class="icon" data-window="secrets">
-            <div class="icon-img">📁</div>
-            <p>Secrets</p>
-        </div>
+    <!-- ═══════════════ SCREENSAVER ═══════════════ -->
+    <div class="screensaver" id="screensaver">
+        <div class="ss-text">💻 TechPro</div>
     </div>
 
-    <!-- Windows Container -->
-    <div id="windows-container">
-        <!-- Students Window -->
-        <div class="window" id="window-students">
-            <div class="title-bar" data-window="students">
-                <span class="window-title">📁 Students</span>
-                <div class="window-controls">
-                    <button class="minimize-btn">–</button>
-                    <button class="close-btn">✕</button>
-                </div>
+    <!-- ═══════════════ DESKTOP ═══════════════ -->
+    <div class="desktop wallpaper-teal" id="desktop">
+        <div class="icon" data-window="computer"><div class="icon-img">🖥️</div><p>My Computer</p></div>
+        <div class="icon" data-window="notepad"><div class="icon-img">📝</div><p>Notepad</p></div>
+        <div class="icon" data-window="calculator"><div class="icon-img">🧮</div><p>Calculator</p></div>
+        <div class="icon" data-window="paint"><div class="icon-img">🎨</div><p>Paint</p></div>
+        <div class="icon" data-window="cmd"><div class="icon-img">⌨️</div><p>Command Prompt</p></div>
+        <div class="icon" data-window="music"><div class="icon-img">🎵</div><p>Music Player</p></div>
+        <div class="icon" data-window="recycle"><div class="icon-img">🗑️</div><p>Recycle Bin</p></div>
+        <div class="icon" data-window="gallery"><div class="icon-img">🖼️</div><p>Gallery</p></div>
+        <div class="icon" data-window="minesweeper"><div class="icon-img">💣</div><p>Minesweeper</p></div>
+        <div class="icon" data-window="solitaire"><div class="icon-img">🃏</div><p>Solitaire</p></div>
+        <div class="icon" data-window="pinball"><div class="icon-img">🎱</div><p>Pinball</p></div>
+    </div>
+
+    <!-- ═══════════════ WINDOWS CONTAINER ═══════════════ -->
+    <div id="windowsContainer">
+
+        <!-- My Computer -->
+        <div class="window" id="window-computer" style="width:320px; height:280px; top:60px; left:60px;">
+            <div class="title-bar" data-window="computer">
+                <span class="window-title">🖥️ My Computer</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
             </div>
             <div class="window-content">
-                <p><b>🌟 Class of 2024</b></p>
-                <div class="list-item">🎓 Hana Tanaka – Valedictorian</div>
-                <div class="list-item">🚀 Leo Martinez – Tech Club</div>
-                <div class="list-item">🎨 Aisha Patel – Art Champion</div>
-                <div class="list-item">📚 Jun-Seo Kim – Bookworm</div>
-                <p style="margin-top:10px;">Total: 24 students</p>
+                <div class="drive-item"><span class="drive-icon">💾</span><span>Local Disk (C:)</span></div>
+                <div class="drive-item"><span class="drive-icon">📀</span><span>CD-ROM (D:)</span></div>
+                <div class="drive-item"><span class="drive-icon">💾</span><span>Removable Disk (E:)</span></div>
+                <div style="margin-top:12px;font-size:0.8rem;color:var(--win95-dark);border-top:1px solid #aaa;padding-top:8px;font-family:'VT323',monospace;">🗂️ 3 objects</div>
             </div>
+            <div class="resize-handle"></div>
         </div>
 
-        <!-- Teachers Window -->
-        <div class="window" id="window-teachers">
-            <div class="title-bar" data-window="teachers">
-                <span class="window-title">📁 Teachers</span>
-                <div class="window-controls">
-                    <button class="minimize-btn">–</button>
-                    <button class="close-btn">✕</button>
+        <!-- Notepad -->
+        <div class="window" id="window-notepad" style="width:380px; height:300px; top:80px; left:100px;">
+            <div class="title-bar" data-window="notepad">
+                <span class="window-title">📝 Notepad</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:6px;">
+                <textarea class="notepad-textarea" id="notepadText" placeholder="Type something…">Welcome to Notepad! ✨
+Write anything you want.
+(Your text is saved automatically.)</textarea>
+                <div style="font-size:0.7rem;color:var(--win95-dark);margin-top:4px;text-align:right;font-family:'VT323',monospace;" id="notepadStatus">Saved</div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Calculator -->
+        <div class="window" id="window-calculator" style="width:260px; height:300px; top:100px; left:160px;">
+            <div class="title-bar" data-window="calculator">
+                <span class="window-title">🧮 Calculator</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:10px;">
+                <div class="calc-display" id="calcDisplay">0</div>
+                <div class="calc-grid">
+                    <button class="calc-clear" data-calc="C">C</button><button data-calc="±">±</button><button data-calc="%">%</button><button class="calc-op" data-calc="÷">÷</button>
+                    <button data-calc="7">7</button><button data-calc="8">8</button><button data-calc="9">9</button><button class="calc-op" data-calc="×">×</button>
+                    <button data-calc="4">4</button><button data-calc="5">5</button><button data-calc="6">6</button><button class="calc-op" data-calc="−">−</button>
+                    <button data-calc="1">1</button><button data-calc="2">2</button><button data-calc="3">3</button><button class="calc-op" data-calc="+">+</button>
+                    <button data-calc="0" style="grid-column:span 2;">0</button><button data-calc=".">.</button><button class="calc-eq" data-calc="=">=</button>
                 </div>
             </div>
-            <div class="window-content">
-                <p><b>🍎 Faculty</b></p>
-                <div class="list-item">👩‍🏫 Ms. Rodriguez – Math</div>
-                <div class="list-item">👨‍🏫 Mr. Chen – Science</div>
-                <div class="list-item">👩‍🎨 Mrs. Patel – Art</div>
-                <div class="list-item">🎵 Mr. Thompson – Music</div>
-            </div>
+            <div class="resize-handle"></div>
         </div>
 
-        <!-- Gallery Window -->
-        <div class="window" id="window-gallery">
+        <!-- Paint -->
+        <div class="window" id="window-paint" style="width:440px; height:380px; top:60px; left:140px;">
+            <div class="title-bar" data-window="paint">
+                <span class="window-title">🎨 Paint</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:8px;">
+                <div class="paint-tools">
+                    <button class="paint-tool active-tool" data-tool="pen">✏️ Pen</button>
+                    <button class="paint-tool" data-tool="eraser">🧹 Eraser</button>
+                    <button class="paint-tool" data-tool="clear">🗑️ Clear</button>
+                </div>
+                <div class="paint-colors" id="paintColors">
+                    <span class="color-swatch active-color" style="background:#000;" data-color="#000"></span>
+                    <span class="color-swatch" style="background:#f00;" data-color="#f00"></span>
+                    <span class="color-swatch" style="background:#0f0;" data-color="#0f0"></span>
+                    <span class="color-swatch" style="background:#00f;" data-color="#00f"></span>
+                    <span class="color-swatch" style="background:#ff0;" data-color="#ff0"></span>
+                    <span class="color-swatch" style="background:#f0f;" data-color="#f0f"></span>
+                    <span class="color-swatch" style="background:#0ff;" data-color="#0ff"></span>
+                    <span class="color-swatch" style="background:#fff;" data-color="#fff"></span>
+                    <span class="color-swatch" style="background:#888;" data-color="#888"></span>
+                    <span class="color-swatch" style="background:#f80;" data-color="#f80"></span>
+                </div>
+                <canvas class="paint-canvas" id="paintCanvas" width="400" height="260"></canvas>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Command Prompt -->
+        <div class="window" id="window-cmd" style="width:380px; height:320px; top:90px; left:120px;">
+            <div class="title-bar" data-window="cmd">
+                <span class="window-title">⌨️ Command Prompt</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:6px;background:#000;">
+                <div class="cmd-output" id="cmdOutput">C:\> TechPro OS v2.0
+C:\> Type 'help' for commands.
+</div>
+                <div class="cmd-input-wrap">
+                    <input type="text" id="cmdInput" placeholder="> type command…" autofocus />
+                    <button id="cmdSend">⏎</button>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Music Player -->
+        <div class="window" id="window-music" style="width:300px; height:220px; top:130px; left:180px;">
+            <div class="title-bar" data-window="music">
+                <span class="window-title">🎵 Music Player</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content music-player">
+                <div class="music-display" id="musicDisplay">▶️</div>
+                <div style="font-size:0.8rem;color:var(--win95-dark);margin-bottom:8px;font-family:'VT323',monospace;" id="musicTrack">Track: 8-bit groove</div>
+                <div class="music-controls">
+                    <button id="musicPlay">▶ Play</button>
+                    <button id="musicStop">⏹ Stop</button>
+                    <button id="musicNext">⏭ Next</button>
+                </div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Recycle Bin -->
+        <div class="window" id="window-recycle" style="width:300px; height:240px; top:80px; left:80px;">
+            <div class="title-bar" data-window="recycle">
+                <span class="window-title">🗑️ Recycle Bin</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" id="recycleContent"><div class="recycle-empty">♻️ This bin is empty.</div></div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="window" id="window-gallery" style="width:320px; height:260px; top:110px; left:150px;">
             <div class="title-bar" data-window="gallery">
                 <span class="window-title">🖼️ Gallery</span>
-                <div class="window-controls">
-                    <button class="minimize-btn">–</button>
-                    <button class="close-btn">✕</button>
-                </div>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
             </div>
             <div class="window-content" style="text-align:center;">
-                <p>📸 Class Trip 2024</p>
-                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                    <span style="font-size:2rem;">🏞️</span>
-                    <span style="font-size:2rem;">🎢</span>
-                    <span style="font-size:2rem;">🌌</span>
-                </div>
-                <p style="margin-top:10px;">📸 Science Fair</p>
-                <div style="display:flex; gap:10px; justify-content:center;">
-                    <span style="font-size:2rem;">🔬</span>
-                    <span style="font-size:2rem;">🧪</span>
-                </div>
+                <p style="font-size:1rem;margin-bottom:6px;">📸 Class Memories</p>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;font-size:2.2rem;"><span>🏞️</span><span>🎢</span><span>🌌</span><span>🎓</span></div>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;font-size:2.2rem;margin-top:4px;"><span>🔬</span><span>🧪</span><span>🎨</span><span>📚</span></div>
+                <p style="margin-top:8px;font-size:0.8rem;color:var(--win95-dark);font-family:'VT323',monospace;">Double-click an icon to view</p>
             </div>
+            <div class="resize-handle"></div>
         </div>
 
-        <!-- Secrets Window -->
-        <div class="window" id="window-secrets">
-            <div class="title-bar" data-window="secrets">
-                <span class="window-title">🔒 Secrets</span>
-                <div class="window-controls">
-                    <button class="minimize-btn">–</button>
-                    <button class="close-btn">✕</button>
+        <!-- Minesweeper -->
+        <div class="window" id="window-minesweeper" style="width:340px; height:380px; top:70px; left:80px;">
+            <div class="title-bar" data-window="minesweeper">
+                <span class="window-title">💣 Minesweeper</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:8px;display:flex;flex-direction:column;align-items:center;">
+                <div class="ms-header"><span id="msMines">💣 10</span><span id="msStatus">😀</span><span id="msTimer">⏱️ 000</span></div>
+                <div class="ms-grid" id="msGrid"></div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- SOLITAIRE - FIXED -->
+        <div class="window" id="window-solitaire" style="width:520px; height:460px; top:50px; left:80px;">
+            <div class="title-bar" data-window="solitaire">
+                <span class="window-title">🃏 Solitaire</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:8px;overflow:hidden;">
+                <div class="solitaire-wrapper" id="solitaireGame"></div>
+            </div>
+            <div class="resize-handle"></div>
+        </div>
+
+        <!-- PINBALL - FIXED -->
+        <div class="window" id="window-pinball" style="width:360px; height:500px; top:40px; left:120px;">
+            <div class="title-bar" data-window="pinball">
+                <span class="window-title">🎱 Pinball</span>
+                <div class="window-controls"><button class="min-btn">–</button><button class="max-btn">☐</button><button class="close-btn">✕</button></div>
+            </div>
+            <div class="window-content" style="padding:6px;background:#000;">
+                <canvas id="pinballCanvas" width="340" height="420"></canvas>
+                <div class="pinball-controls">
+                    <span>Score: <span id="pinballScore">0</span></span>
+                    <span>Lives: <span id="pinballLives">3</span></span>
+                    <span class="key-hint">[Z] [M] Flippers</span>
                 </div>
             </div>
-            <div class="window-content" style="text-align:center;">
-                <p style="font-size:1rem;">🎮</p>
-                <p><b>Konami Code?</b></p>
-                <p style="font-size:0.45rem;">↑ ↑ ↓ ↓ ← → ← → B A</p>
-                <p style="margin-top:12px; color:#000080;">✨ You're awesome! ✨</p>
-            </div>
+            <div class="resize-handle"></div>
         </div>
+
     </div>
 
-    <!-- Taskbar -->
-    <div class="taskbar">
-        <div class="start-button" id="startButton">
-            <span>🖥️</span> Start
-        </div>
+    <!-- ═══════════════ TASKBAR ═══════════════ -->
+    <div class="taskbar" id="taskbar">
+        <button class="start-button" id="startButton"><span class="start-icon">🖥️</span> Start</button>
+        <div class="taskbar-programs" id="taskbarPrograms"></div>
+        <div class="taskbar-tray"><span id="trayVolume">🔊</span><span id="trayNetwork">📶</span></div>
         <div class="taskbar-time" id="taskbarTime">12:00 PM</div>
     </div>
 
     <!-- Start Menu -->
     <div class="start-menu" id="startMenu">
-        <div class="menu-item" id="menu-shutdown">🔌 Shut Down</div>
-        <div class="menu-item" id="menu-home">🏠 Back to Home</div>
+        <div class="menu-item" data-action="computer">🖥️ My Computer</div>
+        <div class="menu-item" data-action="notepad">📝 Notepad</div>
+        <div class="menu-item" data-action="calculator">🧮 Calculator</div>
+        <div class="menu-item" data-action="paint">🎨 Paint</div>
+        <div class="menu-item" data-action="cmd">⌨️ Command Prompt</div>
+        <div class="menu-item" data-action="music">🎵 Music Player</div>
+        <div class="menu-item" data-action="recycle">🗑️ Recycle Bin</div>
+        <div class="menu-item" data-action="gallery">🖼️ Gallery</div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-action="minesweeper">💣 Minesweeper</div>
+        <div class="menu-item" data-action="solitaire">🃏 Solitaire</div>
+        <div class="menu-item" data-action="pinball">🎱 Pinball</div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-action="wallpaper">🖼️ Change Wallpaper</div>
+        <div class="menu-item" data-action="screensaver">🖥️ Screensaver</div>
+        <div class="menu-divider"></div>
+        <div class="menu-item" data-action="shutdown">🔌 Shut Down</div>
+        <div class="menu-item" data-action="home">🏠 Back to Home</div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="contextMenu">
+        <div class="ctx-item" data-action="wallpaper">🖼️ Change Wallpaper</div>
+        <div class="ctx-item" data-action="screensaver">🖥️ Screensaver</div>
+        <div class="ctx-item" data-action="refresh">🔄 Refresh</div>
+        <div class="ctx-item" data-action="shutdown">🔌 Shut Down</div>
     </div>
 
     <script>
-        // Wait for boot screen to finish (3.5s) then enable interactions
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.querySelector('.boot-screen').style.display = 'none';
-            }, 3600);
-        });
+        /* ════════════════════════════════════════════════════════════
+           BOOT SCREEN
+           ════════════════════════════════════════════════════════════ */
+        (function boot() {
+            const statusEl = document.getElementById('bootStatus');
+            const messages = ['⟡ INITIALIZING KERNEL …', '✦ LOADING SYSTEM FILES …', '⟡ MOUNTING DRIVES …', '✦ STARTING SERVICES …',
+                '⟡ LOADING DESKTOP …', '✦ READY!'
+            ];
+            let idx = 0;
+            const interval = setInterval(() => { idx++;
+                if (idx < messages.length) statusEl.textContent = messages[idx]; if (idx >= messages.length - 1)
+                    clearInterval(interval); }, 650);
+            setTimeout(() => { document.getElementById('bootScreen').style.display = 'none'; }, 4200);
+        })();
 
-        // ═══════════════ CLOCK UPDATE ═══════════════
+        /* ════════════════════════════════════════════════════════════
+           CLOCK
+           ════════════════════════════════════════════════════════════ */
         function updateClock() {
             const now = new Date();
-            let hours = now.getHours();
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
-            document.getElementById('taskbarTime').textContent = `${hours}:${minutes} ${ampm}`;
+            let h = now.getHours();
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            document.getElementById('taskbarTime').textContent = `${h}:${m} ${ampm}`;
         }
         updateClock();
-        setInterval(updateClock, 30000);
+        setInterval(updateClock, 10000);
 
-        // ═══════════════ WINDOW MANAGEMENT ═══════════════
-        const windows = document.querySelectorAll('.window');
-        const desktop = document.getElementById('desktop');
-        const icons = document.querySelectorAll('.icon');
+        /* ════════════════════════════════════════════════════════════
+           WINDOW MANAGEMENT
+           ════════════════════════════════════════════════════════════ */
+        const allWindows = document.querySelectorAll('.window');
         let zIndexCounter = 10;
         let activeWindow = null;
-
-        // Open window on double-click (or single for touch)
-        icons.forEach(icon => {
-            icon.addEventListener('dblclick', () => {
-                const windowId = icon.getAttribute('data-window');
-                openWindow(windowId);
-            });
-            // For mobile/tablet, single click opens
-            icon.addEventListener('click', (e) => {
-                if (window.innerWidth < 768) {
-                    const windowId = icon.getAttribute('data-window');
-                    openWindow(windowId);
-                }
-            });
-        });
+        let windowState = {};
+        let pinballRunning = false;
+        let pinballRAF = null;
 
         function openWindow(windowId) {
             const win = document.getElementById(`window-${windowId}`);
             if (!win) return;
+            if (win.classList.contains('minimized')) win.classList.remove('minimized');
             win.style.display = 'flex';
             zIndexCounter++;
             win.style.zIndex = zIndexCounter;
             if (activeWindow) activeWindow.classList.remove('active');
             win.classList.add('active');
             activeWindow = win;
-            // Random position offset if not yet positioned
-            if (!win.style.top || win.style.top === '120px') {
-                win.style.top = (80 + Math.random() * 100) + 'px';
-                win.style.left = (80 + Math.random() * 200) + 'px';
+            if (!win.dataset.positioned) {
+                win.style.top = (60 + Math.random() * 80) + 'px';
+                win.style.left = (60 + Math.random() * 120) + 'px';
+                win.dataset.positioned = 'true';
+            }
+            updateTaskbar();
+            if (windowId === 'cmd') setTimeout(() => document.getElementById('cmdInput')?.focus(), 100);
+            if (windowId === 'notepad') document.getElementById('notepadText')?.focus();
+            if (windowId === 'minesweeper') initMinesweeper();
+            if (windowId === 'solitaire') initSolitaire();
+            if (windowId === 'pinball') initPinball();
+        }
+
+        function closeWindow(win) {
+            const id = win.id.replace('window-', '');
+            if (id === 'pinball' && pinballRunning) { pinballRunning = false; if (pinballRAF) { cancelAnimationFrame(
+                        pinballRAF);
+                    pinballRAF = null; } }
+            win.style.display = 'none';
+            win.classList.remove('active');
+            if (activeWindow === win) activeWindow = null;
+            const btn = document.querySelector(`.taskbar-btn[data-window="${id}"]`);
+            if (btn) btn.remove();
+            updateTaskbar();
+        }
+
+        function minimizeWindow(win) {
+            const id = win.id.replace('window-', '');
+            if (id === 'pinball' && pinballRunning) { pinballRunning = false; if (pinballRAF) { cancelAnimationFrame(
+                        pinballRAF);
+                    pinballRAF = null; } }
+            win.classList.add('minimized');
+            win.style.display = 'none';
+            win.classList.remove('active');
+            if (activeWindow === win) activeWindow = null;
+            updateTaskbar();
+        }
+
+        function toggleMaximize(win) {
+            const id = win.id.replace('window-', '');
+            if (!windowState[id]) windowState[id] = { maximized: false, top: '', left: '', width: '', height: '' };
+            const state = windowState[id];
+            if (!state.maximized) {
+                state.top = win.style.top;
+                state.left = win.style.left;
+                state.width = win.style.width;
+                state.height = win.style.height;
+                win.style.top = '0';
+                win.style.left = '0';
+                win.style.width = '100%';
+                win.style.height = `calc(100% - 50px)`;
+                win.classList.add('maximized');
+                state.maximized = true;
+                const handle = win.querySelector('.resize-handle');
+                if (handle) handle.style.display = 'none';
+            } else {
+                win.style.top = state.top || '60px';
+                win.style.left = state.left || '60px';
+                win.style.width = state.width || '340px';
+                win.style.height = state.height || '280px';
+                win.classList.remove('maximized');
+                state.maximized = false;
+                const handle = win.querySelector('.resize-handle');
+                if (handle) handle.style.display = 'block';
             }
         }
 
-        // Close and minimize buttons
-        document.querySelectorAll('.close-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const win = e.target.closest('.window');
-                win.style.display = 'none';
-                if (activeWindow === win) {
-                    activeWindow = null;
-                }
-            });
-        });
-
-        document.querySelectorAll('.minimize-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const win = e.target.closest('.window');
-                win.style.display = 'none';
-                if (activeWindow === win) {
-                    activeWindow = null;
-                }
-                // Could add taskbar button, but keeping simple
-            });
-        });
-
-        // Make windows draggable
-        document.querySelectorAll('.title-bar').forEach(titleBar => {
-            titleBar.addEventListener('mousedown', function(e) {
-                const win = titleBar.closest('.window');
-                if (!win) return;
-                // Bring to front
+        allWindows.forEach(win => {
+            const closeBtn = win.querySelector('.close-btn');
+            const minBtn = win.querySelector('.min-btn');
+            const maxBtn = win.querySelector('.max-btn');
+            closeBtn?.addEventListener('click', () => closeWindow(win));
+            minBtn?.addEventListener('click', () => minimizeWindow(win));
+            maxBtn?.addEventListener('click', () => toggleMaximize(win));
+            const titleBar = win.querySelector('.title-bar');
+            titleBar?.addEventListener('mousedown', () => {
                 zIndexCounter++;
                 win.style.zIndex = zIndexCounter;
                 if (activeWindow) activeWindow.classList.remove('active');
                 win.classList.add('active');
                 activeWindow = win;
-
-                const rect = win.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const offsetY = e.clientY - rect.top;
-
-                function onMouseMove(e) {
-                    win.style.left = (e.clientX - offsetX) + 'px';
-                    win.style.top = (e.clientY - offsetY) + 'px';
-                }
-
-                function onMouseUp() {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                }
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
+                updateTaskbar();
             });
         });
 
-        // Click on desktop to deactivate windows? Not needed.
+        document.querySelectorAll('.title-bar').forEach(bar => {
+            bar.addEventListener('mousedown', function(e) {
+                if (e.target.closest('button')) return;
+                const win = bar.closest('.window');
+                if (!win || win.classList.contains('maximized')) return;
+                const rect = win.getBoundingClientRect();
+                const ox = e.clientX - rect.left;
+                const oy = e.clientY - rect.top;
 
-        // ═══════════════ START MENU ═══════════════
-        const startButton = document.getElementById('startButton');
-        const startMenu = document.getElementById('startMenu');
+                function onMove(e) { win.style.left = (e.clientX - ox) + 'px';
+                    win.style.top = (e.clientY - oy) + 'px'; }
 
-        startButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+                function onUp() { document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp); }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            });
         });
 
-        document.addEventListener('click', (e) => {
-            if (!startMenu.contains(e.target) && e.target !== startButton) {
-                startMenu.style.display = 'none';
-            }
-        });
+        document.querySelectorAll('.resize-handle').forEach(handle => {
+            handle.addEventListener('mousedown', function(e) {
+                e.stopPropagation();
+                const win = handle.closest('.window');
+                if (!win || win.classList.contains('maximized')) return;
+                const startX = e.clientX,
+                    startY = e.clientY;
+                const startW = win.offsetWidth,
+                    startH = win.offsetHeight;
 
-        document.getElementById('menu-shutdown').addEventListener('click', () => {
-            document.body.style.transition = 'opacity 0.5s';
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.innerHTML =
-                    '<div style="background:black;height:100vh;display:flex;align-items:center;justify-content:center;color:#00ff00;font-family:\'Press Start 2P\';">It\'s now safe to turn off your computer.<br>🖥️⚡</div>';
-            }, 500);
-        });
-
-        document.getElementById('menu-home').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
-
-        // ═══════════════ KONAMI CODE EASTER EGG ═══════════════
-        const konamiCode = [
-            'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
-            'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
-            'KeyB', 'KeyA'
-        ];
-        let konamiIndex = 0;
-        document.addEventListener('keydown', (e) => {
-            if (e.code === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiCode.length) {
-                    // Trigger secret
-                    const secretWin = document.getElementById('window-secrets');
-                    if (secretWin) {
-                        secretWin.querySelector('.window-content').innerHTML +=
-                            '<p style="color:red; margin-top:10px;">🌟 KONAMI ACTIVATED! 🌟</p>';
-                    }
-                    openWindow('secrets');
-                    konamiIndex = 0;
+                function onMove(e) {
+                    let dw = e.clientX - startX,
+                        dh = e.clientY - startY;
+                    win.style.width = Math.max(200, startW + dw) + 'px';
+                    win.style.height = Math.max(120, startH + dh) + 'px';
                 }
-            } else {
-                konamiIndex = 0;
+
+                function onUp() { document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp); }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+            });
+        });
+
+        function updateTaskbar() {
+            const container = document.getElementById('taskbarPrograms');
+            const existingBtns = container.querySelectorAll('.taskbar-btn');
+            const openWindows = [];
+            allWindows.forEach(win => {
+                if (win.style.display !== 'none' && !win.classList.contains('minimized')) {
+                    const id = win.id.replace('window-', '');
+                    const title = win.querySelector('.window-title')?.textContent?.trim() || id;
+                    openWindows.push({ id, title, win });
+                }
+            });
+            existingBtns.forEach(btn => {
+                const wid = btn.dataset.window;
+                if (!openWindows.some(w => w.id === wid)) btn.remove();
+            });
+            openWindows.forEach(({ id, title, win }) => {
+                if (!container.querySelector(`.taskbar-btn[data-window="${id}"]`)) {
+                    const btn = document.createElement('button');
+                    btn.className = 'taskbar-btn';
+                    btn.dataset.window = id;
+                    btn.textContent = title;
+                    btn.addEventListener('click', () => {
+                        if (win.classList.contains('minimized')) { win.classList.remove('minimized');
+                            win.style.display = 'flex'; }
+                        zIndexCounter++;
+                        win.style.zIndex = zIndexCounter;
+                        if (activeWindow) activeWindow.classList.remove('active');
+                        win.classList.add('active');
+                        activeWindow = win;
+                        updateTaskbar();
+                        if (id === 'pinball') initPinball();
+                    });
+                    container.appendChild(btn);
+                }
+                const btn = container.querySelector(`.taskbar-btn[data-window="${id}"]`);
+                if (btn) btn.classList.toggle('active-btn', win === activeWindow);
+            });
+        }
+
+        document.querySelectorAll('.icon').forEach(icon => {
+            icon.addEventListener('dblclick', () => { openWindow(icon.dataset.window); });
+            icon.addEventListener('click', (e) => { if (window.innerWidth < 768) openWindow(icon.dataset.window); });
+        });
+
+        document.querySelectorAll('.start-menu .menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                handleAction(item.dataset.action);
+                document.getElementById('startMenu').style.display = 'none';
+            });
+        });
+
+        const contextMenu = document.getElementById('contextMenu');
+        document.getElementById('desktop').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = Math.min(e.clientX, window.innerWidth - 180) + 'px';
+            contextMenu.style.top = Math.min(e.clientY, window.innerHeight - 120) + 'px';
+        });
+        document.addEventListener('click', () => { contextMenu.style.display = 'none'; });
+        contextMenu.querySelectorAll('.ctx-item').forEach(item => {
+            item.addEventListener('click', () => { handleAction(item.dataset.action);
+                contextMenu.style.display = 'none'; });
+        });
+
+        function handleAction(action) {
+            switch (action) {
+                case 'computer':
+                case 'notepad':
+                case 'calculator':
+                case 'paint':
+                case 'cmd':
+                case 'music':
+                case 'recycle':
+                case 'gallery':
+                case 'minesweeper':
+                case 'solitaire':
+                case 'pinball':
+                    openWindow(action);
+                    break;
+                case 'wallpaper':
+                    cycleWallpaper();
+                    break;
+                case 'screensaver':
+                    toggleScreensaver();
+                    break;
+                case 'refresh':
+                    const d = document.getElementById('desktop');
+                    d.style.transition = 'opacity 0.1s';
+                    d.style.opacity = '0.5';
+                    setTimeout(() => { d.style.opacity = '1'; }, 150);
+                    break;
+                case 'shutdown':
+                    document.body.style.transition = 'opacity 0.8s';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.innerHTML =
+                            `<div style="background:black;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#00ff00;font-family:'Press Start 2P',cursive;text-align:center;padding:20px;"><div style="font-size:3rem;margin-bottom:20px;">🖥️</div><div style="font-size:1rem;letter-spacing:4px;">It's now safe to turn off your computer.</div><div style="font-size:0.5rem;color:#008800;margin-top:20px;">TechPro OS v2.0</div></div>`;
+                    }, 800);
+                    break;
+                case 'home':
+                    window.location.href = 'index.html';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        const startBtn = document.getElementById('startButton');
+        const startMenu = document.getElementById('startMenu');
+        startBtn.addEventListener('click', (e) => { e.stopPropagation();
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block'; });
+        document.addEventListener('click', (e) => { if (!startMenu.contains(e.target) && e.target !== startBtn) startMenu
+                .style.display = 'none'; });
+
+        /* ════════════════════════════════════════════════════════════
+           NOTEPAD
+           ════════════════════════════════════════════════════════════ */
+        (function notepad() {
+            const textarea = document.getElementById('notepadText');
+            const status = document.getElementById('notepadStatus');
+            try { const saved = localStorage.getItem('techpro_notepad'); if (saved) textarea.value = saved; } catch (_) {}
+            let saveTimeout;
+            textarea.addEventListener('input', () => {
+                status.textContent = '✎ Editing…';
+                status.style.color = '#cc8800';
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(() => {
+                    try { localStorage.setItem('techpro_notepad', textarea.value);
+                        status.textContent = '✓ Saved';
+                        status.style.color = 'var(--win95-dark)'; } catch (_) {}
+                }, 400);
+            });
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           CALCULATOR
+           ════════════════════════════════════════════════════════════ */
+        (function calculator() {
+            const display = document.getElementById('calcDisplay');
+            let current = '0',
+                previous = null,
+                operation = null,
+                resetNext = false;
+
+            function updateDisplay() { display.textContent = current; }
+
+            function inputDigit(digit) {
+                if (resetNext) { current = digit;
+                    resetNext = false; } else { if (current === '0' && digit !== '.') current = digit;
+                    else current += digit; }
+                updateDisplay();
+            }
+
+            function inputDecimal() {
+                if (resetNext) { current = '0.';
+                    resetNext = false; return; }
+                if (!current.includes('.')) current += '.';
+                updateDisplay();
+            }
+
+            function inputOperator(op) {
+                if (operation && !resetNext) calculate();
+                previous = parseFloat(current);
+                operation = op;
+                resetNext = true;
+            }
+
+            function calculate() {
+                if (operation === null || previous === null) return;
+                const prev = previous,
+                    curr = parseFloat(current);
+                let result = 0;
+                switch (operation) {
+                    case '+':
+                        result = prev + curr;
+                        break;
+                    case '−':
+                        result = prev - curr;
+                        break;
+                    case '×':
+                        result = prev * curr;
+                        break;
+                    case '÷':
+                        result = curr !== 0 ? prev / curr : 'Error';
+                        break;
+                    default:
+                        return;
+                }
+                current = typeof result === 'number' ? String(result) : result;
+                operation = null;
+                previous = null;
+                resetNext = true;
+                updateDisplay();
+            }
+            document.querySelectorAll('[data-calc]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const val = btn.dataset.calc;
+                    if (val === 'C') { current = '0';
+                        previous = null;
+                        operation = null;
+                        resetNext = false;
+                        updateDisplay(); return; }
+                    if (val === '±') { current = String(-parseFloat(current));
+                        updateDisplay(); return; }
+                    if (val === '%') { current = String(parseFloat(current) / 100);
+                        updateDisplay(); return; }
+                    if (val === '=') { calculate(); return; }
+                    if (['+', '−', '×', '÷'].includes(val)) { inputOperator(val); return; }
+                    if (val === '.') { inputDecimal(); return; }
+                    inputDigit(val);
+                });
+            });
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           PAINT
+           ════════════════════════════════════════════════════════════ */
+        (function paint() {
+            const canvas = document.getElementById('paintCanvas');
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false,
+                tool = 'pen',
+                color = '#000';
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width || 400;
+                canvas.height = rect.height || 260;
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches?.[0]?.clientX || 0) - rect.left;
+                const y = (e.clientY || e.touches?.[0]?.clientY || 0) - rect.top;
+                return { x: Math.max(0, Math.min(canvas.width, x)), y: Math.max(0, Math.min(canvas.height, y)) };
+            }
+
+            function startDraw(e) { e.preventDefault();
+                isDrawing = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y); }
+
+            function draw(e) {
+                e.preventDefault();
+                if (!isDrawing) return;
+                const pos = getPos(e);
+                if (tool === 'eraser') { ctx.globalCompositeOperation = 'destination-out';
+                    ctx.strokeStyle = 'rgba(0,0,0,1)';
+                    ctx.lineWidth = 12; } else { ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3; }
+                ctx.lineTo(pos.x, pos.y);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+            }
+
+            function endDraw(e) { isDrawing = false;
+                ctx.globalCompositeOperation = 'source-over'; }
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', endDraw);
+            canvas.addEventListener('mouseleave', endDraw);
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', endDraw, { passive: false });
+
+            document.querySelectorAll('.paint-tool').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.paint-tool').forEach(b => b.classList.remove('active-tool'));
+                    btn.classList.add('active-tool');
+                    tool = btn.dataset.tool;
+                    if (tool === 'clear') { ctx.globalCompositeOperation = 'source-over';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        tool = 'pen';
+                        document.querySelector('.paint-tool[data-tool="pen"]')?.classList.add('active-tool'); }
+                });
+            });
+            document.querySelectorAll('.color-swatch').forEach(el => {
+                el.addEventListener('click', () => {
+                    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active-color'));
+                    el.classList.add('active-color');
+                    color = el.dataset.color;
+                });
+            });
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           COMMAND PROMPT
+           ════════════════════════════════════════════════════════════ */
+        (function cmd() {
+            const output = document.getElementById('cmdOutput'),
+                input = document.getElementById('cmdInput'),
+                send = document.getElementById('cmdSend');
+
+            function append(text, prefix = '> ') { output.textContent += '\n' + prefix + text;
+                output.scrollTop = output.scrollHeight; }
+
+            function processCommand(c) {
+                const cmd = c.trim().toLowerCase();
+                if (!cmd) return;
+                append(cmd, '> ');
+                switch (cmd) {
+                    case 'help':
+                        append('Available commands:');
+                        append('  help     - Show this help');
+                        append('  echo     - Print a message');
+                        append('  date     - Show current date');
+                        append('  time     - Show current time');
+                        append('  whoami   - Show user info');
+                        append('  clear    - Clear the screen');
+                        append('  easter   - 🥚 Something special');
+                        append('  exit     - Close this window');
+                        break;
+                    case 'clear':
+                        output.textContent = 'C:\\> TechPro OS v2.0';
+                        break;
+                    case 'date':
+                        append(new Date().toLocaleDateString());
+                        break;
+                    case 'time':
+                        append(new Date().toLocaleTimeString());
+                        break;
+                    case 'whoami':
+                        append('TechPro User');
+                        append('Role: Administrator');
+                        append('Terminal: TTY0');
+                        break;
+                    case 'easter':
+                        append('🥚 You found the Easter egg!');
+                        append('✨ "The cake is a lie." – GLaDOS');
+                        break;
+                    case 'exit':
+                        append('Closing terminal...');
+                        setTimeout(() => { const win = document.getElementById('window-cmd'); if (win) closeWindow(win); },
+                            400);
+                        break;
+                    default:
+                        if (cmd.startsWith('echo ')) { append(cmd.slice(5)); } else { append(
+                                `'${cmd}' is not recognized as an internal command.`); }
+                }
+            }
+
+            function handleCommand() { const cmd = input.value;
+                input.value = '';
+                processCommand(cmd); }
+            send.addEventListener('click', handleCommand);
+            input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCommand(); });
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           MUSIC PLAYER
+           ════════════════════════════════════════════════════════════ */
+        (function musicPlayer() {
+            const display = document.getElementById('musicDisplay');
+            const trackLabel = document.getElementById('musicTrack');
+            const tracks = [
+                { name: '8-bit groove', notes: [262, 294, 330, 349, 392, 440, 494, 523] },
+                { name: 'Chiptune dreams', notes: [523, 494, 440, 392, 349, 330, 294, 262] },
+                { name: 'Retro wave', notes: [440, 440, 440, 349, 349, 349, 392, 392, 392] },
+                { name: 'Pixel sky', notes: [523, 523, 523, 392, 440, 440, 392, 349] },
+            ];
+            let currentTrack = 0,
+                audioCtx = null,
+                isPlaying = false,
+                timeoutId = null;
+
+            function playNote(freq, duration = 0.15) {
+                try {
+                    if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    const osc = audioCtx.createOscillator(),
+                        gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = freq;
+                    osc.type = 'square';
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + duration);
+                } catch (_) {}
+            }
+
+            function playTrack(index) {
+                stopPlayback();
+                const track = tracks[index % tracks.length];
+                trackLabel.textContent = `Track: ${track.name}`;
+                display.textContent = '▶️ Playing...';
+                isPlaying = true;
+                let i = 0,
+                    lastTime = 0;
+
+                function playNext() {
+                    if (!isPlaying || i >= track.notes.length) { if (isPlaying) { i = 0;
+                            setTimeout(playNext, 300); } return; }
+                    const now = Date.now();
+                    const delay = Math.max(0, 180 - (now - lastTime));
+                    lastTime = now;
+                    setTimeout(() => { playNote(track.notes[i], 0.12);
+                        i++; if (isPlaying) timeoutId = setTimeout(playNext, 120); }, delay);
+                }
+                timeoutId = setTimeout(playNext, 100);
+            }
+
+            function stopPlayback() { isPlaying = false; if (timeoutId) { clearTimeout(timeoutId);
+                    timeoutId = null; }
+                display.textContent = '⏹️ Stopped';
+                trackLabel.textContent = `Track: ${tracks[currentTrack % tracks.length].name}`; }
+
+            document.getElementById('musicPlay').addEventListener('click', () => {
+                if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                if (!isPlaying) playTrack(currentTrack);
+                else { stopPlayback();
+                    setTimeout(() => playTrack(currentTrack), 200); }
+            });
+            document.getElementById('musicStop').addEventListener('click', stopPlayback);
+            document.getElementById('musicNext').addEventListener('click', () => { stopPlayback();
+                currentTrack = (currentTrack + 1) % tracks.length;
+                trackLabel.textContent = `Track: ${tracks[currentTrack].name}`;
+                display.textContent = '⏭️ Next'; if (isPlaying) setTimeout(() => playTrack(currentTrack), 200); });
+            trackLabel.textContent = `Track: ${tracks[0].name}`;
+            display.textContent = '▶️';
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           RECYCLE BIN
+           ════════════════════════════════════════════════════════════ */
+        (function recycle() {
+            const content = document.getElementById('recycleContent');
+            let items = [];
+            try { const saved = localStorage.getItem('techpro_recycle'); if (saved) items = JSON.parse(saved); } catch (_) {}
+
+            function render() {
+                if (!items.length) { content.innerHTML = `<div class="recycle-empty">♻️ This bin is empty.</div>`; return; }
+                let html = '';
+                items.forEach((item, idx) => {
+                    html += `
+                        <div class="recycle-item" data-idx="${idx}">
+                            <span class="del-icon">📄</span>
+                            <span>${item.name}</span>
+                            <span style="margin-left:auto;font-size:0.7rem;color:var(--win95-dark);">${item.date}</span>
+                            <button data-restore="${idx}" style="font-family:'Press Start 2P',cursive;font-size:0.4rem;padding:2px 6px;background:var(--win95-gray);border:2px solid #000;box-shadow:inset 1px 1px 0 white,inset -1px -1px 0 #555;cursor:pointer;">Restore</button>
+                        </div>
+                    `;
+                });
+                html +=
+                    `<div style="margin-top:8px;"><button id="emptyRecycle" style="font-family:'Press Start 2P',cursive;font-size:0.4rem;padding:4px 12px;background:#c04040;color:white;border:2px solid #000;box-shadow:inset 1px 1px 0 #e06060,inset -1px -1px 0 #800000;cursor:pointer;">🗑️ Empty Bin</button></div>`;
+                content.innerHTML = html;
+                document.querySelectorAll('[data-restore]').forEach(btn => {
+                    btn.addEventListener('click', () => { const idx = parseInt(btn.dataset.restore);
+                        items.splice(idx, 1);
+                        saveAndRender(); });
+                });
+                document.getElementById('emptyRecycle')?.addEventListener('click', () => { if (items.length && confirm(
+                            'Empty Recycle Bin?')) { items = [];
+                        saveAndRender(); } });
+            }
+
+            function saveAndRender() { try { localStorage.setItem('techpro_recycle', JSON.stringify(items)); } catch (_) {}
+                render(); }
+            if (!items.length) { items.push({ name: 'old_note.txt', date: '2024-12-01' });
+                items.push({ name: 'temp_image.png', date: '2024-11-28' });
+                saveAndRender(); } else render();
+            window.recycleAdd = function(name) { items.push({ name: name || 'deleted_file.txt', date: new Date()
+                    .toLocaleDateString() });
+                saveAndRender(); };
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           WALLPAPER CYCLER
+           ════════════════════════════════════════════════════════════ */
+        let wallpaperIndex = 0;
+        const wallpapers = ['wallpaper-teal', 'wallpaper-blue', 'wallpaper-dark'];
+
+        function cycleWallpaper() {
+            const desktop = document.getElementById('desktop');
+            wallpaperIndex = (wallpaperIndex + 1) % wallpapers.length;
+            wallpapers.forEach(w => desktop.classList.remove(w));
+            desktop.classList.add(wallpapers[wallpaperIndex]);
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           SCREENSAVER
+           ════════════════════════════════════════════════════════════ */
+        let screensaverActive = false,
+            ssTimeout = null;
+
+        function toggleScreensaver() {
+            const ss = document.getElementById('screensaver');
+            screensaverActive = !screensaverActive;
+            ss.classList.toggle('active', screensaverActive);
+            if (screensaverActive) {
+                const dismiss = () => { if (screensaverActive) { screensaverActive = false;
+                        ss.classList.remove('active');
+                        document.removeEventListener('mousemove', dismiss);
+                        document.removeEventListener('keydown', dismiss);
+                        document.removeEventListener('click', dismiss);
+                        clearTimeout(ssTimeout); } };
+                document.addEventListener('mousemove', dismiss);
+                document.addEventListener('keydown', dismiss);
+                document.addEventListener('click', dismiss);
+                ssTimeout = setTimeout(dismiss, 10000);
+            }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           MINESWEEPER
+           ════════════════════════════════════════════════════════════ */
+        let msBoard = [],
+            msRevealed = [],
+            msFlagged = [],
+            msGameOver = false,
+            msFirstClick = true,
+            msRows = 9,
+            msCols = 9,
+            msMines = 10,
+            msTimer = 0,
+            msTimerInterval = null;
+
+        function initMinesweeper() {
+            const grid = document.getElementById('msGrid');
+            const status = document.getElementById('msStatus');
+            const timer = document.getElementById('msTimer');
+            const mineCounter = document.getElementById('msMines');
+            if (msTimerInterval) clearInterval(msTimerInterval);
+            msTimer = 0;
+            msGameOver = false;
+            msFirstClick = true;
+            timer.textContent = '⏱️ 000';
+            status.textContent = '😀';
+            mineCounter.textContent = `💣 ${msMines}`;
+            msBoard = [];
+            msRevealed = [];
+            msFlagged = [];
+            for (let r = 0; r < msRows; r++) { msBoard[r] = new Array(msCols).fill(0);
+                msRevealed[r] = new Array(msCols).fill(false);
+                msFlagged[r] = new Array(msCols).fill(false); }
+            grid.style.gridTemplateColumns = `repeat(${msCols}, 32px)`;
+            grid.innerHTML = '';
+            for (let r = 0; r < msRows; r++) {
+                for (let c = 0; c < msCols; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'ms-cell';
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    cell.addEventListener('click', () => handleMSClick(r, c));
+                    cell.addEventListener('contextmenu', (e) => { e.preventDefault();
+                        handleMSFlag(r, c); });
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function placeMines(excludeR, excludeC) {
+            let placed = 0;
+            while (placed < msMines) {
+                const r = Math.floor(Math.random() * msRows);
+                const c = Math.floor(Math.random() * msCols);
+                if ((r === excludeR && c === excludeC) || msBoard[r][c] === -1) continue;
+                msBoard[r][c] = -1;
+                placed++;
+            }
+            for (let r = 0; r < msRows; r++) {
+                for (let c = 0; c < msCols; c++) {
+                    if (msBoard[r][c] === -1) continue;
+                    let count = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            const nr = r + dr,
+                                nc = c + dc;
+                            if (nr >= 0 && nr < msRows && nc >= 0 && nc < msCols && msBoard[nr][nc] === -1) count++;
+                        }
+                    }
+                    msBoard[r][c] = count;
+                }
+            }
+        }
+
+        function handleMSClick(r, c) {
+            if (msGameOver) return;
+            if (msFlagged[r][c]) return;
+            if (msRevealed[r][c]) return;
+            if (msFirstClick) { placeMines(r, c);
+                msFirstClick = false;
+                msTimer = 0; if (msTimerInterval) clearInterval(msTimerInterval);
+                msTimerInterval = setInterval(() => { msTimer++;
+                    document.getElementById('msTimer').textContent = `⏱️ ${String(msTimer).padStart(3,'0')}`; }, 1000); }
+            if (msBoard[r][c] === -1) { msGameOver = true;
+                document.getElementById('msStatus').textContent = '💥';
+                revealAllMines(); return; }
+            revealCell(r, c);
+            checkWin();
+        }
+
+        function revealCell(r, c) {
+            if (r < 0 || r >= msRows || c < 0 || c >= msCols) return;
+            if (msRevealed[r][c] || msFlagged[r][c]) return;
+            msRevealed[r][c] = true;
+            const cell = document.querySelector(`.ms-cell[data-row="${r}"][data-col="${c}"]`);
+            if (cell) {
+                cell.classList.add('revealed');
+                if (msBoard[r][c] > 0) cell.textContent = msBoard[r][c];
+                else if (msBoard[r][c] === 0) { cell.textContent = ''; for (let dr = -1; dr <= 1; dr++) { for (let dc = -1; dc <=
+                            1; dc++) { if (dr === 0 && dc === 0) continue;
+                            revealCell(r + dr, c + dc); } } }
+            }
+        }
+
+        function handleMSFlag(r, c) {
+            if (msGameOver) return;
+            if (msRevealed[r][c]) return;
+            msFlagged[r][c] = !msFlagged[r][c];
+            const cell = document.querySelector(`.ms-cell[data-row="${r}"][data-col="${c}"]`);
+            if (cell) { if (msFlagged[r][c]) { cell.classList.add('flagged');
+                    cell.textContent = '🚩'; } else { cell.classList.remove('flagged');
+                    cell.textContent = ''; } }
+            const flaggedCount = msFlagged.flat().filter(v => v).length;
+            document.getElementById('msMines').textContent = `💣 ${msMines - flaggedCount}`;
+        }
+
+        function revealAllMines() {
+            for (let r = 0; r < msRows; r++) {
+                for (let c = 0; c < msCols; c++) {
+                    if (msBoard[r][c] === -1) {
+                        const cell = document.querySelector(`.ms-cell[data-row="${r}"][data-col="${c}"]`);
+                        if (cell) { cell.classList.add('revealed', 'mine-exploded');
+                            cell.textContent = '💣'; }
+                    }
+                }
+            }
+        }
+
+        function checkWin() {
+            let totalRevealed = 0;
+            for (let r = 0; r < msRows; r++) { for (let c = 0; c < msCols; c++) { if (msRevealed[r][c]) totalRevealed++; } }
+            if (totalRevealed === (msRows * msCols) - msMines) { msGameOver = true;
+                document.getElementById('msStatus').textContent = '😎'; if (msTimerInterval) clearInterval(msTimerInterval);
+                alert('🎉 You won! Congratulations!'); }
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           SOLITAIRE - FIXED with click-to-select
+           ════════════════════════════════════════════════════════════ */
+        let solitaireState = {};
+        let selectedSolitaireCard = null; // { source: 'tableau'|'waste', pileIdx: number, cardIdx: number }
+
+        function initSolitaire() {
+            const suits = ['♠', '♥', '♦', '♣'];
+            const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            let deck = [];
+            for (const suit of suits)
+                for (const rank of ranks) deck.push({ suit, rank, faceUp: false });
+
+            // Shuffle
+            for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]]; }
+
+            let tableau = [
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                []
+            ];
+            let idx = 0;
+            for (let i = 0; i < 7; i++) {
+                for (let j = i; j < 7; j++) {
+                    const card = deck[idx++];
+                    card.faceUp = (j === i);
+                    tableau[j].push(card);
+                }
+            }
+            const stock = deck.slice(idx);
+            const foundations = [
+                [],
+                [],
+                [],
+                []
+            ];
+
+            solitaireState = { tableau, stock, foundations, waste: [] };
+            selectedSolitaireCard = null;
+            renderSolitaire();
+        }
+
+        function renderSolitaire() {
+            const container = document.getElementById('solitaireGame');
+            const { tableau, stock, foundations, waste } = solitaireState;
+
+            // Check win
+            let won = foundations.every(p => p.length === 13);
+
+            let html = `
+                <div class="solitaire-top">
+                    <div class="solitaire-stock-area">
+                        <div class="solitaire-pile" id="stockPile" style="cursor:pointer;font-size:1.2rem;">
+                            ${stock.length > 0 ? '📦' : '🃏'}
+                            <span style="font-size:0.6rem;position:absolute;bottom:2px;right:4px;color:rgba(255,255,255,0.6);">${stock.length}</span>
+                        </div>
+                        <div class="solitaire-pile" id="wastePile" style="cursor:pointer;">
+                            ${waste.length > 0 ? `<div class="card ${waste[waste.length-1].suit === '♥' || waste[waste.length-1].suit === '♦' ? 'red' : ''}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2;font-size:1.1rem;">
+                                ${waste[waste.length-1].rank}${waste[waste.length-1].suit}
+                            </div>` : '⬜'}
+                        </div>
+                    </div>
+                    <div class="solitaire-foundation-area">
+                        ${foundations.map((pile, i) => `
+                            <div class="solitaire-pile foundation-pile" data-foundation="${i}" style="cursor:pointer;">
+                                ${pile.length > 0 ? `<div class="card ${pile[pile.length-1].suit === '♥' || pile[pile.length-1].suit === '♦' ? 'red' : ''}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2;font-size:1.1rem;">
+                                    ${pile[pile.length-1].rank}${pile[pile.length-1].suit}
+                                </div>` : '⬜'}
+                                <span style="position:absolute;bottom:2px;right:4px;font-size:0.5rem;color:rgba(255,255,255,0.3);">${pile.length}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="solitaire-tableau-area">
+                    ${tableau.map((pile, idx) => `
+                        <div class="solitaire-pile tableau-pile" data-tableau="${idx}" style="cursor:pointer;position:relative;">
+                            ${pile.length === 0 ? '<span class="solitaire-empty-label">⬜</span>' : ''}
+                            ${pile.map((card, cardIdx) => {
+                                const isSelected = selectedSolitaireCard && selectedSolitaireCard.source === 'tableau' && selectedSolitaireCard.pileIdx === idx && selectedSolitaireCard.cardIdx === cardIdx;
+                                const top = cardIdx * 22;
+                                const faceDown = !card.faceUp;
+                                const red = card.suit === '♥' || card.suit === '♦';
+                                return `
+                                    <div class="card ${faceDown ? 'face-down' : ''} ${red ? 'red' : ''} ${isSelected ? 'selected' : ''}"
+                                         style="top:${top}px;left:2px;width:calc(100% - 4px);height:28px;font-size:0.7rem;z-index:${cardIdx + 1};"
+                                         data-tableau="${idx}" data-card="${cardIdx}">
+                                        ${faceDown ? '' : `${card.rank}${card.suit}`}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+                ${won ? '<div class="solitaire-win">🎉 YOU WIN! 🎉</div>' : ''}
+            `;
+            container.innerHTML = html;
+
+            // Event: Stock click
+            document.getElementById('stockPile')?.addEventListener('click', () => {
+                if (solitaireState.stock.length === 0) {
+                    // Reset stock from waste
+                    solitaireState.stock = solitaireState.waste.reverse();
+                    solitaireState.stock.forEach(c => c.faceUp = false);
+                    solitaireState.waste = [];
+                    selectedSolitaireCard = null;
+                    renderSolitaire();
+                    return;
+                }
+                const card = solitaireState.stock.pop();
+                card.faceUp = true;
+                solitaireState.waste.push(card);
+                selectedSolitaireCard = null;
+                renderSolitaire();
+            });
+
+            // Event: Waste pile click - select top card
+            document.getElementById('wastePile')?.addEventListener('click', () => {
+                if (solitaireState.waste.length === 0) return;
+                const topIdx = solitaireState.waste.length - 1;
+                if (selectedSolitaireCard && selectedSolitaireCard.source === 'waste' && selectedSolitaireCard
+                    .cardIdx === topIdx) {
+                    selectedSolitaireCard = null;
+                    renderSolitaire();
+                    return;
+                }
+                selectedSolitaireCard = { source: 'waste', pileIdx: 0, cardIdx: topIdx };
+                renderSolitaire();
+            });
+
+            // Event: Tableau card clicks
+            document.querySelectorAll('.tableau-pile .card').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const tableauIdx = parseInt(el.dataset.tableau);
+                    const cardIdx = parseInt(el.dataset.card);
+                    const pile = solitaireState.tableau[tableauIdx];
+                    const card = pile[cardIdx];
+                    if (!card || !card.faceUp) return;
+
+                    // If clicking on the same selected card, deselect
+                    if (selectedSolitaireCard && selectedSolitaireCard.source === 'tableau' &&
+                        selectedSolitaireCard.pileIdx === tableauIdx &&
+                        selectedSolitaireCard.cardIdx === cardIdx) {
+                        selectedSolitaireCard = null;
+                        renderSolitaire();
+                        return;
+                    }
+
+                    // Try to move to foundation first (single card only)
+                    const movedCard = pile.splice(cardIdx, 1)[0];
+                    let placed = false;
+                    for (let f = 0; f < solitaireState.foundations.length; f++) {
+                        if (canPlaceOnFoundation(movedCard, solitaireState.foundations[f])) {
+                            solitaireState.foundations[f].push(movedCard);
+                            placed = true;
+                            break;
+                        }
+                    }
+                    if (!placed) {
+                        // Put it back
+                        pile.splice(cardIdx, 0, movedCard);
+                        // Select it for moving to another tableau
+                        if (selectedSolitaireCard && selectedSolitaireCard.source === 'tableau') {
+                            // Try to move the selected card(s) to this pile
+                            const srcPile = solitaireState.tableau[selectedSolitaireCard.pileIdx];
+                            const srcIdx = selectedSolitaireCard.cardIdx;
+                            const cardsToMove = srcPile.slice(srcIdx);
+                            if (cardsToMove.length > 0 && canPlaceOnTableau(cardsToMove[0], pile)) {
+                                // Move the whole stack
+                                srcPile.splice(srcIdx);
+                                pile.push(...cardsToMove);
+                                // Flip the new top card if needed
+                                if (srcPile.length > 0 && !srcPile[srcPile.length - 1].faceUp) {
+                                    srcPile[srcPile.length - 1].faceUp = true;
+                                }
+                                selectedSolitaireCard = null;
+                                renderSolitaire();
+                                return;
+                            }
+                        }
+                        // Select this card
+                        selectedSolitaireCard = { source: 'tableau', pileIdx: tableauIdx, cardIdx: cardIdx };
+                        renderSolitaire();
+                        return;
+                    }
+                    // Card was placed on foundation
+                    if (pile.length > 0 && !pile[pile.length - 1].faceUp) {
+                        pile[pile.length - 1].faceUp = true;
+                    }
+                    selectedSolitaireCard = null;
+                    renderSolitaire();
+                });
+            });
+
+            // Event: Tableau pile empty area click (to move selected card)
+            document.querySelectorAll('.tableau-pile').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    // If clicked on a card, the card handler fires first
+                    if (e.target.closest('.card')) return;
+                    const tableauIdx = parseInt(el.dataset.tableau);
+                    if (isNaN(tableauIdx)) return;
+                    if (!selectedSolitaireCard) return;
+
+                    if (selectedSolitaireCard.source === 'waste') {
+                        const card = solitaireState.waste[selectedSolitaireCard.cardIdx];
+                        if (!card) return;
+                        const targetPile = solitaireState.tableau[tableauIdx];
+                        if (canPlaceOnTableau(card, targetPile)) {
+                            solitaireState.waste.pop();
+                            targetPile.push(card);
+                            selectedSolitaireCard = null;
+                            renderSolitaire();
+                        }
+                        return;
+                    }
+
+                    if (selectedSolitaireCard.source === 'tableau') {
+                        const srcPile = solitaireState.tableau[selectedSolitaireCard.pileIdx];
+                        const srcIdx = selectedSolitaireCard.cardIdx;
+                        const cardsToMove = srcPile.slice(srcIdx);
+                        if (cardsToMove.length === 0) return;
+                        const targetPile = solitaireState.tableau[tableauIdx];
+                        if (canPlaceOnTableau(cardsToMove[0], targetPile)) {
+                            srcPile.splice(srcIdx);
+                            targetPile.push(...cardsToMove);
+                            if (srcPile.length > 0 && !srcPile[srcPile.length - 1].faceUp) {
+                                srcPile[srcPile.length - 1].faceUp = true;
+                            }
+                            selectedSolitaireCard = null;
+                            renderSolitaire();
+                        }
+                    }
+                });
+            });
+
+            // Event: Foundation pile click - move from waste or selected
+            document.querySelectorAll('.foundation-pile').forEach(el => {
+                el.addEventListener('click', () => {
+                    const fIdx = parseInt(el.dataset.foundation);
+                    if (isNaN(fIdx)) return;
+
+                    // Try from waste first
+                    if (solitaireState.waste.length > 0) {
+                        const card = solitaireState.waste[solitaireState.waste.length - 1];
+                        if (canPlaceOnFoundation(card, solitaireState.foundations[fIdx])) {
+                            solitaireState.waste.pop();
+                            solitaireState.foundations[fIdx].push(card);
+                            selectedSolitaireCard = null;
+                            renderSolitaire();
+                            return;
+                        }
+                    }
+
+                    // Try from selected tableau card
+                    if (selectedSolitaireCard && selectedSolitaireCard.source === 'tableau') {
+                        const pile = solitaireState.tableau[selectedSolitaireCard.pileIdx];
+                        const idx = selectedSolitaireCard.cardIdx;
+                        const card = pile[idx];
+                        if (card && card.faceUp && canPlaceOnFoundation(card, solitaireState.foundations[
+                            fIdx])) {
+                            pile.splice(idx, 1);
+                            solitaireState.foundations[fIdx].push(card);
+                            if (pile.length > 0 && !pile[pile.length - 1].faceUp) {
+                                pile[pile.length - 1].faceUp = true;
+                            }
+                            selectedSolitaireCard = null;
+                            renderSolitaire();
+                        }
+                    }
+                });
+            });
+        }
+
+        function canPlaceOnFoundation(card, foundation) {
+            if (foundation.length === 0) return card.rank === 'A';
+            const top = foundation[foundation.length - 1];
+            const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            return top.suit === card.suit && ranks.indexOf(top.rank) === ranks.indexOf(card.rank) - 1;
+        }
+
+        function canPlaceOnTableau(card, pile) {
+            if (pile.length === 0) return true;
+            const top = pile[pile.length - 1];
+            if (!top.faceUp) return false;
+            const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            const isRed = card.suit === '♥' || card.suit === '♦';
+            const isTopRed = top.suit === '♥' || top.suit === '♦';
+            return isRed !== isTopRed && ranks.indexOf(top.rank) === ranks.indexOf(card.rank) + 1;
+        }
+
+        /* ════════════════════════════════════════════════════════════
+           PINBALL - FIXED with proper physics
+           ════════════════════════════════════════════════════════════ */
+        let pinball = {
+            ball: { x: 170, y: 350, r: 6, vx: 0, vy: 0 },
+            leftFlipper: { x: 120, y: 380, angle: 0, length: 38, speed: 0.15 },
+            rightFlipper: { x: 220, y: 380, angle: 0, length: 38, speed: 0.15 },
+            leftPressed: false,
+            rightPressed: false,
+            score: 0,
+            lives: 3,
+            bumpers: [{ x: 170, y: 160, r: 18 }, { x: 115, y: 210, r: 16 }, { x: 225, y: 210, r: 16 }],
+            slingshots: [{ x: 85, y: 340, r: 12 }, { x: 255, y: 340, r: 12 }],
+            gameOver: false,
+            launched: false,
+            W: 340,
+            H: 420
+        };
+
+        function initPinball() {
+            const canvas = document.getElementById('pinballCanvas');
+            const ctx = canvas.getContext('2d');
+            const W = pinball.W,
+                H = pinball.H;
+            pinball.lives = 3;
+            pinball.score = 0;
+            pinball.gameOver = false;
+            pinball.launched = false;
+            document.getElementById('pinballScore').textContent = '0';
+            document.getElementById('pinballLives').textContent = '3';
+
+            // Reset ball
+            pinball.ball.x = W / 2;
+            pinball.ball.y = 350;
+            pinball.ball.vx = (Math.random() - 0.5) * 1.5;
+            pinball.ball.vy = -3.5;
+
+            if (pinballRunning) { pinballRunning = false; if (pinballRAF) { cancelAnimationFrame(pinballRAF);
+                    pinballRAF = null; } }
+            pinballRunning = true;
+            gameLoopPinball();
+        }
+
+        function gameLoopPinball() {
+            if (!pinballRunning) return;
+            const canvas = document.getElementById('pinballCanvas');
+            if (!canvas) { pinballRunning = false; return; }
+            const ctx = canvas.getContext('2d');
+            const W = pinball.W,
+                H = pinball.H;
+
+            // Physics update
+            const ball = pinball.ball;
+            const lf = pinball.leftFlipper;
+            const rf = pinball.rightFlipper;
+
+            // Gravity
+            ball.vy += 0.18;
+
+            // Friction
+            ball.vx *= 0.998;
+            ball.vy *= 0.998;
+
+            // Clamp speed
+            const speed = Math.hypot(ball.vx, ball.vy);
+            if (speed > 12) { ball.vx = (ball.vx / speed) * 12;
+                ball.vy = (ball.vy / speed) * 12; }
+
+            // Move ball
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            // Wall collisions
+            if (ball.x - ball.r < 0) { ball.x = ball.r;
+                ball.vx = Math.abs(ball.vx) * 0.85; }
+            if (ball.x + ball.r > W) { ball.x = W - ball.r;
+                ball.vx = -Math.abs(ball.vx) * 0.85; }
+            if (ball.y - ball.r < 0) { ball.y = ball.r;
+                ball.vy = Math.abs(ball.vy) * 0.85; }
+
+            // Bottom - lose ball
+            if (ball.y + ball.r > H + 10) {
+                pinball.lives--;
+                document.getElementById('pinballLives').textContent = pinball.lives;
+                if (pinball.lives <= 0) {
+                    pinball.gameOver = true;
+                    pinballRunning = false;
+                    alert('Game Over! Score: ' + pinball.score);
+                    return;
+                }
+                // Reset ball
+                ball.x = W / 2;
+                ball.y = 350;
+                ball.vx = (Math.random() - 0.5) * 1.5;
+                ball.vy = -3.5;
+                pinball.launched = false;
+            }
+
+            // Flipper controls
+            const flipperSpeed = 0.14;
+            if (pinball.leftPressed) lf.angle = Math.min(lf.angle + flipperSpeed, 0.7);
+            else lf.angle = Math.max(lf.angle - flipperSpeed, -0.7);
+            if (pinball.rightPressed) rf.angle = Math.min(rf.angle + flipperSpeed, 0.7);
+            else rf.angle = Math.max(rf.angle - flipperSpeed, -0.7);
+
+            // Flipper collisions
+            function flipperCollision(fx, fy, angle, len) {
+                const tipX = fx + Math.sin(angle) * len;
+                const tipY = fy - Math.cos(angle) * len;
+                const d = Math.hypot(ball.x - tipX, ball.y - tipY);
+                if (d < ball.r + 10) {
+                    const nx = (ball.x - tipX) / d;
+                    const ny = (ball.y - tipY) / d;
+                    const spd = Math.hypot(ball.vx, ball.vy);
+                    const newSpeed = Math.max(spd * 1.3, 2.5);
+                    ball.vx = nx * newSpeed;
+                    ball.vy = ny * newSpeed;
+                    pinball.score += 10;
+                    document.getElementById('pinballScore').textContent = pinball.score;
+                }
+            }
+            flipperCollision(lf.x, lf.y, lf.angle, lf.length);
+            flipperCollision(rf.x, rf.y, rf.angle, rf.length);
+
+            // Bumpers
+            pinball.bumpers.forEach(b => {
+                const d = Math.hypot(ball.x - b.x, ball.y - b.y);
+                if (d < ball.r + b.r) {
+                    const nx = (ball.x - b.x) / d;
+                    const ny = (ball.y - b.y) / d;
+                    const spd = Math.hypot(ball.vx, ball.vy) * 1.6 + 2;
+                    ball.vx = nx * spd;
+                    ball.vy = ny * spd;
+                    pinball.score += 25;
+                    document.getElementById('pinballScore').textContent = pinball.score;
+                }
+            });
+
+            // Slingshots
+            pinball.slingshots.forEach(s => {
+                const d = Math.hypot(ball.x - s.x, ball.y - s.y);
+                if (d < ball.r + s.r) {
+                    const nx = (ball.x - s.x) / d;
+                    const ny = (ball.y - s.y) / d;
+                    const spd = Math.hypot(ball.vx, ball.vy) * 1.5 + 1.5;
+                    ball.vx = nx * spd;
+                    ball.vy = ny * spd;
+                    pinball.score += 15;
+                    document.getElementById('pinballScore').textContent = pinball.score;
+                }
+            });
+
+            // ── DRAW ──
+            ctx.clearRect(0, 0, W, H);
+
+            // Table background
+            const grad = ctx.createRadialGradient(W / 2, 100, 20, W / 2, 100, 300);
+            grad.addColorStop(0, '#0a1a3a');
+            grad.addColorStop(1, '#050510');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, W, H);
+
+            // Walls
+            ctx.strokeStyle = '#444';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(0, 0, W, H);
+
+            // Bumpers
+            pinball.bumpers.forEach(b => {
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = '#00ccff';
+                ctx.fillStyle = '#00ccff';
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.beginPath();
+                ctx.arc(b.x - 4, b.y - 5, b.r * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Slingshots
+            pinball.slingshots.forEach(s => {
+                ctx.shadowBlur = 14;
+                ctx.shadowColor = '#ffaa00';
+                ctx.fillStyle = '#ffaa00';
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.beginPath();
+                ctx.arc(s.x - 3, s.y - 4, s.r * 0.25, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Flippers
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#ff4444';
+            ctx.strokeStyle = '#cc0000';
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            const lx = lf.x + Math.sin(lf.angle) * lf.length;
+            const ly = lf.y - Math.cos(lf.angle) * lf.length;
+            ctx.moveTo(lf.x, lf.y);
+            ctx.lineTo(lx, ly);
+            ctx.stroke();
+            ctx.beginPath();
+            const rx = rf.x + Math.sin(rf.angle) * rf.length;
+            const ry = rf.y - Math.cos(rf.angle) * rf.length;
+            ctx.moveTo(rf.x, rf.y);
+            ctx.lineTo(rx, ry);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Flipper bases
+            ctx.fillStyle = '#888';
+            ctx.beginPath();
+            ctx.arc(lf.x, lf.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(rf.x, rf.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Ball
+            ctx.shadowBlur = 25;
+            ctx.shadowColor = '#ffffff';
+            const grad2 = ctx.createRadialGradient(ball.x - 3, ball.y - 4, 2, ball.x, ball.y, ball.r + 2);
+            grad2.addColorStop(0, '#ffffff');
+            grad2.addColorStop(0.6, '#cccccc');
+            grad2.addColorStop(1, '#888888');
+            ctx.fillStyle = grad2;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Launch indicator
+            if (!pinball.launched) {
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.font = '0.7rem "VT323", monospace';
+                ctx.fillText('Press SPACE to launch', W / 2 - 60, 395);
+            }
+
+            pinballRAF = requestAnimationFrame(gameLoopPinball);
+        }
+
+        // Pinball keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'z' || e.key === 'Z') { pinball.leftPressed = true;
+                e.preventDefault(); }
+            if (e.key === 'm' || e.key === 'M') { pinball.rightPressed = true;
+                e.preventDefault(); }
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                if (!pinball.launched && pinball.lives > 0 && !pinball.gameOver) {
+                    pinball.launched = true;
+                    const ball = pinball.ball;
+                    ball.vx = (Math.random() - 0.5) * 2;
+                    ball.vy = -5.5;
+                }
             }
         });
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'z' || e.key === 'Z') { pinball.leftPressed = false;
+                e.preventDefault(); }
+            if (e.key === 'm' || e.key === 'M') { pinball.rightPressed = false;
+                e.preventDefault(); }
+        });
+
+        // ── Also handle window resize for pinball ──
+        const origCloseWindow = closeWindow;
+        closeWindow = function(win) {
+            const id = win.id.replace('window-', '');
+            if (id === 'pinball') { pinballRunning = false; if (pinballRAF) { cancelAnimationFrame(pinballRAF);
+                    pinballRAF = null; } }
+            origCloseWindow(win);
+        };
+
+        /* ════════════════════════════════════════════════════════════
+           KONAMI CODE
+           ════════════════════════════════════════════════════════════ */
+        (function konami() {
+            const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft',
+                'ArrowRight', 'KeyB', 'KeyA'
+            ];
+            let idx = 0;
+            document.addEventListener('keydown', (e) => {
+                if (e.code === code[idx]) { idx++; if (idx === code.length) { openWindow('gallery');
+                        const content = document.getElementById('window-gallery')?.querySelector('.window-content'); if (
+                            content) { const existing = content.querySelector('.konami-msg'); if (!existing) { const
+                                div = document.createElement('div');
+                                div.className = 'konami-msg';
+                                div.style.cssText =
+                                    'margin-top:10px;color:#ffd700;font-size:1.2rem;animation:bootGlow 1s infinite;font-family:"VT323",monospace;';
+                                div.textContent = '🌟 KONAMI CODE ACTIVATED! You are legendary! 🌟';
+                                content.appendChild(div); } }
+                        idx = 0; } } else idx = 0;
+            });
+        })();
+
+        /* ════════════════════════════════════════════════════════════
+           KEYBOARD SHORTCUTS
+           ════════════════════════════════════════════════════════════ */
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'F4') { e.preventDefault(); if (activeWindow) { closeWindow(activeWindow);
+                    activeWindow = null;
+                    updateTaskbar(); } }
+            if (e.ctrlKey && e.key === 'Escape') { e.preventDefault();
+                startBtn.click(); }
+            if (e.key === 'Escape') { contextMenu.style.display = 'none';
+                startMenu.style.display = 'none'; }
+        });
+
+        /* ════════════════════════════════════════════════════════════
+           INIT
+           ════════════════════════════════════════════════════════════ */
+        updateTaskbar();
+        console.log(`
+        ╔══════════════════════════════════════╗
+        ║   💻 TechPro OS v2.0               ║
+        ║   "Retro computing, reimagined."   ║
+        ╚══════════════════════════════════════╝
+        🎮 Konami code: ↑ ↑ ↓ ↓ ← → ← → B A
+        ⌨️  Alt+F4 to close window
+        ⌨️  Ctrl+Esc for Start menu
+        `);
     </script>
 </body>
 </html>

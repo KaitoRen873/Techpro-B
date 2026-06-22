@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>💬 Class Messages</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 
     <style>
+        /* ───────────── ROOT VARIABLES ───────────── */
         :root {
             --bg-deep: #09142e;
             --card-bg: #132040;
@@ -19,7 +20,8 @@
             --pink: #ff6b9d;
             --teal: #00e5c0;
             --purple: #b388ff;
-            --star-color: #ffffff;
+            --danger: #ff4757;
+            --success: #2ed573;
         }
 
         * {
@@ -38,7 +40,7 @@
             overflow-x: hidden;
         }
 
-        /* ═══════════════════════ STARFIELD BACKGROUND ═══════════════════════ */
+        /* ───────────── STARFIELD ───────────── */
         .starfield {
             position: fixed;
             top: 0;
@@ -48,7 +50,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .star {
             position: absolute;
             background: white;
@@ -57,7 +58,6 @@
             animation-delay: var(--delay);
             opacity: 0;
         }
-
         @keyframes twinkle {
             0%,
             100% {
@@ -70,7 +70,7 @@
             }
         }
 
-        /* ═══════════════════════ SHOOTING STAR ═══════════════════════ */
+        /* ───────────── SHOOTING STARS ───────────── */
         .shooting-star {
             position: fixed;
             top: -10px;
@@ -86,7 +86,6 @@
             transform: rotate(-25deg);
             filter: blur(1px);
         }
-
         .shooting-star::after {
             content: '';
             position: absolute;
@@ -98,21 +97,18 @@
             border-radius: 50%;
             box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.7);
         }
-
         .shooting-star:nth-child(2) {
             left: 25%;
             animation-delay: 5s;
             animation-duration: 5s;
             height: 60px;
         }
-
         .shooting-star:nth-child(3) {
             left: 55%;
             animation-delay: 8s;
             animation-duration: 3.5s;
             height: 100px;
         }
-
         @keyframes shoot {
             0% {
                 transform: translate(0, 0) rotate(-25deg);
@@ -132,92 +128,284 @@
             }
         }
 
-        /* ═══════════════════════ INTRO OVERLAY ═══════════════════════ */
+        /* ───────────── FLOATING PARTICLES ───────────── */
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            font-size: 1.2rem;
+            animation: floatUp var(--dur) linear infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+            bottom: -30px;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            80% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-110vh) translateX(var(--drift)) rotate(var(--spin));
+                opacity: 0;
+            }
+        }
+
+        /* ═══════════════════════ INTRO OVERLAY (UPDATED) ═══════════════════════ */
         #intro-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #020816;
+            background: radial-gradient(ellipse at center, #0b1a3a 0%, #020816 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.9s ease, visibility 0.9s ease;
             visibility: visible;
             opacity: 1;
+            overflow: hidden;
         }
         #intro-overlay.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
+
+        /* Intro background stars (extra layer) */
+        .intro-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .intro-stars .s {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        /* Intro card */
+        .intro-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(19, 32, 64, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(91, 141, 239, 0.4);
+            border-radius: 28px;
+            padding: 50px 50px 44px;
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(91, 141, 239, 0.15);
+            animation: introPulse 3s ease-in-out infinite;
+        }
+        @keyframes introPulse {
+            0%,
+            100% {
+                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(91, 141, 239, 0.15);
+            }
+            50% {
+                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 90px rgba(91, 141, 239, 0.30);
+            }
+        }
+
+        .intro-icon {
+            font-size: 3.2rem;
+            margin-bottom: 12px;
+            display: block;
+            animation: iconFloat 2.5s ease-in-out infinite;
+        }
+        @keyframes iconFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
         .intro-title {
-            font-size: 1.4rem;
-            color: #5b8def;
-            text-shadow: 0 0 20px #5b8def, 0 0 40px #1e3a6b;
-            animation: glitchText 2s infinite;
-            margin-bottom: 30px;
-            letter-spacing: 3px;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(91, 141, 239, 0.6), 0 0 60px rgba(91, 141, 239, 0.2);
+            letter-spacing: 4px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffd700, #ff9500, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(255, 180, 50, 0.3));
         }
-        @keyframes glitchText {
-            0%, 100% { text-shadow: 0 0 20px #5b8def, 0 0 40px #1e3a6b; }
-            20% { text-shadow: -3px 0 #ff6b9d, 3px 0 #5b8def; }
-            40% { text-shadow: 3px 0 #ff6b9d, -3px 0 #5b8def; }
-            60% { text-shadow: 0 0 20px #5b8def; }
+        .intro-sub {
+            font-size: 0.45rem;
+            color: var(--muted);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            -webkit-text-fill-color: var(--muted);
         }
+
+        /* Progress bar */
         .intro-bar-outer {
-            width: 320px;
-            height: 22px;
-            border: 3px solid #5b8def;
-            background: #0a1230;
+            width: 100%;
+            height: 14px;
+            border: 2px solid rgba(91, 141, 239, 0.5);
+            background: rgba(10, 18, 48, 0.8);
             padding: 2px;
-            box-shadow: 0 0 15px rgba(91,141,239,0.4);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(91, 141, 239, 0.15);
+            overflow: hidden;
+            position: relative;
         }
         .intro-bar-inner {
             height: 100%;
             width: 0%;
-            background: #5b8def;
-            animation: introLoad 2.5s steps(20) forwards;
-            box-shadow: 0 0 12px #5b8def;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #5b8def, #b388ff, #ff6b9d, #ffd700);
+            background-size: 300% 100%;
+            animation: introLoad 2.8s steps(30) forwards, shimmer 1.8s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(91, 141, 239, 0.5);
+            position: relative;
         }
         @keyframes introLoad {
-            0% { width: 0%; }
-            100% { width: 100%; }
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
         }
-        .intro-status {
-            margin-top: 18px;
-            font-size: 0.5rem;
-            color: #aac0f0;
-            animation: blink 1s infinite;
-            letter-spacing: 2px;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+        @keyframes shimmer {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 300% 0%;
+            }
         }
 
-        /* ═══════════════════════ MAIN CONTENT WRAPPER ═══════════════════════ */
+        /* Glow dots on progress bar */
+        .intro-bar-outer::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 20px;
+            background: transparent;
+            pointer-events: none;
+            animation: barGlow 2s ease-in-out infinite;
+        }
+        @keyframes barGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(91, 141, 239, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(91, 141, 239, 0.5), 0 0 60px rgba(255, 215, 0, 0.1);
+            }
+        }
+
+        .intro-status {
+            margin-top: 20px;
+            font-size: 0.45rem;
+            color: #aac0f0;
+            letter-spacing: 3px;
+            animation: blink 1.2s infinite;
+            min-height: 1.2em;
+            -webkit-text-fill-color: #aac0f0;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.25;
+            }
+        }
+
+        /* Intro decorative rings */
+        .intro-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(91, 141, 239, 0.08);
+            animation: ringSpin 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .intro-ring:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 25s;
+            border-color: rgba(255, 215, 0, 0.06);
+        }
+        .intro-ring:nth-child(2) {
+            width: 380px;
+            height: 380px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 18s;
+            animation-direction: reverse;
+            border-color: rgba(255, 107, 157, 0.05);
+        }
+        .intro-ring:nth-child(3) {
+            width: 260px;
+            height: 260px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 14s;
+            border-color: rgba(0, 229, 192, 0.05);
+        }
+        @keyframes ringSpin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* ───────────── MAIN CONTENT ───────────── */
         .main-content {
             position: relative;
             z-index: 1;
             max-width: 850px;
             margin: 0 auto;
             opacity: 0;
-            transition: opacity 0.8s ease 0.4s;
+            transition: opacity 0.9s ease 0.4s;
         }
         .main-content.visible {
             opacity: 1;
         }
 
-        /* ═══════════════════════ HEADER ═══════════════════════ */
+        /* ───────────── HEADER ───────────── */
         .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
-
         .header h1 {
             font-size: 1.6rem;
             letter-spacing: 3px;
@@ -225,12 +413,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: none;
             filter: drop-shadow(0 0 18px rgba(255, 180, 50, 0.5));
             animation: titleGlow 2s ease-in-out infinite;
             margin-bottom: 8px;
         }
-
         @keyframes titleGlow {
             0%,
             100% {
@@ -240,7 +426,6 @@
                 filter: drop-shadow(0 0 32px rgba(255, 180, 50, 0.9));
             }
         }
-
         .header .subtitle {
             font-size: 0.5rem;
             color: var(--muted);
@@ -248,7 +433,6 @@
             margin-top: 6px;
             text-transform: uppercase;
         }
-
         .header .pixel-divider {
             display: flex;
             align-items: center;
@@ -256,7 +440,6 @@
             gap: 8px;
             margin-top: 16px;
         }
-
         .header .pixel-divider span {
             display: block;
             width: 6px;
@@ -285,7 +468,6 @@
             background: var(--accent);
             box-shadow: 0 0 8px var(--accent-glow);
         }
-
         @keyframes dividerPulse {
             0%,
             100% {
@@ -298,14 +480,149 @@
             }
         }
 
-        /* ═══════════════════════ MESSAGE CARDS GRID ═══════════════════════ */
+        /* ───────────── MESSAGE FORM ───────────── */
+        .message-form {
+            background: var(--card-bg);
+            border: 3px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 24px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .message-form:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 180, 30, 0.08);
+        }
+
+        .message-form .form-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .message-form .form-row textarea {
+            flex: 1;
+            min-width: 200px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.35);
+            color: var(--text);
+            resize: vertical;
+            min-height: 68px;
+            max-height: 140px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            line-height: 1.7;
+            letter-spacing: 0.5px;
+        }
+        .message-form .form-row textarea::placeholder {
+            color: var(--muted);
+            opacity: 0.6;
+            font-size: 0.45rem;
+        }
+        .message-form .form-row textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255, 180, 30, 0.1);
+        }
+        .message-form .form-row textarea:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message-form .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: stretch;
+            flex-shrink: 0;
+        }
+
+        .message-form .send-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: 12px 22px;
+            border-radius: 50px;
+            border: 3px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            box-shadow: 0 0 20px rgba(255, 180, 30, 0.08);
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+        .message-form .send-btn:hover:not(:disabled) {
+            background: var(--accent);
+            color: var(--bg-deep);
+            box-shadow: 0 0 40px rgba(255, 180, 30, 0.3);
+            transform: translateY(-2px);
+        }
+        .message-form .send-btn:active:not(:disabled) {
+            transform: scale(0.94);
+            transition: transform 0.1s ease;
+        }
+        .message-form .send-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            border-color: var(--muted);
+            color: var(--muted);
+            box-shadow: none;
+        }
+
+        .message-form .char-counter {
+            font-size: 0.4rem;
+            color: var(--muted);
+            text-align: right;
+            padding-right: 4px;
+            letter-spacing: 1px;
+            min-height: 1.2em;
+        }
+        .message-form .char-counter.warning {
+            color: var(--accent);
+        }
+        .message-form .char-counter.danger {
+            color: var(--danger);
+        }
+
+        .message-form .form-error {
+            font-size: 0.4rem;
+            color: var(--danger);
+            margin-top: 8px;
+            min-height: 1.4em;
+            letter-spacing: 1px;
+            padding-left: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .message-form .form-error.show {
+            opacity: 1;
+        }
+
+        .message-form .form-success {
+            font-size: 0.4rem;
+            color: var(--success);
+            margin-top: 8px;
+            min-height: 1.4em;
+            letter-spacing: 1px;
+            padding-left: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .message-form .form-success.show {
+            opacity: 1;
+        }
+
+        /* ───────────── MESSAGES GRID ───────────── */
         .messages-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 28px;
             margin-bottom: 50px;
         }
-
         @media (min-width: 600px) {
             .messages-grid {
                 grid-template-columns: 1fr 1fr;
@@ -318,19 +635,42 @@
             }
         }
 
-        /* ═══════════════════════ MESSAGE CARD ═══════════════════════ */
+        /* ───────────── MESSAGE CARD ───────────── */
         .message-card {
             background: var(--card-bg);
             border: 3px solid var(--card-border);
             border-radius: 16px;
             padding: 28px 24px 24px;
             position: relative;
-            cursor: pointer;
+            cursor: default;
             transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            box-shadow:
-                0 4px 20px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
             overflow: hidden;
+            animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            transform: scale(0.92) translateY(16px);
+        }
+        .message-card.pop-in {
+            animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes cardPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .message-card.user-message {
+            border-color: var(--teal);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 229, 192, 0.08);
+        }
+        .message-card.user-message .card-accent {
+            background: linear-gradient(90deg, var(--teal), #00c9a7) !important;
+            box-shadow: 0 0 18px rgba(0, 229, 192, 0.4) !important;
         }
 
         .message-card::before {
@@ -340,34 +680,20 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at center,
-                    rgba(255, 255, 255, 0.03) 0%,
-                    transparent 70%);
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
         }
-
         .message-card:hover::before {
             opacity: 1;
         }
-
         .message-card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.55),
-                0 0 40px rgba(255, 180, 30, 0.15),
-                0 0 80px rgba(255, 180, 30, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 40px rgba(255, 180, 30, 0.15), 0 0 80px rgba(255, 180, 30, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        .message-card:active {
-            transform: scale(0.97);
-            transition: transform 0.1s ease;
-        }
-
-        /* Card accent stripe */
         .message-card .card-accent {
             position: absolute;
             top: 0;
@@ -376,7 +702,6 @@
             height: 4px;
             border-radius: 13px 13px 0 0;
         }
-
         .message-card:nth-child(1) .card-accent {
             background: linear-gradient(90deg, var(--pink), #ff4081);
             box-shadow: 0 0 18px rgba(255, 107, 157, 0.5);
@@ -390,7 +715,6 @@
             box-shadow: 0 0 18px rgba(179, 136, 255, 0.5);
         }
 
-        /* Avatar circle */
         .message-card .avatar {
             width: 52px;
             height: 52px;
@@ -406,13 +730,11 @@
             transition: all 0.35s ease;
             flex-shrink: 0;
         }
-
         .message-card:hover .avatar {
             border-color: rgba(255, 255, 255, 0.7);
             box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
             transform: rotate(-5deg) scale(1.08);
         }
-
         .message-card:nth-child(1) .avatar {
             background: linear-gradient(135deg, #ff6b9d, #c0392b);
         }
@@ -422,8 +744,10 @@
         .message-card:nth-child(3) .avatar {
             background: linear-gradient(135deg, #b388ff, #512da8);
         }
+        .message-card.user-message .avatar {
+            background: linear-gradient(135deg, #00e5c0, #00796b);
+        }
 
-        /* Student name */
         .message-card .student-name {
             font-size: 0.65rem;
             letter-spacing: 2px;
@@ -433,12 +757,20 @@
             margin-bottom: 4px;
             transition: color 0.3s ease;
         }
-
         .message-card:hover .student-name {
             color: var(--accent);
         }
+        .message-card .student-name .user-tag {
+            font-size: 0.35rem;
+            background: rgba(0, 229, 192, 0.2);
+            border: 1px solid rgba(0, 229, 192, 0.3);
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            color: var(--teal);
+            letter-spacing: 1px;
+        }
 
-        /* Role / badge */
         .message-card .role-badge {
             display: inline-block;
             font-size: 0.4rem;
@@ -454,14 +786,17 @@
             color: var(--muted);
             transition: all 0.3s ease;
         }
-
         .message-card:hover .role-badge {
             border-color: var(--accent);
             color: var(--accent);
             background: rgba(255, 215, 0, 0.08);
         }
+        .message-card.user-message .role-badge {
+            border-color: rgba(0, 229, 192, 0.3);
+            color: var(--teal);
+            background: rgba(0, 229, 192, 0.05);
+        }
 
-        /* Message text */
         .message-card .message-text {
             font-size: 0.55rem;
             line-height: 1.9;
@@ -474,15 +809,14 @@
             border-left: 3px solid rgba(255, 255, 255, 0.2);
             transition: all 0.35s ease;
             font-style: italic;
+            word-break: break-word;
         }
-
         .message-card:hover .message-text {
             border-left-color: var(--accent);
             background: rgba(0, 0, 0, 0.35);
             color: #ffffff;
         }
 
-        /* Heart icon */
         .message-card .heart-icon {
             position: absolute;
             bottom: 16px;
@@ -493,13 +827,11 @@
             z-index: 1;
             pointer-events: none;
         }
-
         .message-card:hover .heart-icon {
             opacity: 1;
             transform: scale(1.3);
             animation: heartBeat 0.8s ease-in-out;
         }
-
         @keyframes heartBeat {
             0%,
             100% {
@@ -519,12 +851,26 @@
             }
         }
 
-        /* ═══════════════════════ BACK BUTTON ═══════════════════════ */
+        /* ───────────── EMPTY STATE ───────────── */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            font-size: 0.5rem;
+            letter-spacing: 2px;
+            grid-column: 1 / -1;
+        }
+        .empty-state span {
+            display: block;
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+        }
+
+        /* ───────────── BACK BUTTON ───────────── */
         .back-button-wrapper {
             text-align: center;
             margin-top: 10px;
         }
-
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -544,7 +890,6 @@
             overflow: hidden;
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
         }
-
         .back-button::after {
             content: '';
             position: absolute;
@@ -552,72 +897,33 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.06),
-                    transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
             transition: left 0.5s ease;
         }
-
         .back-button:hover::after {
             left: 100%;
         }
-
         .back-button:hover {
             border-color: var(--accent);
             color: var(--accent);
-            box-shadow:
-                0 12px 35px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(255, 180, 30, 0.2);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 180, 30, 0.2);
             transform: translateY(-4px);
             letter-spacing: 5px;
         }
-
         .back-button:active {
             transform: scale(0.94);
             transition: transform 0.1s ease;
         }
-
         .back-button .arrow {
             display: inline-block;
             transition: transform 0.35s ease;
             font-size: 0.7rem;
         }
-
         .back-button:hover .arrow {
             transform: translateX(-6px);
         }
 
-        /* ═══════════════════════ FLOATING PARTICLES ═══════════════════════ */
-        .floating-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            font-size: 1.2rem;
-            animation: floatUp var(--dur) linear infinite;
-            animation-delay: var(--delay);
-            opacity: 0;
-            bottom: -30px;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            80% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-110vh) translateX(var(--drift)) rotate(var(--spin));
-                opacity: 0;
-            }
-        }
-
-        /* ═══════════════════════ SCROLLBAR ═══════════════════════ */
+        /* ───────────── SCROLLBAR ───────────── */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -632,7 +938,26 @@
             background: var(--accent);
         }
 
-        /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+        /* ───────────── RESPONSIVE ───────────── */
+        @media (max-width: 600px) {
+            .message-form .form-row {
+                flex-direction: column;
+            }
+            .message-form .form-actions {
+                flex-direction: row;
+                width: 100%;
+            }
+            .message-form .send-btn {
+                flex: 1;
+                text-align: center;
+                font-size: 0.45rem;
+                padding: 10px 16px;
+            }
+            .message-form .char-counter {
+                text-align: center;
+                min-width: 60px;
+            }
+        }
         @media (max-width: 480px) {
             .header h1 {
                 font-size: 1rem;
@@ -659,6 +984,21 @@
                 font-size: 0.45rem;
                 padding: 12px 22px;
             }
+            .intro-card {
+                padding: 32px 20px 28px;
+            }
+            .intro-title {
+                font-size: 0.9rem;
+            }
+            .message-form .form-row textarea {
+                font-size: 0.45rem;
+                padding: 10px 12px;
+                min-height: 56px;
+            }
+            .message-form .send-btn {
+                font-size: 0.4rem;
+                padding: 8px 14px;
+            }
         }
     </style>
 </head>
@@ -675,17 +1015,30 @@
     <!-- ═══════════════ FLOATING PARTICLES ═══════════════ -->
     <div id="particles-container"></div>
 
-    <!-- ═══════════════ INTRO SCREEN ═══════════════ -->
+    <!-- ═══════════════ INTRO OVERLAY (UPDATED) ═══════════════ -->
     <div id="intro-overlay">
-        <div class="intro-title">TECHPRO B MESSAGES</div>
-        <div class="intro-bar-outer"><div class="intro-bar-inner"></div></div>
-        <div class="intro-status">LOADING MESSAGES...</div>
+        <!-- Background stars -->
+        <div class="intro-stars" id="introStars"></div>
+        <!-- Decorative rings -->
+        <div class="intro-ring"></div>
+        <div class="intro-ring"></div>
+        <div class="intro-ring"></div>
+
+        <div class="intro-card">
+            <span class="intro-icon">🚀</span>
+            <div class="intro-title">TECHPRO B</div>
+            <div class="intro-sub">✦ Class Messages ✦</div>
+            <div class="intro-bar-outer">
+                <div class="intro-bar-inner" id="introProgress"></div>
+            </div>
+            <div class="intro-status" id="introStatus">⟡ INITIALIZING …</div>
+        </div>
     </div>
 
     <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
     <div class="main-content" id="main-content">
 
-        <!-- Header -->
+        <!-- ──── HEADER ──── -->
         <div class="header">
             <h1>💬 Class Messages</h1>
             <p class="subtitle">Farewell &middot; Memories &middot; Good Vibes</p>
@@ -694,42 +1047,25 @@
             </div>
         </div>
 
-        <!-- Messages Grid -->
-        <div class="messages-grid">
-
-            <!-- Message Card 1 -->
-            <div class="message-card">
-                <div class="card-accent"></div>
-                <div class="avatar">🌸</div>
-                <div class="student-name">HANA TANAKA</div>
-                <div class="role-badge">🌟 Class President</div>
-                <p class="message-text">"Thank you for the memories. Every laugh, every challenge — I'll carry them all with me. Stay amazing!"</p>
-                <span class="heart-icon">💖</span>
+        <!-- ──── MESSAGE FORM ──── -->
+        <div class="message-form" id="messageForm">
+            <div class="form-row">
+                <textarea id="msgInput" placeholder="Write your message…" maxlength="200" rows="2"></textarea>
+                <div class="form-actions">
+                    <button class="send-btn" id="sendBtn">✉ SEND</button>
+                    <div class="char-counter" id="charCounter">0 / 200</div>
+                </div>
             </div>
-
-            <!-- Message Card 2 -->
-            <div class="message-card">
-                <div class="card-accent"></div>
-                <div class="avatar">🚀</div>
-                <div class="student-name">LEO MARTINEZ</div>
-                <div class="role-badge">🎮 Gaming Club</div>
-                <p class="message-text">"Good luck everyone. The final boss of life awaits — and I know we'll all beat it. GG WP!"</p>
-                <span class="heart-icon">💛</span>
-            </div>
-
-            <!-- Message Card 3 -->
-            <div class="message-card">
-                <div class="card-accent"></div>
-                <div class="avatar">📚</div>
-                <div class="student-name">AISHA PATEL</div>
-                <div class="role-badge">🏆 Valedictorian</div>
-                <p class="message-text">"Never stop learning. The classroom may end, but curiosity is a lifelong adventure. Go chase your dreams!"</p>
-                <span class="heart-icon">💜</span>
-            </div>
-
+            <div class="form-error" id="formError"></div>
+            <div class="form-success" id="formSuccess">✓ Message sent!</div>
         </div>
 
-        <!-- Back Button -->
+        <!-- ──── MESSAGES GRID ──── -->
+        <div class="messages-grid" id="messagesGrid">
+            <!-- Cards will be rendered by JavaScript -->
+        </div>
+
+        <!-- ──── BACK BUTTON ──── -->
         <div class="back-button-wrapper">
             <a href="index.html" class="back-button">
                 <span class="arrow">◀</span> BACK TO HOME
@@ -739,62 +1075,465 @@
     </div>
 
     <script>
-        // ═══════════════════════ INTRO OVERLAY LOGIC ═══════════════════════
-        window.addEventListener('load', () => {
-            const introOverlay = document.getElementById('intro-overlay');
+        /* ═══════════════════════════════════════════════════════════════
+               INTRO OVERLAY
+               ═══════════════════════════════════════════════════════════════ */
+        (function initIntro() {
+            const overlay = document.getElementById('intro-overlay');
+            const status = document.getElementById('introStatus');
+            const progress = document.getElementById('introProgress');
             const mainContent = document.getElementById('main-content');
-            setTimeout(() => {
-                introOverlay.classList.add('hidden');
-                mainContent.classList.add('visible');
-            }, 2600);
-        });
 
-        // ═══════════════════════ STARFIELD GENERATOR ═══════════════════════
-        const starfield = document.getElementById('starfield');
-        const starCount = 90;
+            const statuses = [
+                '⟡ INITIALIZING …',
+                '✦ LOADING MEMORIES …',
+                '⟡ ALMOST THERE …',
+                '✦ WELCOME!'
+            ];
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = Math.random() * 3 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
-            star.style.setProperty('--delay', Math.random() * 4 + 's');
-            starfield.appendChild(star);
-        }
-
-        // ═══════════════════════ FLOATING PARTICLES ═══════════════════════
-        const particlesContainer = document.getElementById('particles-container');
-        const emojis = ['✨', '⭐', '💫', '🌟', '💛', '🧡', '🪐', '💎', '🔮', '🎓'];
-
-        function spawnParticle() {
-            const particle = document.createElement('span');
-            particle.classList.add('floating-particle');
-            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            particle.style.left = Math.random() * 95 + '%';
-            particle.style.setProperty('--dur', (Math.random() * 10 + 8) + 's');
-            particle.style.setProperty('--delay', Math.random() * 2 + 's');
-            particle.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
-            particle.style.setProperty('--spin', (Math.random() * 360 - 180) + 'deg');
-            particlesContainer.appendChild(particle);
-
-            const duration = parseFloat(particle.style.getPropertyValue('--dur')) + parseFloat(particle.style.getPropertyValue('--delay'));
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.remove();
+            let step = 0;
+            const interval = setInterval(() => {
+                step++;
+                if (step < statuses.length) {
+                    status.textContent = statuses[step];
                 }
-            }, duration * 1000 + 500);
+                if (step >= statuses.length - 1) {
+                    clearInterval(interval);
+                }
+            }, 700);
+
+            // Progress bar animation is CSS-driven, but we sync the status
+            // Hide overlay after load + animation
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    mainContent.classList.add('visible');
+                    // Ensure final status is shown
+                    status.textContent = statuses[statuses.length - 1];
+                }, 2900);
+            });
+
+            // Intro background stars
+            const starContainer = document.getElementById('introStars');
+            for (let i = 0; i < 50; i++) {
+                const s = document.createElement('div');
+                s.classList.add('s');
+                const size = Math.random() * 2.5 + 0.5;
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.animationDelay = Math.random() * 3 + 's';
+                s.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                starContainer.appendChild(s);
+            }
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           STARFIELD
+           ═══════════════════════════════════════════════════════════════ */
+        (function createStarfield() {
+            const container = document.getElementById('starfield');
+            for (let i = 0; i < 90; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--delay', Math.random() * 4 + 's');
+                container.appendChild(star);
+            }
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           FLOATING PARTICLES
+           ═══════════════════════════════════════════════════════════════ */
+        (function spawnParticles() {
+            const container = document.getElementById('particles-container');
+            const emojis = ['✨', '⭐', '💫', '🌟', '💛', '🧡', '🪐', '💎', '🔮', '🎓', '🌈', '☄️'];
+
+            function spawn() {
+                const el = document.createElement('span');
+                el.classList.add('floating-particle');
+                el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                el.style.left = Math.random() * 95 + '%';
+                el.style.setProperty('--dur', (Math.random() * 10 + 8) + 's');
+                el.style.setProperty('--delay', Math.random() * 2 + 's');
+                el.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+                el.style.setProperty('--spin', (Math.random() * 360 - 180) + 'deg');
+                container.appendChild(el);
+
+                const dur = parseFloat(el.style.getPropertyValue('--dur')) +
+                    parseFloat(el.style.getPropertyValue('--delay'));
+                setTimeout(() => { if (el.parentNode) el.remove(); }, dur * 1000 + 500);
+            }
+
+            setInterval(spawn, 1800);
+            for (let i = 0; i < 8; i++) setTimeout(spawn, i * 300);
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           PROFANITY FILTER
+           ═══════════════════════════════════════════════════════════════ */
+        const PROFANITY_LIST = [
+            // Common swear words
+            'badword1', 'badword2', // Placeholder – real list below
+            'fuck', 'shit', 'damn', 'bitch', 'bastard', 'asshole', 'cunt',
+            'dick', 'pussy', 'cock', 'suck', 'fucker', 'motherfucker',
+            'whore', 'slut', 'porn', 'sex', 'nigger', 'nigga', 'chink',
+            'spic', 'kike', 'fag', 'faggot', 'dyke', 'retard', 'retarded',
+            'crap', 'piss', 'balls', 'douche', 'douchebag', 'twat', 'wanker',
+            'bloody', 'bugger', 'arse', 'arsehole', 'bollocks', 'knob',
+            'tosser', 'prat', 'git', 'berk', 'smeg', 'minge', 'clunge',
+            'gash', 'fanny', 'jizz', 'cum', 'semen', 'masturbate',
+            'orgasm', 'penis', 'vagina', 'clitoris', 'scrotum',
+            // Common leetspeak / substitutions will be handled dynamically
+        ];
+
+        // Build a Set for O(1) lookup
+        const forbiddenSet = new Set(PROFANITY_LIST.map(w => w.toLowerCase()));
+
+        /**
+         * Check if a message contains profanity.
+         * Returns the first offending word found, or null if clean.
+         */
+        function containsProfanity(text) {
+            const normalized = text.toLowerCase().trim();
+            if (!normalized) return null;
+
+            // Split into words (keep letters, numbers, apostrophes)
+            const words = normalized.match(/[a-z0-9']+/g) || [];
+
+            for (const word of words) {
+                // Exact match
+                if (forbiddenSet.has(word)) return word;
+
+                // Check for leetspeak substitutions
+                const variants = generateLeetVariants(word);
+                for (const v of variants) {
+                    if (forbiddenSet.has(v)) return v;
+                }
+
+                // Check if any forbidden word is a substring (with word boundaries)
+                // But only if the word is long enough to avoid false positives
+                for (const forbidden of forbiddenSet) {
+                    if (forbidden.length >= 4 && word.includes(forbidden)) {
+                        return forbidden;
+                    }
+                }
+            }
+
+            // Also check the whole text for multi-word phrases or embedded bad words
+            // e.g., "f u c k" with spaces
+            const spaceless = normalized.replace(/\s/g, '');
+            for (const forbidden of forbiddenSet) {
+                if (forbidden.length >= 3 && spaceless.includes(forbidden)) {
+                    return forbidden;
+                }
+            }
+
+            return null;
         }
 
-        setInterval(spawnParticle, 1800);
-        for (let i = 0; i < 8; i++) {
-            setTimeout(spawnParticle, i * 300);
+        /**
+         * Generate common leetspeak variants of a word.
+         */
+        function generateLeetVariants(word) {
+            const map = {
+                'a': ['a', '4', '@'],
+                'e': ['e', '3'],
+                'i': ['i', '1', '!'],
+                'o': ['o', '0'],
+                's': ['s', '5', '$'],
+                't': ['t', '7'],
+                'b': ['b', '8'],
+                'g': ['g', '9'],
+                'z': ['z', '2'],
+                'l': ['l', '1'],
+                'u': ['u', 'v'],
+                'c': ['c', 'k'],
+                'x': ['x', '*'],
+            };
+
+            const chars = word.split('');
+            const results = [];
+
+            function generate(index, current) {
+                if (index === chars.length) {
+                    results.push(current);
+                    return;
+                }
+                const ch = chars[index];
+                const variants = map[ch] || [ch];
+                for (const v of variants) {
+                    generate(index + 1, current + v);
+                }
+            }
+
+            generate(0, '');
+            return results;
         }
 
-        // ═══════════════════════ CONSOLE EASTER EGG ═══════════════════════
+        /* ═══════════════════════════════════════════════════════════════
+           MESSAGES SYSTEM
+           ═══════════════════════════════════════════════════════════════ */
+
+        // ── Default messages ──
+        const DEFAULT_MESSAGES = [{
+            id: 1,
+            name: 'HANA TANAKA',
+            avatar: '🌸',
+            badge: '🌟 Class President',
+            text: '"Thank you for the memories. Every laugh, every challenge — I\'ll carry them all with me. Stay amazing!"',
+            heart: '💖',
+            isUser: false
+        }, {
+            id: 2,
+            name: 'LEO MARTINEZ',
+            avatar: '🚀',
+            badge: '🎮 Gaming Club',
+            text: '"Good luck everyone. The final boss of life awaits — and I know we\'ll all beat it. GG WP!"',
+            heart: '💛',
+            isUser: false
+        }, {
+            id: 3,
+            name: 'AISHA PATEL',
+            avatar: '📚',
+            badge: '🏆 Valedictorian',
+            text: '"Never stop learning. The classroom may end, but curiosity is a lifelong adventure. Go chase your dreams!"',
+            heart: '💜',
+            isUser: false
+        }];
+
+        // ── State ──
+        let messages = [];
+        let nextId = 4;
+
+        // ── Load from localStorage ──
+        function loadMessages() {
+            try {
+                const stored = localStorage.getItem('classMessages_data');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        messages = parsed;
+                        // Update nextId
+                        let maxId = 0;
+                        for (const m of messages) {
+                            if (m.id > maxId) maxId = m.id;
+                        }
+                        nextId = maxId + 1;
+                        return;
+                    }
+                }
+            } catch (_) { /* ignore */ }
+            // Fallback to defaults
+            messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
+            nextId = 4;
+            saveMessages();
+        }
+
+        function saveMessages() {
+            try {
+                localStorage.setItem('classMessages_data', JSON.stringify(messages));
+            } catch (_) { /* ignore */ }
+        }
+
+        // ── Render messages ──
+        function renderMessages() {
+            const grid = document.getElementById('messagesGrid');
+            if (!messages.length) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <span>📭</span>
+                        No messages yet. Be the first to write!
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            for (let i = 0; i < messages.length; i++) {
+                const msg = messages[i];
+                const userClass = msg.isUser ? 'user-message' : '';
+                const accentColor = msg.isUser ?
+                    'background: linear-gradient(90deg, #00e5c0, #00c9a7); box-shadow: 0 0 18px rgba(0,229,192,0.4);' :
+                    '';
+
+                // Determine which accent style to use (for non-user cards)
+                const accentIndex = i % 3;
+                const accentStyles = [
+                    'background: linear-gradient(90deg, #ff6b9d, #ff4081); box-shadow: 0 0 18px rgba(255,107,157,0.5);',
+                    'background: linear-gradient(90deg, #00e5c0, #00c9a7); box-shadow: 0 0 18px rgba(0,229,192,0.5);',
+                    'background: linear-gradient(90deg, #b388ff, #7c4dff); box-shadow: 0 0 18px rgba(179,136,255,0.5);'
+                ];
+                const accentStyle = msg.isUser ? accentColor : accentStyles[accentIndex];
+
+                const avatarBg = msg.isUser ?
+                    'background: linear-gradient(135deg, #00e5c0, #00796b);' :
+                    ['background: linear-gradient(135deg, #ff6b9d, #c0392b);',
+                        'background: linear-gradient(135deg, #00e5c0, #00796b);',
+                        'background: linear-gradient(135deg, #b388ff, #512da8);'
+                    ][accentIndex];
+
+                const userTag = msg.isUser ? '<span class="user-tag">✦ you</span>' : '';
+
+                html += `
+                    <div class="message-card ${userClass} pop-in" style="animation-delay: ${i * 0.06}s;">
+                        <div class="card-accent" style="${accentStyle}"></div>
+                        <div class="avatar" style="${avatarBg}">${msg.avatar || '👤'}</div>
+                        <div class="student-name">${msg.name} ${userTag}</div>
+                        <div class="role-badge">${msg.badge || '💬 Member'}</div>
+                        <p class="message-text">${escapeHtml(msg.text)}</p>
+                        <span class="heart-icon">${msg.heart || '💙'}</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        // ── Simple HTML escape ──
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ── Add a new message ──
+        function addMessage(name, text, avatar, badge, heart) {
+            const msg = {
+                id: nextId++,
+                name: name || 'Anonymous',
+                avatar: avatar || '👤',
+                badge: badge || '💬 New Message',
+                text: text.trim(),
+                heart: heart || '💙',
+                isUser: true
+            };
+            messages.push(msg);
+            saveMessages();
+            renderMessages();
+            // Scroll to the new message
+            const grid = document.getElementById('messagesGrid');
+            const cards = grid.querySelectorAll('.message-card');
+            if (cards.length > 0) {
+                cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return msg;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           FORM HANDLING
+           ═══════════════════════════════════════════════════════════════ */
+        (function setupForm() {
+            const input = document.getElementById('msgInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const charCounter = document.getElementById('charCounter');
+            const formError = document.getElementById('formError');
+            const formSuccess = document.getElementById('formSuccess');
+            const maxLength = 200;
+
+            // Character counter
+            function updateCounter() {
+                const len = input.value.length;
+                charCounter.textContent = `${len} / ${maxLength}`;
+                charCounter.classList.remove('warning', 'danger');
+                if (len > maxLength * 0.85) charCounter.classList.add('warning');
+                if (len >= maxLength) charCounter.classList.add('danger');
+                sendBtn.disabled = len === 0 || len > maxLength;
+            }
+            input.addEventListener('input', updateCounter);
+            updateCounter();
+
+            // Hide error/success after a delay
+            function showError(msg) {
+                formError.textContent = msg;
+                formError.classList.add('show');
+                formSuccess.classList.remove('show');
+                setTimeout(() => formError.classList.remove('show'), 5000);
+            }
+
+            function showSuccess() {
+                formSuccess.classList.add('show');
+                formError.classList.remove('show');
+                setTimeout(() => formSuccess.classList.remove('show'), 3000);
+            }
+
+            // Send handler
+            sendBtn.addEventListener('click', function() {
+                const text = input.value.trim();
+                if (!text) {
+                    showError('✖ Please write a message.');
+                    return;
+                }
+                if (text.length > maxLength) {
+                    showError(`✖ Message is too long (max ${maxLength} chars).`);
+                    return;
+                }
+
+                // ── PROFANITY CHECK ──
+                const badWord = containsProfanity(text);
+                if (badWord) {
+                    // Show a friendly but firm error
+                    const displayWord = badWord.replace(/./g, (ch) => {
+                        // Only show first letter, rest as asterisks
+                        return '*';
+                    });
+                    showError(`✖ Your message contains inappropriate language. Please keep it kind.`);
+                    // Shake the input briefly
+                    input.style.animation = 'none';
+                    setTimeout(() => {
+                        input.style.animation = 'shake 0.4s ease';
+                    }, 10);
+                    return;
+                }
+
+                // ── All good: send the message ──
+                const name = 'A Student';
+                const avatar = ['🌟', '✨', '🎯', '🌈', '🔥', '💪', '🎨', '🎵', '📖', '🧠'][Math.floor(Math.random() * 10)];
+                const badge = '💬 New Message';
+                const hearts = ['💖', '💛', '💜', '🧡', '💚', '💙', '❤️', '🤍', '🩷', '💗'];
+                const heart = hearts[Math.floor(Math.random() * hearts.length)];
+
+                addMessage(name, text, avatar, badge, heart);
+                showSuccess();
+                input.value = '';
+                updateCounter();
+                input.focus();
+            });
+
+            // Enter key to send (Shift+Enter for newline)
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            });
+
+            // Shake keyframes (injected dynamically)
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    20% { transform: translateX(-10px); }
+                    40% { transform: translateX(10px); }
+                    60% { transform: translateX(-6px); }
+                    80% { transform: translateX(6px); }
+                }
+            `;
+            document.head.appendChild(style);
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           INIT
+           ═══════════════════════════════════════════════════════════════ */
+        loadMessages();
+        renderMessages();
+
+        // ── Console Easter Egg ──
         console.log(`
         🎓  Class Messages  🎓
         "The beautiful thing about learning

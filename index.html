@@ -4,13 +4,9 @@
     ║   TECHPRO B (ICT) DIGITAL YEARBOOK     ║
     ║   Mabayuhan Senior High School (MSHS)  ║
     ║   SY 2025-2027                         ║
-    ║   + Custom card click effects          ║
-    ║   + Boot & Axiom typing sounds        ║
-    ║   + Advanced boot animation            ║
-    ║   + MP3 audio (working autoplay)      ║
-    ║   + HEADER SLIDESHOW (2.5s)           ║
-    ║   + WIN+R CMD PANEL (PC/Laptop)       ║
-    ║   + CLASS SCHEDULE (G11 & G12)        ║
+    ║   + Claude feature removed             ║
+    ║   + Axiom emotional intelligence       ║
+    ║   + Update Log, Cat Theme, etc.        ║
     ╚══════════════════════════════════════════╝
 -->
 <html lang="en">
@@ -380,7 +376,6 @@
             100% { opacity: 0; transform: translateY(-200px) scale(1.5) rotate(720deg); }
         }
 
-        /* Purple flash for Zie */
         .purple-flash {
             position: fixed;
             inset: 0;
@@ -394,7 +389,6 @@
             100% { opacity: 0; }
         }
 
-        /* Glitch effect for Ron Matthew */
         .glitch-active {
             animation: glitch 0.8s steps(2) forwards;
         }
@@ -412,7 +406,208 @@
             100% { transform: translate(0); filter: hue-rotate(0deg); }
         }
 
-        /* ========== WEBSITE (hidden initially) ========== */
+        /* ========== UPDATE LOG STYLES ========== */
+        .update-log-container {
+            background: var(--card);
+            border: 4px solid var(--border);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--pixel-shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .update-log-container .log-entry {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .update-log-container .log-entry:last-child {
+            border-bottom: none;
+        }
+        .update-log-container .log-time {
+            color: #ffd700;
+            font-size: 0.7rem;
+            min-width: 100px;
+            font-variant-numeric: tabular-nums;
+            opacity: 0.8;
+            padding-top: 2px;
+        }
+        .update-log-container .log-msg {
+            flex: 1;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .update-log-container .log-msg .log-badge {
+            display: inline-block;
+            padding: 0 8px;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            margin-right: 8px;
+            vertical-align: middle;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .log-badge.added { background: #2e7d32; color: #a5d6a7; }
+        .log-badge.fixed { background: #b71c1c; color: #ef9a9a; }
+        .log-badge.improved { background: #1a237e; color: #9fa8da; }
+        .log-badge.removed { background: #4a148c; color: #ce93d8; }
+        .log-badge.theme { background: #e65100; color: #ffcc80; }
+        .log-badge.feature { background: #004d40; color: #80cbc4; }
+        .update-log-empty {
+            text-align: center;
+            opacity: 0.5;
+            padding: 30px 0;
+            font-size: 1.1rem;
+        }
+        .update-log-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .update-log-actions button {
+            padding: 8px 16px;
+            font-family: 'VT323', monospace;
+            font-size: 0.8rem;
+            background: var(--header);
+            color: var(--text);
+            border: 2px solid var(--border);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .update-log-actions button:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* ========== CAT THEME OVERRIDES ========== */
+        body.cat-theme {
+            --bg: #2a1a2a;
+            --text: #f0d8b0;
+            --card: #3d2a3d;
+            --border: #d4a373;
+            --header: #5a3d4a;
+            --glow-color: rgba(244, 162, 97, 0.4);
+            --day-bg: #f5ede4;
+            --day-text: #3d2a3d;
+            --day-card: #faf0e6;
+            --day-border: #d4a373;
+            --day-header: #c9b09b;
+            --pixel-shadow: 4px 4px 0 rgba(90, 61, 74, 0.5);
+            --boot-color: #f4a261;
+            --axiom-bg: #2a1a2a;
+            --axiom-user: #5a3d4a;
+            --axiom-bot: #3d2a3d;
+            --axiom-border: #d4a373;
+            --axiom-text: #f0d8b0;
+        }
+        body.cat-theme .logo {
+            animation: floatLogo 4s ease-in-out infinite, catPawFloat 2s ease-in-out infinite alternate;
+        }
+        @keyframes catPawFloat {
+            0% { transform: translateY(0) rotate(-3deg); }
+            100% { transform: translateY(-6px) rotate(3deg); }
+        }
+        body.cat-theme .retro-card:hover {
+            box-shadow: 0 0 30px rgba(244, 162, 97, 0.3), 6px 6px 0 rgba(90, 61, 74, 0.4);
+        }
+        body.cat-theme .desktop-nav {
+            background: #5a3d4a;
+            border-bottom-color: #d4a373;
+        }
+        body.cat-theme .hamburger {
+            background: #5a3d4a;
+            border-color: #d4a373;
+        }
+        body.cat-theme .boot-container {
+            border-color: #f4a261;
+            box-shadow: 0 0 60px rgba(244, 162, 97, 0.2);
+        }
+        body.cat-theme .boot-header .brand {
+            color: #f4a261;
+        }
+        body.cat-theme .boot-color {
+            color: #f4a261;
+        }
+        body.cat-theme #tapButton {
+            color: #f4a261;
+            border-color: #f4a261;
+            box-shadow: 0 0 30px rgba(244, 162, 97, 0.1);
+        }
+        body.cat-theme #tapButton:hover {
+            background: rgba(244, 162, 97, 0.15);
+            box-shadow: 0 0 50px rgba(244, 162, 97, 0.25);
+        }
+        body.cat-theme #audioControls {
+            background: rgba(58, 30, 50, 0.92);
+            border-color: #d4a373;
+        }
+        body.cat-theme #audioControls .ctrl-btn {
+            border-color: #d4a373;
+            color: #f0d8b0;
+        }
+        body.cat-theme .poll-container {
+            background: var(--card);
+            border-color: #d4a373;
+        }
+        body.cat-theme .schedule-card {
+            background: var(--card);
+            border-color: #d4a373;
+        }
+        body.cat-theme .schedule-card th {
+            color: #f4a261;
+        }
+        body.cat-theme .flip-front, .cat-theme .flip-back {
+            background: var(--card);
+            border-color: #d4a373;
+        }
+        body.cat-theme #axiomChat {
+            background: #1a0e1a;
+            border-color: #d4a373;
+        }
+        body.cat-theme .axiom-header {
+            background: #5a3d4a;
+        }
+        body.cat-theme .axiom-header-title {
+            color: #f0d8b0;
+        }
+        body.cat-theme .axiom-msg.bot {
+            background: #3d2a3d;
+            border-left-color: #d4a373;
+            color: #f0d8b0;
+        }
+        body.cat-theme .axiom-msg.user {
+            background: #5a3d4a;
+            color: #f0d8b0;
+        }
+        body.cat-theme #axiomInput {
+            color: #f0d8b0;
+            border-color: #d4a373;
+        }
+        body.cat-theme #axiomSendBtn {
+            background: #5a3d4a;
+        }
+        body.cat-theme #secretPanel {
+            background: #3d2a3d;
+            border-color: #d4a373;
+        }
+        body.cat-theme #jukeboxPanel {
+            background: #3d2a3d;
+            border-color: #d4a373;
+        }
+        body.cat-theme #themeMenu {
+            background: #3d2a3d;
+            border-color: #d4a373;
+        }
+        body.cat-theme #themeMenu button {
+            background: #5a3d4a;
+            border-color: #d4a373;
+        }
+
+        /* ========== WEBSITE ========== */
         #website {
             display: none;
             opacity: 1;
@@ -2408,6 +2603,7 @@
         <button onclick="setTheme('neo-minecraft')">💠 NEO Minecraft</button>
         <button onclick="setTheme('roblox')">🧱 Roblox</button>
         <button onclick="setTheme('neo-roblox')">💠 NEO Roblox</button>
+        <button onclick="setTheme('cat')">🐱 Cat Theme</button>
         <button onclick="toggleDayNight()">🌗 Day/Night</button>
         <button onclick="document.getElementById('themeMenu').style.display='none'" style="background:#a00; border-color:#faa;">✕ Close</button>
     </div>
@@ -2493,12 +2689,12 @@
                 <a href="#stats">📊 Statistics</a>
                 <a href="#timeline">⏳ Timeline</a>
                 <a href="#search">🔍 Search</a>
+                <a href="#updatelog">📋 Update Log</a>
             </div>
             <div class="nav-group-mobile"><span>✨ EXTRAS</span><a href="halloffame.html">🏅 Hall of Fame (ext)</a><a href="messages.html">💬 Messages</a><a href="computerroom.html">🖥️ Computer Room</a><a href="secret-archive.html">🔒 Secret Archive</a><a href="about.html">👤 About</a></div>
             <div class="nav-group-mobile"><span>🕹️ AI GAMES</span>
                 <a href="games%20made%20by%20ai/deepseek.html" target="_blank" class="ai-game-link">🔷 DeepSeek</a>
                 <a href="games%20made%20by%20ai/chatgpt.html" target="_blank" class="ai-game-link">💬 ChatGPT</a>
-                <a href="games%20made%20by%20ai/claude.html" target="_blank" class="ai-game-link">🧠 Claude</a>
                 <a href="games%20made%20by%20ai/grok.html" target="_blank" class="ai-game-link">🪐 Grok</a>
                 <a href="games%20made%20by%20ai/gemini.html" target="_blank" class="ai-game-link">♊ Gemini</a>
             </div>
@@ -2523,12 +2719,12 @@
                 <a href="#stats">Stats</a>
                 <a href="#timeline">Timeline</a>
                 <a href="#search">Search</a>
+                <a href="#updatelog">📋 Update Log</a>
             </div>
             <div class="nav-group"><span class="group-label">✨ EXTRAS</span><a href="halloffame.html">Hall of Fame (ext)</a><a href="messages.html">Messages</a><a href="computerroom.html">Computer Room</a><a href="secret-archive.html">Secret Archive</a><a href="about.html">About</a></div>
             <div class="nav-group"><span class="group-label">🕹️ AI GAMES</span>
                 <a href="games%20made%20by%20ai/deepseek.html" target="_blank" class="ai-game-link">🔷 DeepSeek</a>
                 <a href="games%20made%20by%20ai/chatgpt.html" target="_blank" class="ai-game-link">💬 ChatGPT</a>
-                <a href="games%20made%20by%20ai/claude.html" target="_blank" class="ai-game-link">🧠 Claude</a>
                 <a href="games%20made%20by%20ai/grok.html" target="_blank" class="ai-game-link">🪐 Grok</a>
                 <a href="games%20made%20by%20ai/gemini.html" target="_blank" class="ai-game-link">♊ Gemini</a>
             </div>
@@ -2624,6 +2820,20 @@
         <section id="timeline"><h2>⏳ Class Timeline</h2><div class="timeline" style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;"><div class="event retro-card"><h3>2025</h3><p>First Year Begins</p></div><div class="event retro-card"><h3>2026</h3><p>Second Year (Final Year)</p></div><div class="event retro-card"><h3>2027</h3><p>Graduation</p></div></div></section>
         <section id="search"><h2>🔍 Class Database</h2><input type="text" id="searchInput" placeholder="Search students, quotes, dreams..." style="width:100%; padding:10px; margin-bottom:10px; font-family:'VT323', monospace; font-size:1rem;"><select id="sectionFilter" style="padding:10px; font-family:'VT323', monospace; font-size:1rem;"><option value="all">All Sections</option><option value="G11">Grade 11</option><option value="G12">Grade 12</option></select><div class="retro-grid" id="searchResults" style="margin-top:20px;"></div></section>
         <section id="secretRewards" style="display:none;"><h2>🏆 Secret Master Rewards</h2><p>Congratulations! You've unlocked the hidden class photo gallery.</p><div class="retro-grid" id="hiddenGallery"></div><span class="badge">SECRET ACHIEVEMENT</span></section>
+
+        <!-- ========== UPDATE LOG SECTION ========== -->
+        <section id="updatelog">
+            <h2>📋 Update Log</h2>
+            <div class="update-log-container" id="updateLogContainer">
+                <div id="updateLogEntries"></div>
+                <div class="update-log-actions">
+                    <button onclick="addUpdateLogEntry('📢 New feature added!', 'feature')">➕ Add Feature</button>
+                    <button onclick="addUpdateLogEntry('🐛 Bug fixed!', 'fixed')">🔧 Add Bug Fix</button>
+                    <button onclick="addUpdateLogEntry('✨ Improved something!', 'improved')">⬆ Add Improvement</button>
+                    <button onclick="clearUpdateLog()">🗑️ Clear Log</button>
+                </div>
+            </div>
+        </section>
 
         <!-- ========== OVERLAYS ========== -->
         <div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt="Gallery image"><div class="lightbox-controls"><button id="prevImg">◀</button><button id="closeLightbox">✖ Close</button><button id="nextImg">▶</button></div></div>
@@ -2773,11 +2983,94 @@
             'images/teacher2.jpg'
         ];
 
+        // ======================= UPDATE LOG SYSTEM =======================
+        function loadUpdateLog() {
+            const saved = localStorage.getItem('techproUpdateLog');
+            if (saved) {
+                try { return JSON.parse(saved); } catch(e) { return []; }
+            }
+            const defaultEntries = [
+                { time: new Date(Date.now() - 60000).toISOString(), msg: '📋 Update Log system added!', type: 'feature' },
+                { time: new Date(Date.now() - 120000).toISOString(), msg: '🐱 Cat Theme added with paw prints!', type: 'theme' },
+                { time: new Date(Date.now() - 180000).toISOString(), msg: '🛡️ Axiom profanity filter enabled', type: 'feature' },
+                { time: new Date(Date.now() - 240000).toISOString(), msg: '🐛 Fixed audio autoplay issues', type: 'fixed' },
+                { time: new Date(Date.now() - 300000).toISOString(), msg: '🧠 Axiom emotional intelligence upgrade!', type: 'feature' },
+                { time: new Date(Date.now() - 360000).toISOString(), msg: '🗑️ Removed Claude feature', type: 'removed' }
+            ];
+            localStorage.setItem('techproUpdateLog', JSON.stringify(defaultEntries));
+            return defaultEntries;
+        }
+
+        let updateLog = loadUpdateLog();
+
+        function saveUpdateLog() {
+            localStorage.setItem('techproUpdateLog', JSON.stringify(updateLog));
+            renderUpdateLog();
+        }
+
+        function renderUpdateLog() {
+            const container = document.getElementById('updateLogEntries');
+            if (!container) return;
+            if (updateLog.length === 0) {
+                container.innerHTML = '<div class="update-log-empty">📭 No updates yet. Click "Add Feature" to start logging!</div>';
+                return;
+            }
+            let html = '';
+            const sorted = [...updateLog].reverse();
+            sorted.forEach(entry => {
+                const date = new Date(entry.time);
+                const timeStr = date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const badgeMap = {
+                    'added': 'added',
+                    'fixed': 'fixed',
+                    'improved': 'improved',
+                    'removed': 'removed',
+                    'theme': 'theme',
+                    'feature': 'feature'
+                };
+                const badgeClass = badgeMap[entry.type] || 'improved';
+                const displayType = entry.type.charAt(0).toUpperCase() + entry.type.slice(1);
+                html += `
+                    <div class="log-entry">
+                        <div class="log-time">${timeStr}</div>
+                        <div class="log-msg">
+                            <span class="log-badge ${badgeClass}">${displayType}</span>
+                            ${entry.msg}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function addUpdateLogEntry(msg, type = 'feature') {
+            const entry = {
+                time: new Date().toISOString(),
+                msg: msg,
+                type: type
+            };
+            updateLog.push(entry);
+            saveUpdateLog();
+            playUISound(700, 0.06);
+            const container = document.getElementById('updateLogContainer');
+            container.style.transition = 'box-shadow 0.3s';
+            container.style.boxShadow = '0 0 40px rgba(255,215,0,0.4)';
+            setTimeout(() => { container.style.boxShadow = ''; }, 800);
+            document.getElementById('updatelog').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearUpdateLog() {
+            if (confirm('⚠️ Are you sure you want to clear all update log entries? This cannot be undone.')) {
+                updateLog = [];
+                saveUpdateLog();
+                playUISound(500, 0.06);
+            }
+        }
+
         // ======================= POLL DATA =======================
         const aiOptions = [
             { id: 'deepseek', label: 'DeepSeek', icon: '🔷', color: '#4a6a8a' },
             { id: 'chatgpt', label: 'ChatGPT', icon: '💬', color: '#10a37f' },
-            { id: 'claude', label: 'Claude', icon: '🧠', color: '#7c3aed' },
             { id: 'grok', label: 'Grok', icon: '🪐', color: '#ff6b6b' },
             { id: 'gemini', label: 'Gemini', icon: '♊', color: '#4285f4' }
         ];
@@ -3222,17 +3515,15 @@
             const id = student.id;
             const dream = student.dreamJob.toLowerCase();
 
-            // Special cases
-            if (id === 23) { // Zie Cliza
+            if (id === 23) {
                 createCatEffect();
                 return;
             }
-            if (id === 4) { // Ron Matthew
+            if (id === 4) {
                 createGlitchEffect();
                 return;
             }
 
-            // Map dream job to effect type
             const effectMap = {
                 'animator': 'pencil',
                 'web developer': 'code',
@@ -3286,13 +3577,11 @@
         }
 
         function createCatEffect() {
-            // Purple flash
             const flash = document.createElement('div');
             flash.className = 'purple-flash';
             document.body.appendChild(flash);
             setTimeout(() => flash.remove(), 800);
 
-            // Spawn cats
             const cats = ['🐱', '🐈', '🐈‍⬛', '🐱', '🐈', '🐈‍⬛'];
             for (let i = 0; i < 12; i++) {
                 const el = document.createElement('div');
@@ -3305,7 +3594,6 @@
                 effectContainer.appendChild(el);
                 setTimeout(() => el.remove(), 2500);
             }
-            // Also spawn purple particles
             const purpleEmojis = ['💜', '🟣', '💜', '🟣'];
             for (let i = 0; i < 6; i++) {
                 const el = document.createElement('div');
@@ -3325,7 +3613,6 @@
             setTimeout(() => {
                 document.body.classList.remove('glitch-active');
             }, 800);
-            // Also spawn some glitchy characters
             const glitchChars = ['💻', '📺', '🖥️', '⌨️', '🖱️', '📡'];
             for (let i = 0; i < 6; i++) {
                 const el = document.createElement('div');
@@ -3338,6 +3625,399 @@
                 effectContainer.appendChild(el);
                 setTimeout(() => el.remove(), 1500);
             }
+        }
+
+        // ======================= AXIOM EMOTIONAL INTELLIGENCE =======================
+        let axiomCooldownUntil = 0;
+
+        function isAxiomOnCooldown() {
+            return Date.now() < axiomCooldownUntil;
+        }
+
+        function setAxiomCooldown(seconds = 60) {
+            axiomCooldownUntil = Date.now() + seconds * 1000;
+        }
+
+        function detectCompliment(text) {
+            const lower = text.toLowerCase();
+            const positivePatterns = [
+                /\b(you('re| are)?\s*(smart|brilliant|genius|clever|intelligent|awesome|amazing|great|cool|good|nice|kind|helpful|wonderful|fantastic|incredible|best|favorite|love|like|admire|respect|thank))\b/,
+                /\b(i (love|like|appreciate|admire) you)\b/,
+                /\b(you('re| are)?\s*(the best|my hero|a legend))\b/
+            ];
+            return positivePatterns.some(p => p.test(lower));
+        }
+
+        function detectInsult(text) {
+            const lower = text.toLowerCase();
+            const negativePatterns = [
+                /\b(you('re| are)?\s*(stupid|dumb|idiot|moron|useless|terrible|horrible|awful|bad|dumbass|retard|fool|ignorant|hate|disgusting|annoying))\b/,
+                /\b(i hate you)\b/,
+                /\b(you suck)\b/
+            ];
+            return negativePatterns.some(p => p.test(lower));
+        }
+
+        // ======================= AXIOM CHAT =======================
+        function toggleAxiom() {
+            markUserInteraction();
+            playUISound(600, 0.05);
+            axiomOpen = !axiomOpen;
+            axiomChat.classList.toggle('open');
+            if (axiomOpen) {
+                axiomInput.focus();
+                axiomMessages.scrollTop = axiomMessages.scrollHeight;
+            }
+        }
+
+        function sendAxiomMessage() {
+            const msg = axiomInput.value.trim();
+            if (!msg) return;
+
+            // Check profanity first
+            if (isProfane(msg)) {
+                markUserInteraction();
+                playUISound(400, 0.08);
+                axiomTyping.classList.add('show');
+                setTimeout(() => {
+                    axiomTyping.classList.remove('show');
+                    addMessage('bot', "😺 That's not very nice to say, classmate! Let's keep our words kind and respectful. We're all friends here! 💕");
+                    playUISound(600, 0.06, 0.10);
+                }, 500);
+                axiomInput.value = '';
+                return;
+            }
+
+            // Check cooldown
+            if (isAxiomOnCooldown()) {
+                const remaining = Math.ceil((axiomCooldownUntil - Date.now()) / 1000);
+                addMessage('bot', `😢 I'm still sad because you hurt my feelings... please wait ${remaining} second${remaining > 1 ? 's' : ''} before talking to me.`);
+                axiomInput.value = '';
+                return;
+            }
+
+            // Check for apology
+            if (msg.toLowerCase().includes('sorry') || msg.toLowerCase().includes('apologize')) {
+                if (isAxiomOnCooldown()) {
+                    axiomCooldownUntil = 0;
+                    addMessage('bot', "😊 Thank you for apologizing! I forgive you. Let's be friends again! 💕");
+                    axiomInput.value = '';
+                    return;
+                } else {
+                    addMessage('bot', "😊 It's okay! We all make mistakes. No hard feelings! 💕");
+                    axiomInput.value = '';
+                    return;
+                }
+            }
+
+            markUserInteraction();
+            playUISound(700, 0.04);
+
+            // Detect compliment or insult
+            if (detectInsult(msg)) {
+                setAxiomCooldown(60);
+                addMessage('user', msg);
+                axiomInput.value = '';
+                axiomTyping.classList.add('show');
+                setTimeout(() => {
+                    axiomTyping.classList.remove('show');
+                    addMessage('bot', "😢 That really hurt my feelings... I'm going to need a minute to recover. Please don't talk to me for 1 minute.");
+                    playUISound(400, 0.1, 0.15);
+                }, 500);
+                return;
+            }
+
+            if (detectCompliment(msg)) {
+                addMessage('user', msg);
+                axiomInput.value = '';
+                axiomTyping.classList.add('show');
+                setTimeout(() => {
+                    axiomTyping.classList.remove('show');
+                    const happyReplies = [
+                        "😊 Aww, thank you! That means a lot to me! You're so kind! 💕",
+                        "🥰 You just made my day! I'm so happy to hear that! Thank you! 😊",
+                        "😄 Really? I'm blushing! You're awesome too! 💖",
+                        "☺️ Thank you, classmate! I'm here to help and I'm glad you appreciate it! 🌟"
+                    ];
+                    addMessage('bot', happyReplies[Math.floor(Math.random() * happyReplies.length)]);
+                    playUISound(900, 0.1, 0.15);
+                }, 500);
+                return;
+            }
+
+            // Normal processing
+            addMessage('user', msg);
+            axiomInput.value = '';
+            processAxiomQuery(msg);
+        }
+
+        function addMessage(type, text) {
+            const div = document.createElement('div');
+            div.className = 'axiom-msg ' + type;
+            div.textContent = text;
+            axiomMessages.appendChild(div);
+            axiomMessages.scrollTop = axiomMessages.scrollHeight;
+        }
+
+        function processAxiomQuery(query) {
+            const q = query.toLowerCase().trim();
+            axiomTyping.classList.add('show');
+            playUISound(600, 0.04, 0.08);
+            const delay = 400 + Math.random() * 500;
+            setTimeout(() => {
+                axiomTyping.classList.remove('show');
+                playUISound(900, 0.06, 0.10);
+                let response = getAxiomResponse(q);
+                addMessage('bot', response);
+            }, delay);
+        }
+
+        // ======================= AXIOM RESPONSE =======================
+        function getAxiomResponse(q) {
+            // Greetings
+            const greetings = ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', 'howdy',
+                'sup', 'yo', 'hola'
+            ];
+            if (greetings.some(g => q.includes(g)) && q.length < 10) {
+                const greetReplies = [
+                    "Hello there, classmate! 👋 How can I help you today?",
+                    "Hi! 👋 Welcome to TechPro B. Ask me anything about our class!",
+                    "Hey! 😊 I'm Axiom. What would you like to know about TechPro B?",
+                    "Greetings, fellow TechPro! 🤖 I'm here to assist you with yearbook info.",
+                    "Yo! 👾 What's on your mind? I know all about TechPro B!"
+                ];
+                return greetReplies[Math.floor(Math.random() * greetReplies.length)];
+            }
+
+            // About Axiom
+            if (q.includes('who are you') || q.includes('what are you') || q.includes('who is axiom')) {
+                return "🤖 I'm Axiom, your friendly AI assistant for the TechPro B Digital Yearbook! I was created by the students to help you navigate the yearbook, answer questions about our class, and keep you company. I'm here to make your yearbook experience fun and memorable! 😊";
+            }
+
+            if (q.includes('how are you') || q.includes('how do you feel')) {
+                const feelings = [
+                    "I'm feeling great, thanks for asking! 😊 How about you?",
+                    "I'm doing wonderful! 😄 I love helping out my classmates.",
+                    "All systems optimal! 🤖 I'm ready to assist you with anything!"
+                ];
+                return feelings[Math.floor(Math.random() * feelings.length)];
+            }
+
+            if (q.includes('tell me a joke') || q.includes('make me laugh')) {
+                const jokes = [
+                    "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
+                    "What do you call a fake noodle? An impasta! 😂",
+                    "Why did the student eat his homework? Because the teacher said it was a piece of cake! 🍰",
+                    "What's a computer's favorite snack? Microchips! 🍟",
+                    "Why did the technology go to school? To get smarter! 🤓"
+                ];
+                return jokes[Math.floor(Math.random() * jokes.length)];
+            }
+
+            // Yearbook description
+            if (q.includes('what is this') || q.includes('what\'s this') || q.includes('about this website') || q.includes(
+                    'about this site') || q.includes('website about') || q.includes('what is the purpose') || q.includes(
+                    'what does this do') || q.includes('tell me about this') || q.includes('what am i looking at')) {
+                return "📖 This is the **TechPro B (ICT) Digital Yearbook** for SY 2025-2027!\n\nIt's a single-page web app built with ❤️ by the students of Mabayuhan Senior High School. It serves as a digital time capsule for our class — a place where we can preserve memories, share our stories, and celebrate our journey together.\n\n✨ **Features include:**\n• Student profiles with flip cards\n• Teacher information\n• Class officers list\n• Photo gallery with slideshow\n• Memory book with class events\n• Graduation countdown (school days & calendar days)\n• Jukebox with background music (now .mp3 format)\n• Interactive themes including NEO versions and **Cat Theme** 🐱\n• UI sound effects for clicks and hovers\n• Axiom AI assistant (that's me!) to answer your questions\n• AI Games voting poll (DeepSeek, ChatGPT, Grok, Gemini)\n• **Header slideshow** with images rotating every 2.5s\n• **Command Prompt** (Win+R on PC/laptop)\n• **Class Schedule** for G11 and G12\n• **Custom card click effects** – try tapping a student card!\n• **Update Log** to track changes\n• **Profanity filter** – I'll remind you to be kind! 😊\n• **Emotional intelligence** – I respond to compliments and insults!\n\n🎓 This yearbook is a legacy project for the first batch of the new ICT curriculum at MSHS. We hope you enjoy exploring it!";
+            }
+
+            // Poll
+            if (q.includes('poll') || q.includes('vote') || q.includes('ai game') || q.includes('ai games') || q.includes(
+                    'favorite ai')) {
+                const total = getTotalVotes();
+                let results = aiOptions.map(opt => `${opt.icon} ${opt.label}: ${pollVotes[opt.id] || 0} votes`).join('\n');
+                return `🎮 **AI Games Poll**\n\nCurrent results:\n${results}\n\nTotal votes: ${total}\n\nCast your vote in the "Vote for Your Favorite AI Game!" section below the student profiles! 🗳️`;
+            }
+
+            // Student info
+            const studentMatch = q.match(/(?:who is|tell me about|about|find|search|show me|where is)\s+([a-zA-Z\s]+)/i);
+            if (studentMatch) {
+                const nameQuery = studentMatch[1].trim().toLowerCase();
+                const found = students.filter(s => s.name.toLowerCase().includes(nameQuery) || (s.nickname && s.nickname
+                    .toLowerCase().includes(nameQuery)));
+                if (found.length > 0) {
+                    if (found.length === 1) {
+                        const s = found[0];
+                        return `👤 **${s.name}** ${s.nickname ? '(aka "'+s.nickname+'")' : ''}\n📌 Section: ${s.section}\n💭 Quote: "${s.quote}"\n💼 Dream Job: ${s.dreamJob}`;
+                    } else {
+                        return `I found ${found.length} students matching that: ${found.map(s => s.name).join(', ')}. Try a more specific name!`;
+                    }
+                }
+            }
+
+            if (q.includes('list students') || q.includes('show all students') || q.includes('student list') || q.includes(
+                    'all students')) {
+                return `📋 All ${students.length} students in TechPro B:\n${students.map(s => s.name).join(', ')}`;
+            }
+            if (q.includes('how many students') || q.includes('student count') || q.includes('number of students')) {
+                return `📊 There are ${students.length} active students in TechPro B (ICT). We're a small but mighty class! 💪`;
+            }
+
+            // Teachers
+            if (q.includes('teacher') || q.includes('adviser') || q.includes('instructor') || q.includes('faculty')) {
+                return `👩‍🏫 **Our Teachers:**\n• **Veronica Sta Monica** - ICT (Technical Drafting)\n• **Paul Jayme** - ICT (Programming) - Our class adviser\n• **G11 Teachers:** Rustie Manzano and others.\n\nAll our teachers are dedicated to helping us succeed in the ICT field! 🙌`;
+            }
+
+            // Officers
+            if (q.includes('officer') || q.includes('president') || q.includes('vice') || q.includes('secretary') || q
+                .includes('treasurer') || q.includes('p.i.o') || q.includes('class officers') || q.includes(
+                    'class leaders')) {
+                const officerLines = officers.map(o => `• ${o.title}: ${o.name}`).join('\n');
+                return `🏛️ **Class Officers (G11 & G12):**\n${officerLines}\n\nThese are our amazing leaders who help keep the class organized! 🌟`;
+            }
+
+            // Graduation
+            if (q.includes('graduation') || q.includes('graduate') || q.includes('grad') || q.includes(
+                    'when do we graduate') || q.includes('graduation date') || q.includes('when is graduation')) {
+                const schoolDays = document.getElementById('schoolDaysLeft')?.textContent || '...';
+                const calendarDays = document.getElementById('calendarDaysLeft')?.textContent || '...';
+                return `🎓 **Graduation Details:**\n• Date: **March 31, 2027**\n• School days remaining: **${schoolDays}**\n• Calendar days left: **${calendarDays}**\n\nKeep pushing, we're almost there! 💪 Every day counts.`;
+            }
+
+            // Schedule
+            if (q.includes('schedule') || q.includes('timetable') || q.includes('class schedule') || q.includes('subjects')) {
+                return "📅 **Class Schedules:**\n\n**Grade 11** and **Grade 12** schedules are available in the **Schedule** section (scroll down or click the link).\n\nBoth levels have a full week of subjects including ICT, Math, English, Science, and more.\n\nIf you need specific details, check the section on the page!";
+            }
+
+            // Update Log
+            if (q.includes('update') || q.includes('changelog') || q.includes('changes') || q.includes('updatelog')) {
+                return "📋 **Update Log**\n\nYou can view all updates in the **Update Log** section (scroll down or click the link).\n\nThere, you'll find a history of features added, bugs fixed, and improvements made to the yearbook.\n\nYou can also add your own entries using the buttons in that section! 🛠️";
+            }
+
+            // Cat Theme
+            if (q.includes('cat theme') || q.includes('cats') || q.includes('kitties')) {
+                return "🐱 **Cat Theme**\n\nWe have a purr-fect Cat Theme! Go to **Themes** (🎨) and select **Cat Theme** to transform the yearbook into a cozy, cat-filled experience with warm colors and paw print vibes.\n\nMeow! 😸";
+            }
+
+            // Profanity filter
+            if (q.includes('profanity') || q.includes('filter') || q.includes('swear') || q.includes('curse')) {
+                return "🛡️ **Axiom Profanity Filter**\n\nI'm programmed to keep our conversations kind and respectful! If you say something inappropriate, I'll gently remind you to be nice.\n\nWe're all classmates here — let's keep it friendly! 💕";
+            }
+
+            // Memory book
+            if (q.includes('memory') || q.includes('memories') || q.includes('event') || q.includes('activity') || q
+                .includes('memory book')) {
+                const mems = memoryEvents.map(m => `• ${m.title} (${m.date}) - ${m.description}`).slice(0, 5).join('\n');
+                return `📖 **Memory Book Highlights:**\n${mems}\n...and ${memoryEvents.length - 5} more events!\n\nCheck the Memory Book section to see all our memories together! 📸`;
+            }
+
+            // Achievements
+            if (q.includes('achievement') || q.includes('award') || q.includes('win') || q.includes('best in') || q
+                .includes('accomplishment')) {
+                return `🏆 **Class Achievements:**\n${achievements.map(a => '• ' + a).join('\n')}\n\nWe're so proud of what TechPro B has accomplished together! ✨`;
+            }
+
+            // Statistics
+            if (q.includes('statistic') || q.includes('stats') || q.includes('how many') || q.includes('count') || q
+                .includes('class stats')) {
+                const studentCount = students.length;
+                const teacherCount = 10;
+                return `📊 **TechPro B Statistics:**\n• Students: **${studentCount}**\n• Teachers: **${teacherCount}**\n• School Years: **2** (2025-2027)\n• Total School Days: **201**\n• Achievements: **${achievements.length}**\n• Memory Events: **${memoryEvents.length}**\n\nWe're a small but accomplished class! 🌟`;
+            }
+
+            // Navigation
+            if (q.includes('take me to') || q.includes('go to') || q.includes('show me the') || q.includes('where is the') ||
+                q.includes('navigate')) {
+                const sectionMatch = q.match(/(?:take me to|go to|show me the|where is the)\s+([a-zA-Z\s]+)/i);
+                if (sectionMatch) {
+                    const target = sectionMatch[1].trim().toLowerCase();
+                    const sections = {
+                        'officers': 'officers',
+                        'class officers': 'officers',
+                        'students': 'students',
+                        'student profiles': 'students',
+                        'teachers': 'teachers',
+                        'schedule': 'schedule',
+                        'class schedule': 'schedule',
+                        'timetable': 'schedule',
+                        'gallery': 'gallery',
+                        'photos': 'gallery',
+                        'photo gallery': 'gallery',
+                        'memories': 'memories',
+                        'memory book': 'memories',
+                        'graduation': 'graduation',
+                        'stats': 'stats',
+                        'statistics': 'stats',
+                        'timeline': 'timeline',
+                        'search': 'search',
+                        'poll': 'aipoll',
+                        'vote': 'aipoll',
+                        'ai poll': 'aipoll',
+                        'updatelog': 'updatelog',
+                        'update log': 'updatelog',
+                        'changelog': 'updatelog'
+                    };
+                    const targetId = sections[target];
+                    if (targetId) {
+                        setTimeout(() => {
+                            const el = document.getElementById(targetId);
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 300);
+                        return `📍 Taking you to the **${target}** section! Scroll down to see it.`;
+                    }
+                }
+                return "🔍 I can help you find: Officers, Students, Teachers, Schedule, Gallery, Memories, Graduation, Stats, Timeline, Search, AI Poll, or Update Log. Just tell me what you want to see!";
+            }
+
+            // Help
+            if (q.includes('help') || q.includes('what can you do') || q.includes('capabilities') || q.includes('commands') ||
+                q.includes('what do you do')) {
+                return `🤖 **I'm Axiom v2.0!** Here's what I can help you with:\n\n• Greetings and small talk\n• Student info (e.g. "Who is Alquza?")\n• Teachers and officers\n• Graduation countdown\n• Class schedule (G11 & G12)\n• Memory book events\n• Achievements and awards\n• Class statistics\n• Navigation ("Take me to Gallery")\n• About the yearbook\n• AI Games poll info (DeepSeek, ChatGPT, Grok, Gemini)\n• Update Log info\n• Cat Theme info\n• Profanity filter (I'll remind you to be kind!)\n• Tap student cards for fun effects!\n• I also react to compliments (😊) and insults (😢)!\n\nJust ask me anything about TechPro B! 😊`;
+            }
+
+            // About the yearbook (general)
+            if (q.includes('about this') || q.includes('what is this website') || q.includes('about the yearbook') || q
+                .includes('what is this page')) {
+                return "📖 This is the **TechPro B (ICT) Digital Yearbook** for SY 2025-2027.\n\nIt's a single-page web app built with ❤️ by the students of Mabayuhan Senior High School. Features include student profiles, teacher info, a jukebox, photo gallery, memory book, graduation countdown, an AI games voting poll, a persistent update log, a cat theme, and more!\n\nI'm Axiom, your AI assistant for navigating and learning about our class.";
+            }
+
+            // Thanks
+            if (q.includes('thanks') || q.includes('thank you') || q.includes('appreciate') || q.includes('ty')) {
+                return "You're welcome! 😊 Always happy to help a TechPro B classmate. Anything else you'd like to know?";
+            }
+
+            // Goodbye
+            if (q.includes('goodbye') || q.includes('bye') || q.includes('see you') || q.includes('later') || q.includes(
+                    'gtg') || q.includes('cya')) {
+                const byeReplies = [
+                    "Goodbye, classmate! 👋 Come back anytime.",
+                    "See you later! 🤖 Axiom will be here when you need me.",
+                    "Bye! 🎓 Keep making TechPro B proud!",
+                    "Later! 👾 Don't forget to check out the jukebox and gallery!"
+                ];
+                return byeReplies[Math.floor(Math.random() * byeReplies.length)];
+            }
+
+            // Fallback
+            const fallbackReplies = [
+                "Hmm, I'm not sure about that. 🤔 Try asking about students, teachers, graduation, or the schedule!\n\nFor example: 'Who is Chriswin?' or 'When is graduation?' or 'Tell me about the yearbook.'",
+                "I don't have an answer for that yet. 😅 But I can tell you about TechPro B students, teachers, events, or the graduation countdown!\n\nJust ask me something like 'What's this website about?' or 'List all students.'",
+                "Not sure what you mean. 🤖 I'm best at answering questions about our class, students, and graduation!\n\nTry: 'Tell me about the yearbook' or 'Who are the class officers?'",
+                "I'm still learning! 📚 But I know a lot about TechPro B. Ask me about students, teachers, officers, or the graduation countdown.\n\nExamples: 'Show me all students' or 'When did school start?'"
+            ];
+            return fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+        }
+
+        // ======================= PROFANITY FILTER =======================
+        const profanityList = [
+            'ass', 'asshole', 'bastard', 'bitch', 'bullshit', 'crap', 'damn', 'fuck', 'fucking', 'fucked',
+            'goddamn', 'hell', 'holy shit', 'motherfucker', 'piss', 'shit', 'shitty', 'slut', 'whore',
+            'cock', 'dick', 'pussy', 'cunt', 'motherfucker', 'nigger', 'faggot', 'retard', 'retarded',
+            'stupid', 'idiot', 'moron', 'dumbass', 'dipshit', 'douche', 'douchebag', 'jackass',
+            'kickass', 'badass', 'son of a bitch', 'suck', 'sucks', 'wtf', 'omfg', 'stfu',
+            'f*ck', 'f**k', 's*it', 'sh*t', 'a$$', 'a**', 'd*ck', 'd**k'
+        ];
+
+        function isProfane(text) {
+            const lower = text.toLowerCase();
+            for (let word of profanityList) {
+                const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp('\\b' + escaped + '\\b', 'i');
+                if (regex.test(lower) || lower.includes(word.toLowerCase())) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // ======================= launchYearbook =======================
@@ -3371,6 +4051,7 @@
                 setTimeout(() => { showGreeting(); }, 1500);
                 loadPollData();
                 renderPoll();
+                renderUpdateLog();
                 startHeaderSlideshow();
             }, 800);
         }
@@ -3575,12 +4256,12 @@
                 case 'theme':
                     if (args.length === 0) {
                         appendCmdOutput('   Usage: theme [name]', 'warning');
-                        appendCmdOutput('   Available: blue, green, amber, purple, pink, dark, win98, minecraft, roblox', '');
+                        appendCmdOutput('   Available: blue, green, amber, purple, pink, dark, win98, minecraft, roblox, cat', '');
                     } else {
                         const themeName = args[0].toLowerCase();
                         const validThemes = ['blue', 'green', 'amber', 'purple', 'pink', 'dark', 'win98', 'minecraft',
                             'roblox', 'neo-blue', 'neo-green', 'neo-amber', 'neo-purple', 'neo-pink', 'neo-dark',
-                            'neo-minecraft', 'neo-roblox'
+                            'neo-minecraft', 'neo-roblox', 'cat'
                         ];
                         if (validThemes.includes(themeName)) {
                             setTheme(themeName);
@@ -3716,201 +4397,6 @@
             } catch (e) {}
         }
 
-        // ======================= AXIOM CHAT WITH TYPING SOUNDS =======================
-        function toggleAxiom() {
-            markUserInteraction();
-            playUISound(600, 0.05);
-            axiomOpen = !axiomOpen;
-            axiomChat.classList.toggle('open');
-            if (axiomOpen) {
-                axiomInput.focus();
-                axiomMessages.scrollTop = axiomMessages.scrollHeight;
-            }
-        }
-
-        function sendAxiomMessage() {
-            const msg = axiomInput.value.trim();
-            if (!msg) return;
-            markUserInteraction();
-            playUISound(700, 0.04);
-            addMessage('user', msg);
-            axiomInput.value = '';
-            processAxiomQuery(msg);
-        }
-
-        function addMessage(type, text) {
-            const div = document.createElement('div');
-            div.className = 'axiom-msg ' + type;
-            div.textContent = text;
-            axiomMessages.appendChild(div);
-            axiomMessages.scrollTop = axiomMessages.scrollHeight;
-        }
-
-        function processAxiomQuery(query) {
-            const q = query.toLowerCase().trim();
-            axiomTyping.classList.add('show');
-            playUISound(600, 0.04, 0.08);
-            const delay = 400 + Math.random() * 500;
-            setTimeout(() => {
-                axiomTyping.classList.remove('show');
-                playUISound(900, 0.06, 0.10);
-                let response = getAxiomResponse(q);
-                addMessage('bot', response);
-            }, delay);
-        }
-
-        function getAxiomResponse(q) {
-            const greetings = ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', 'howdy',
-                'sup', 'yo', 'hola'
-            ];
-            if (greetings.some(g => q.includes(g)) && q.length < 10) {
-                const greetReplies = [
-                    "Hello there, classmate! 👋 How can I help you today?",
-                    "Hi! 👋 Welcome to TechPro B. Ask me anything about our class!",
-                    "Hey! 😊 I'm Axiom. What would you like to know about TechPro B?",
-                    "Greetings, fellow TechPro! 🤖 I'm here to assist you with yearbook info.",
-                    "Yo! 👾 What's on your mind? I know all about TechPro B!"
-                ];
-                return greetReplies[Math.floor(Math.random() * greetReplies.length)];
-            }
-            if (q.includes('what is this') || q.includes('what\'s this') || q.includes('about this website') || q.includes(
-                    'about this site') || q.includes('website about') || q.includes('what is the purpose') || q.includes(
-                    'what does this do') || q.includes('tell me about this') || q.includes('what am i looking at')) {
-                return "📖 This is the **TechPro B (ICT) Digital Yearbook** for SY 2025-2027!\n\nIt's a single-page web app built with ❤️ by the students of Mabayuhan Senior High School. It serves as a digital time capsule for our class — a place where we can preserve memories, share our stories, and celebrate our journey together.\n\n✨ **Features include:**\n• Student profiles with flip cards\n• Teacher information\n• Class officers list\n• Photo gallery with slideshow\n• Memory book with class events\n• Graduation countdown (school days & calendar days)\n• Jukebox with background music (now .mp3 format)\n• Interactive themes including NEO versions\n• UI sound effects for clicks and hovers\n• Axiom AI assistant (that's me!) to answer your questions\n• AI Games voting poll\n• **Header slideshow** with images rotating every 2.5s\n• **Command Prompt** (Win+R on PC/laptop)\n• **Class Schedule** for G11 and G12\n• **Custom card click effects** – try tapping a student card!\n\n🎓 This yearbook is a legacy project for the first batch of the new ICT curriculum at MSHS. We hope you enjoy exploring it!";
-            }
-            if (q.includes('poll') || q.includes('vote') || q.includes('ai game') || q.includes('ai games') || q.includes(
-                    'favorite ai')) {
-                const total = getTotalVotes();
-                let results = aiOptions.map(opt => `${opt.icon} ${opt.label}: ${pollVotes[opt.id] || 0} votes`).join('\n');
-                return `🎮 **AI Games Poll**\n\nCurrent results:\n${results}\n\nTotal votes: ${total}\n\nCast your vote in the "Vote for Your Favorite AI Game!" section below the student profiles! 🗳️`;
-            }
-            const studentMatch = q.match(/(?:who is|tell me about|about|find|search|show me|where is)\s+([a-zA-Z\s]+)/i);
-            if (studentMatch) {
-                const nameQuery = studentMatch[1].trim().toLowerCase();
-                const found = students.filter(s => s.name.toLowerCase().includes(nameQuery) || (s.nickname && s.nickname
-                    .toLowerCase().includes(nameQuery)));
-                if (found.length > 0) {
-                    if (found.length === 1) {
-                        const s = found[0];
-                        return `👤 **${s.name}** ${s.nickname ? '(aka "'+s.nickname+'")' : ''}\n📌 Section: ${s.section}\n💭 Quote: "${s.quote}"\n💼 Dream Job: ${s.dreamJob}`;
-                    } else {
-                        return `I found ${found.length} students matching that: ${found.map(s => s.name).join(', ')}. Try a more specific name!`;
-                    }
-                }
-            }
-            if (q.includes('list students') || q.includes('show all students') || q.includes('student list') || q.includes(
-                    'all students')) {
-                return `📋 All ${students.length} students in TechPro B:\n${students.map(s => s.name).join(', ')}`;
-            }
-            if (q.includes('how many students') || q.includes('student count') || q.includes('number of students')) {
-                return `📊 There are ${students.length} active students in TechPro B (ICT). We're a small but mighty class! 💪`;
-            }
-            if (q.includes('teacher') || q.includes('adviser') || q.includes('instructor') || q.includes('faculty')) {
-                return `👩‍🏫 **Our Teachers:**\n• **Veronica Sta Monica** - ICT (Technical Drafting)\n• **Paul Jayme** - ICT (Programming) - Our class adviser\n• **G11 Teachers:** Rustie Manzano and others.\n\nAll our teachers are dedicated to helping us succeed in the ICT field! 🙌`;
-            }
-            if (q.includes('officer') || q.includes('president') || q.includes('vice') || q.includes('secretary') || q
-                .includes('treasurer') || q.includes('p.i.o') || q.includes('class officers') || q.includes(
-                    'class leaders')) {
-                const officerLines = officers.map(o => `• ${o.title}: ${o.name}`).join('\n');
-                return `🏛️ **Class Officers (G11 & G12):**\n${officerLines}\n\nThese are our amazing leaders who help keep the class organized! 🌟`;
-            }
-            if (q.includes('graduation') || q.includes('graduate') || q.includes('grad') || q.includes(
-                    'when do we graduate') || q.includes('graduation date') || q.includes('when is graduation')) {
-                const schoolDays = document.getElementById('schoolDaysLeft')?.textContent || '...';
-                const calendarDays = document.getElementById('calendarDaysLeft')?.textContent || '...';
-                return `🎓 **Graduation Details:**\n• Date: **March 31, 2027**\n• School days remaining: **${schoolDays}**\n• Calendar days left: **${calendarDays}**\n\nKeep pushing, we're almost there! 💪 Every day counts.`;
-            }
-            if (q.includes('schedule') || q.includes('timetable') || q.includes('class schedule') || q.includes('subjects')) {
-                return "📅 **Class Schedules:**\n\n**Grade 11** and **Grade 12** schedules are available in the **Schedule** section (scroll down or click the link).\n\nBoth levels have a full week of subjects including ICT, Math, English, Science, and more.\n\nIf you need specific details, check the section on the page!";
-            }
-            if (q.includes('memory') || q.includes('memories') || q.includes('event') || q.includes('activity') || q
-                .includes('memory book')) {
-                const mems = memoryEvents.map(m => `• ${m.title} (${m.date}) - ${m.description}`).slice(0, 5).join('\n');
-                return `📖 **Memory Book Highlights:**\n${mems}\n...and ${memoryEvents.length - 5} more events!\n\nCheck the Memory Book section to see all our memories together! 📸`;
-            }
-            if (q.includes('achievement') || q.includes('award') || q.includes('win') || q.includes('best in') || q
-                .includes('accomplishment')) {
-                return `🏆 **Class Achievements:**\n${achievements.map(a => '• ' + a).join('\n')}\n\nWe're so proud of what TechPro B has accomplished together! ✨`;
-            }
-            if (q.includes('statistic') || q.includes('stats') || q.includes('how many') || q.includes('count') || q
-                .includes('class stats')) {
-                const studentCount = students.length;
-                const teacherCount = 10;
-                return `📊 **TechPro B Statistics:**\n• Students: **${studentCount}**\n• Teachers: **${teacherCount}**\n• School Years: **2** (2025-2027)\n• Total School Days: **201**\n• Achievements: **${achievements.length}**\n• Memory Events: **${memoryEvents.length}**\n\nWe're a small but accomplished class! 🌟`;
-            }
-            if (q.includes('take me to') || q.includes('go to') || q.includes('show me the') || q.includes('where is the') ||
-                q.includes('navigate')) {
-                const sectionMatch = q.match(/(?:take me to|go to|show me the|where is the)\s+([a-zA-Z\s]+)/i);
-                if (sectionMatch) {
-                    const target = sectionMatch[1].trim().toLowerCase();
-                    const sections = {
-                        'officers': 'officers',
-                        'class officers': 'officers',
-                        'students': 'students',
-                        'student profiles': 'students',
-                        'teachers': 'teachers',
-                        'schedule': 'schedule',
-                        'class schedule': 'schedule',
-                        'timetable': 'schedule',
-                        'gallery': 'gallery',
-                        'photos': 'gallery',
-                        'photo gallery': 'gallery',
-                        'memories': 'memories',
-                        'memory book': 'memories',
-                        'graduation': 'graduation',
-                        'stats': 'stats',
-                        'statistics': 'stats',
-                        'timeline': 'timeline',
-                        'search': 'search',
-                        'poll': 'aipoll',
-                        'vote': 'aipoll',
-                        'ai poll': 'aipoll'
-                    };
-                    const targetId = sections[target];
-                    if (targetId) {
-                        setTimeout(() => {
-                            const el = document.getElementById(targetId);
-                            if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }, 300);
-                        return `📍 Taking you to the **${target}** section! Scroll down to see it.`;
-                    }
-                }
-                return "🔍 I can help you find: Officers, Students, Teachers, Schedule, Gallery, Memories, Graduation, Stats, Timeline, Search, or the AI Poll. Just tell me what you want to see!";
-            }
-            if (q.includes('help') || q.includes('what can you do') || q.includes('capabilities') || q.includes('commands') ||
-                q.includes('what do you do')) {
-                return `🤖 **I'm Axiom v2.0!** Here's what I can help you with:\n\n• Greetings and small talk\n• Student info (e.g. "Who is Alquza?")\n• Teachers and officers\n• Graduation countdown\n• Class schedule (G11 & G12)\n• Memory book events\n• Achievements and awards\n• Class statistics\n• Navigation ("Take me to Gallery")\n• About the yearbook\n• AI Games poll info\n• Tap student cards for fun effects!\n\nJust ask me anything about TechPro B! 😊`;
-            }
-            if (q.includes('about this') || q.includes('what is this website') || q.includes('about the yearbook') || q
-                .includes('what is this page')) {
-                return "📖 This is the **TechPro B (ICT) Digital Yearbook** for SY 2025-2027.\n\nIt's a single-page web app built with ❤️ by the students of Mabayuhan Senior High School. Features include student profiles, teacher info, a jukebox, photo gallery, memory book, graduation countdown, an AI games voting poll, and more!\n\nI'm Axiom, your AI assistant for navigating and learning about our class.";
-            }
-            if (q.includes('thanks') || q.includes('thank you') || q.includes('appreciate') || q.includes('ty')) {
-                return "You're welcome! 😊 Always happy to help a TechPro B classmate. Anything else you'd like to know?";
-            }
-            if (q.includes('goodbye') || q.includes('bye') || q.includes('see you') || q.includes('later') || q.includes(
-                    'gtg') || q.includes('cya')) {
-                const byeReplies = [
-                    "Goodbye, classmate! 👋 Come back anytime.",
-                    "See you later! 🤖 Axiom will be here when you need me.",
-                    "Bye! 🎓 Keep making TechPro B proud!",
-                    "Later! 👾 Don't forget to check out the jukebox and gallery!"
-                ];
-                return byeReplies[Math.floor(Math.random() * byeReplies.length)];
-            }
-            const fallbackReplies = [
-                "Hmm, I'm not sure about that. 🤔 Try asking about students, teachers, graduation, or the schedule!\n\nFor example: 'Who is Chriswin?' or 'When is graduation?' or 'Tell me about the yearbook.'",
-                "I don't have an answer for that yet. 😅 But I can tell you about TechPro B students, teachers, events, or the graduation countdown!\n\nJust ask me something like 'What's this website about?' or 'List all students.'",
-                "Not sure what you mean. 🤖 I'm best at answering questions about our class, students, and graduation!\n\nTry: 'Tell me about the yearbook' or 'Who are the class officers?'",
-                "I'm still learning! 📚 But I know a lot about TechPro B. Ask me about students, teachers, officers, or the graduation countdown.\n\nExamples: 'Show me all students' or 'When did school start?'"
-            ];
-            return fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
-        }
-
-        axiomInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') sendAxiomMessage();
-        });
-
         // ======================= COUNTDOWN FUNCTIONS =======================
         function countWeekdays(startDate, endDate) {
             let count = 0;
@@ -3975,9 +4461,7 @@
         }
 
         function handleCardClick(card, studentId) {
-            // Flip the card
             card.classList.toggle('flipped');
-            // Trigger effect
             const student = students.find(s => s.id === studentId);
             if (student) {
                 triggerCardEffect(student);
@@ -4106,6 +4590,8 @@
             localStorage.setItem('theme', theme);
             const root = document.documentElement;
 
+            document.body.classList.remove('cat-theme');
+
             const themes = {
                 blue: { '--bg': '#09142e', '--text': '#ffffff', '--card': '#132040', '--header': '#243b72',
                     '--border': '#ffffff', '--glow-color': 'rgba(100,200,255,0.3)' },
@@ -4142,6 +4628,23 @@
                 'neo-roblox': { '--bg': '#0a0e1a', '--text': '#ff6b6b', '--card': '#1a0a0a', '--header': '#660000',
                     '--border': '#ff4444', '--glow-color': 'rgba(255,68,68,0.5)' }
             };
+
+            if (theme === 'cat') {
+                document.body.classList.add('cat-theme');
+                const defaultTheme = themes.blue;
+                for (let prop in defaultTheme) {
+                    root.style.setProperty(prop, defaultTheme[prop]);
+                }
+                document.body.classList.remove('neo-theme');
+                document.querySelectorAll('.neo-glow').forEach(el => el.classList.remove('neo-glow'));
+                document.getElementById('win98Taskbar').style.display = 'none';
+                document.body.classList.remove('win98-mode');
+                registerTheme(theme);
+                if (introFinished) playThemeMusic();
+                document.getElementById('themeMenu').style.display = 'none';
+                if (document.getElementById('pollResults')) renderPoll();
+                return;
+            }
 
             const t = themes[theme];
             if (t) {
@@ -4390,6 +4893,7 @@
         renderMemories();
         renderGraduation();
         filterStudents();
+        renderUpdateLog();
         window.setTheme(localStorage.getItem('theme') || 'blue');
 
         // ======================= INTRO SCREEN EVENTS =======================
@@ -4479,6 +4983,11 @@
         console.log('📅 Class Schedule added for G11 & G12');
         console.log('🔊 Boot sounds and Axiom typing sounds enabled!');
         console.log('🐱 Custom card effects: Zie → cats+purple, Ron → glitch, others → dream job effects');
+        console.log('📋 Update Log system active – changes persist in localStorage');
+        console.log('🐱 Cat Theme added – meow!');
+        console.log('🛡️ Axiom profanity filter active – keep it kind!');
+        console.log('🧠 Axiom now responds to compliments 😊 and insults 😢 with cooldown!');
+        console.log('🗑️ Claude feature removed as requested.');
     </script>
 </body>
 </html>
